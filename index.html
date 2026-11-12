@@ -81,6 +81,24 @@
             border-color: #fff;
         }
 
+        /* Style de l'avatar Kick */
+        .avatar-container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 15px;
+            margin-bottom: 15px;
+        }
+
+        .user-avatar {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            border: 2px solid var(--gold);
+            object-fit: cover;
+            box-shadow: 0 0 10px rgba(212, 175, 55, 0.4);
+        }
+
         .wheel-container {
             position: relative;
             width: 320px;
@@ -153,22 +171,27 @@
         <p style="color: var(--steel);">Official Community Hub</p>
     </header>
 
-    <!-- Kick Authentication Box -->
+    <!-- Zone d'authentification Kick -->
     <div id="auth-container" class="auth-box">
         <p>Log in with your Kick account to participate and save your TB-Coins!</p>
         <button class="btn-kick" onclick="loginWithKick()">Sign in with Kick</button>
     </div>
 
-    <!-- User Profile (Hidden by default) -->
+    <!-- Profil utilisateur avec Avatar Kick (Caché par défaut) -->
     <div id="user-profile" class="profile-card" style="display:none;">
-        <h3 style="color: var(--gold-light); margin-top:0;">Welcome, <span id="username"></span>!</h3>
-        <p>Status: <span id="user-status" style="color: var(--kick);">Connected via Kick</span></p>
+        <div class="avatar-container">
+            <img id="user-avatar-img" src="" alt="Kick Avatar" class="user-avatar" style="display:none;">
+            <div style="text-align: left;">
+                <h3 style="color: var(--gold-light); margin:0;">Welcome, <span id="username"></span>!</h3>
+                <p style="margin: 5px 0 0 0; font-size: 13px; color: var(--kick);">Connected via Kick</p>
+            </div>
+        </div>
         <div class="coin-badge">⚡ <span id="user-coins">500</span> TB-Coins</div>
         <br>
         <button class="btn-logout" onclick="logout()">Sign out</button>
     </div>
 
-    <!-- The Beyond Wheel -->
+    <!-- Roue du TB Show -->
     <div class="auth-box">
         <h3 style="color: var(--gold);">The Beyond Wheel</h3>
         <div class="wheel-container">
@@ -179,12 +202,12 @@
         <div id="result"></div>
     </div>
 
-    <!-- Main Script (Firebase v10 & Kick OAuth Logic) -->
+    <!-- Script Principal (Firebase v10 & Kick OAuth Logic) -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
         import { getDatabase, ref, set, get, update } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js";
 
-        // === 1. FIREBASE CONFIGURATION ===
+        // === 1. CONFIGURATION FIREBASE ===
         const firebaseConfig = {
             apiKey: "AIzaSyDkRuOlqwTcKo_KdcB-1XeJ9QBS9sEvlDY",
             authDomain: "tb-show-web.firebaseapp.com",
@@ -198,7 +221,7 @@
         const app = initializeApp(firebaseConfig);
         const db = getDatabase(app);
 
-        // === 2. KICK & CLOUDFLARE CONFIGURATION ===
+        // === 2. CONFIGURATION KICK & CLOUDFLARE ===
         const CLIENT_ID = "01M775NPQP93VF5PGP6DJR4BQF";
         const REDIRECT_URI = window.location.origin + window.location.pathname;
         const WORKER_URL = "https://nameless-base-1ca1.teebeeshow.workers.dev";
@@ -241,6 +264,20 @@
             window.location.reload();
         }
 
+        // Fonction pour afficher le profil utilisateur dans le DOM
+        function renderUserProfile(userData) {
+            document.getElementById('auth-container').style.display = 'none';
+            document.getElementById('user-profile').style.display = 'block';
+            document.getElementById('username').innerText = userData.username;
+            document.getElementById('user-coins').innerText = userData.coins;
+
+            if (userData.profile_pic) {
+                const avatarImg = document.getElementById('user-avatar-img');
+                avatarImg.src = userData.profile_pic;
+                avatarImg.style.display = 'block';
+            }
+        }
+
         // Check on load / Kick redirect return
         window.addEventListener('DOMContentLoaded', async () => {
             const urlParams = new URLSearchParams(window.location.search);
@@ -257,26 +294,28 @@
                         headers: { 'Content-Type': 'application/json' },
                         body: JSON.stringify({ code: authCode, code_verifier: codeVerifier, redirect_uri: REDIRECT_URI })
                     });
-                    const userData = await response.json();
+                    const rawData = await response.json();
 
-                    if (userData && userData.username) {
-                        document.getElementById('auth-container').style.display = 'none';
-                        document.getElementById('user-profile').style.display = 'block';
-                        document.getElementById('username').innerText = userData.username;
+                    if (rawData && rawData.username) {
+                        const userId = rawData.id;
+                        const username = rawData.username;
+                        const profilePic = rawData.profile_pic || "";
 
-                        // Save / Load from Firebase
-                        const userRef = ref(db, 'tbshow/users/' + userData.id);
+                        // Sauvegarde / Chargement depuis Firebase
+                        const userRef = ref(db, 'tbshow/users/' + userId);
                         const snapshot = await get(userRef);
                         
                         let currentCoins = 500;
                         if (!snapshot.exists()) {
-                            await set(userRef, { username: userData.username, coins: 500, last_seen: Date.now() });
+                            await set(userRef, { username, profile_pic: profilePic, coins: 500, last_seen: Date.now() });
                         } else {
                             currentCoins = snapshot.val().coins ?? 500;
-                            await update(userRef, { last_seen: Date.now() });
+                            await update(userRef, { username, profile_pic: profilePic, last_seen: Date.now() });
                         }
-                        document.getElementById('user-coins').innerText = currentCoins;
-                        localStorage.setItem('tb_current_user', JSON.stringify({ id: userData.id, username: userData.username, coins: currentCoins }));
+
+                        const userObj = { id: userId, username: username, profile_pic: profilePic, coins: currentCoins };
+                        localStorage.setItem('tb_current_user', JSON.stringify(userObj));
+                        renderUserProfile(userObj);
                     } else {
                         throw new Error("Empty user data");
                     }
@@ -288,18 +327,16 @@
                 const savedUser = localStorage.getItem('tb_current_user');
                 if (savedUser) {
                     const u = JSON.parse(savedUser);
-                    document.getElementById('auth-container').style.display = 'none';
-                    document.getElementById('user-profile').style.display = 'block';
-                    document.getElementById('username').innerText = u.username;
                     
-                    // Live coins synchronization from Firebase
+                    // Synchronisation du solde en direct depuis Firebase
                     const userRef = ref(db, 'tbshow/users/' + u.id);
                     const snapshot = await get(userRef);
                     if (snapshot.exists()) {
                         u.coins = snapshot.val().coins ?? u.coins;
+                        u.profile_pic = snapshot.val().profile_pic ?? u.profile_pic;
                         localStorage.setItem('tb_current_user', JSON.stringify(u));
                     }
-                    document.getElementById('user-coins').innerText = u.coins;
+                    renderUserProfile(u);
                 }
             }
         });
