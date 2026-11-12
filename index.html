@@ -373,6 +373,28 @@
             letter-spacing: 1px;
         }
 
+        /* Armory Grid */
+        .armory-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 16px;
+            margin-top: 15px;
+        }
+
+        .weapon-card {
+            background: #090b10;
+            border: 1px solid var(--burgundy);
+            border-radius: 10px;
+            padding: 20px;
+            text-align: left;
+            position: relative;
+        }
+
+        .weapon-card.owned {
+            border-color: var(--gold);
+            box-shadow: 0 0 15px rgba(212, 175, 55, 0.15);
+        }
+
         /* Leaderboard table style */
         .leaderboard-table {
             width: 100%;
@@ -509,22 +531,11 @@
     <!-- TAB 4: ARMORY -->
     <div id="tab-armory" class="tab-content">
         <div class="panel-card" style="max-width: 820px; text-align: left;">
-            <h3 class="panel-title" style="text-align: center;">Beyond Boss Raids & Weapons</h3>
+            <h3 class="panel-title" style="text-align: center;">Beyond Boss Raids & Armory</h3>
             <p style="color: #94a3b8; font-size: 14px; text-align: center; margin-bottom: 20px;">
                 Equip powerful weapons using your TB-Coins to deal massive damage during live stream boss encounters!
             </p>
-            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 15px;">
-                <div style="background: #090b10; border: 1px solid var(--gold); border-radius: 8px; padding: 15px;">
-                    <h4 style="color: var(--gold-bright); margin-top: 0; font-family: 'Cinzel', serif;">Steel Blaster</h4>
-                    <p style="font-size: 12px; color: #cbd5e1;">+10% attack damage during raids.</p>
-                    <button class="tab-btn" style="width: 100%; margin-top: 10px;">Equipped (Free)</button>
-                </div>
-                <div style="background: #090b10; border: 1px solid var(--burgundy); border-radius: 8px; padding: 15px;">
-                    <h4 style="color: var(--neon-pink); margin-top: 0; font-family: 'Cinzel', serif;">Gold Trident</h4>
-                    <p style="font-size: 12px; color: #cbd5e1;">+50% attack damage during raids.</p>
-                    <button class="tab-btn" style="width: 100%; margin-top: 10px;">50,000 Coins</button>
-                </div>
-            </div>
+            <div id="armory-grid" class="armory-grid"></div>
         </div>
     </div>
 
@@ -547,7 +558,7 @@
         const app = initializeApp(firebaseConfig);
         const db = getDatabase(app);
 
-        // === 2. ARTIFACTS CATALOG (6 Rarities) ===
+        // === 2. CATALOGS (Artifacts & Weapons) ===
         const ARTIFACTS_CATALOG = [
             { id: "aether_orb", code: "#001", name: "Aether Orb", rarity: "Common", color: "#60a5fa", icon: "🔮", weight: 35 },
             { id: "beyond_core", code: "#002", name: "Beyond Core", rarity: "Uncommon", color: "#963d48", icon: "⚡", weight: 25 },
@@ -555,6 +566,13 @@
             { id: "quantum_key", code: "#004", name: "Quantum Key", rarity: "Epic", color: "#a855f7", icon: "🗝️", weight: 12 },
             { id: "cosmic_crown", code: "#005", name: "Cosmic Crown", rarity: "Legendary", color: "#ffae00", icon: "👑", weight: 7 },
             { id: "beyond_trident", code: "#006", name: "The Beyond Trident", rarity: "Mythic", color: "#e0828a", icon: "🔱", weight: 3 }
+        ];
+
+        const WEAPONS_CATALOG = [
+            { id: "steel_blaster", name: "Steel Blaster", damage: "+10% Attack Damage", price: 0, icon: "⚔️" },
+            { id: "reinforced_harpoon", name: "Reinforced Harpoon", damage: "+25% Attack Damage", price: 5000, icon: "🗡️" },
+            { id: "tideforged_spear", name: "Tideforged Spear", damage: "+50% Attack Damage", price: 15000, icon: "⚡" },
+            { id: "abyss_trident", name: "Abyss Trident", damage: "+100% Attack Damage", price: 50000, icon: "🔱" }
         ];
 
         function rollRandomArtifact() {
@@ -599,6 +617,28 @@
             document.getElementById('stat-artifacts').innerText = `${unlockedCount} / ${ARTIFACTS_CATALOG.length}`;
         }
 
+        function renderArmory(ownedWeapons = {}, userCoins = 500) {
+            const grid = document.getElementById('armory-grid');
+            grid.innerHTML = "";
+
+            WEAPONS_CATALOG.forEach(weapon => {
+                const isOwned = weapon.price === 0 || ownedWeapons[weapon.id];
+                const card = document.createElement('div');
+                card.className = `weapon-card ${isOwned ? 'owned' : ''}`;
+
+                card.innerHTML = `
+                    <div style="font-size: 28px; margin-bottom: 8px;">${weapon.icon}</div>
+                    <h4 style="color: var(--gold-bright); margin: 0 0 5px 0; font-family: 'Cinzel', serif;">${weapon.name}</h4>
+                    <p style="font-size: 12px; color: #cbd5e1; margin: 0 0 12px 0;">${weapon.damage}</p>
+                    <button class="tab-btn" style="width: 100%; ${isOwned ? 'background: var(--burgundy); color: var(--gold-bright); border-color: var(--gold);' : ''}" 
+                        onclick="buyWeapon('${weapon.id}', ${weapon.price})" ${isOwned ? 'disabled' : ''}>
+                        ${isOwned ? 'Owned / Equipped' : `${weapon.price.toLocaleString()} Coins`}
+                    </button>
+                `;
+                grid.appendChild(card);
+            });
+        }
+
         // === 3. KICK & CLOUDFLARE WORKER CONFIGURATION ===
         const CLIENT_ID = "01M775NPQP93VF5PGP6DJR4BQF";
         const REDIRECT_URI = "https://teebeeshow-cloud.github.io/tbshow/";
@@ -609,6 +649,39 @@
             document.querySelectorAll('.tab-btn').forEach(el => el.classList.remove('active'));
             document.getElementById('tab-' + tabId).classList.add('active');
             if (btnElement) btnElement.classList.add('active');
+        }
+
+        window.buyWeapon = async function(weaponId, price) {
+            const savedUserStr = localStorage.getItem('tb_current_user');
+            if (!savedUserStr) {
+                alert("Please sign in with Kick first!");
+                return;
+            }
+
+            let user = JSON.parse(savedUserStr);
+            if (!user.weapons) user.weapons = {};
+            if (user.weapons[weaponId]) return;
+
+            if (user.coins < price) {
+                alert("Insufficient TB-Coins to purchase this weapon!");
+                return;
+            }
+
+            user.coins -= price;
+            user.weapons[weaponId] = true;
+
+            document.getElementById('user-coins').innerText = user.coins;
+            document.getElementById('stat-coins').innerText = user.coins + " ⚡";
+            localStorage.setItem('tb_current_user', JSON.stringify(user));
+
+            renderArmory(user.weapons, user.coins);
+
+            await update(ref(db, 'tbshow/users/' + user.id), {
+                coins: user.coins,
+                weapons: user.weapons
+            });
+
+            alert("Weapon successfully acquired and equipped!");
         }
 
         function generateRandomString(length = 32) {
@@ -669,10 +742,12 @@
             }
 
             renderCollection(userData.collection || {});
+            renderArmory(userData.weapons || {}, userData.coins);
         }
 
-        // Initial render of locked collection for guests
+        // Initial render for guests
         renderCollection({});
+        renderArmory({}, 500);
 
         // OAuth Callback Handling & Live Leaderboard listener
         window.addEventListener('DOMContentLoaded', async () => {
@@ -738,6 +813,7 @@
 
                         let currentCoins = 500;
                         let currentCollection = {};
+                        let currentWeapons = { steel_blaster: true };
                         let currentSpins = 0;
 
                         if (!snapshot.exists()) {
@@ -747,12 +823,14 @@
                                 coins: 500,
                                 total_spins: 0,
                                 collection: {},
+                                weapons: { steel_blaster: true },
                                 last_seen: Date.now()
                             });
                         } else {
                             const val = snapshot.val();
                             currentCoins = val.coins ?? 500;
                             currentCollection = val.collection ?? {};
+                            currentWeapons = val.weapons ?? { steel_blaster: true };
                             currentSpins = val.total_spins ?? 0;
                             await update(userRef, {
                                 username: username,
@@ -767,7 +845,8 @@
                             profile_pic: profilePic,
                             coins: currentCoins,
                             total_spins: currentSpins,
-                            collection: currentCollection
+                            collection: currentCollection,
+                            weapons: currentWeapons
                         };
                         localStorage.setItem('tb_current_user', JSON.stringify(userObj));
                         localStorage.removeItem('kick_code_verifier');
@@ -791,6 +870,7 @@
                         u.coins = val.coins ?? u.coins;
                         u.profile_pic = val.profile_pic ?? u.profile_pic;
                         u.collection = val.collection ?? {};
+                        u.weapons = val.weapons ?? { steel_blaster: true };
                         u.total_spins = val.total_spins ?? 0;
                         localStorage.setItem('tb_current_user', JSON.stringify(u));
                     }
@@ -921,6 +1001,7 @@
 
                     localStorage.setItem('tb_current_user', JSON.stringify(user));
                     renderCollection(user.collection);
+                    renderArmory(user.weapons || {}, user.coins);
 
                     update(ref(db, 'tbshow/users/' + user.id), {
                         coins: user.coins,
