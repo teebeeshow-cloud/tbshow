@@ -3,122 +3,156 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>THE BEYOND SHOW - Community Hub & Wheel</title>
+    <title>THE BEYOND SHOW — Community Hub & Wheel</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700;900&family=Montserrat:wght@400;600;800&display=swap" rel="stylesheet">
     <style>
         :root {
-            --bg-dark: #0f172a;
-            --card-bg: #1e293b;
+            --bg-dark: #090b10;
+            --card-bg: #121622;
             --gold: #d4af37;
-            --gold-light: #ffa300;
+            --gold-bright: #ffae00;
+            --burgundy: #722f37;
             --amethyst: #a855f7;
             --steel: #60a5fa;
-            --burgundy: #722f37;
-            --kick: #53fc18;
+            --neon-pink: #e0828a;
+            --kick-green: #53fc18;
+        }
+
+        * {
+            box-sizing: border-box;
         }
 
         body {
-            background-color: var(--bg-dark);
-            color: #ffffff;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: radial-gradient(circle at top, #181c2e 0%, var(--bg-dark) 75%);
+            color: #f8fafc;
+            font-family: 'Montserrat', sans-serif;
             text-align: center;
             margin: 0;
-            padding: 20px;
+            padding: 25px 15px;
+            min-height: 100vh;
         }
 
         header {
-            margin-bottom: 30px;
+            max-width: 600px;
+            margin: 0 auto 30px auto;
+            padding-bottom: 18px;
             border-bottom: 2px solid var(--burgundy);
-            padding-bottom: 15px;
+            box-shadow: 0 4px 20px -10px var(--neon-pink);
         }
 
         h1 {
-            color: var(--gold-light);
-            text-shadow: 0 0 15px rgba(255, 163, 0, 0.4);
-            margin: 10px 0;
+            font-family: 'Cinzel', serif;
+            font-weight: 900;
+            font-size: 2.1rem;
+            letter-spacing: 3px;
+            color: var(--gold-bright);
+            text-shadow: 0 0 18px rgba(255, 174, 0, 0.5), 0 2px 4px #000;
+            margin: 0 0 6px 0;
         }
 
-        .auth-box, .profile-card {
-            background-color: var(--card-bg);
+        .subtitle {
+            font-size: 0.85rem;
+            font-weight: 600;
+            letter-spacing: 4px;
+            text-transform: uppercase;
+            color: var(--neon-pink);
+            margin: 0;
+        }
+
+        .panel-card {
+            background: linear-gradient(145deg, #161b29, var(--card-bg));
             border: 1px solid var(--gold);
-            border-radius: 12px;
-            padding: 20px;
-            max-width: 450px;
-            margin: 20px auto;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.5);
+            border-top: 3px solid var(--gold-bright);
+            border-radius: 14px;
+            padding: 24px;
+            max-width: 460px;
+            margin: 22px auto;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.75), inset 0 0 15px rgba(212, 175, 55, 0.08);
+        }
+
+        .panel-title {
+            font-family: 'Cinzel', serif;
+            font-weight: 700;
+            font-size: 1.3rem;
+            letter-spacing: 1.5px;
+            color: var(--gold-bright);
+            text-transform: uppercase;
+            margin: 0 0 16px 0;
         }
 
         .btn-kick {
-            background-color: var(--kick);
-            color: #000;
+            background: linear-gradient(135deg, var(--kick-green), #38c90a);
+            color: #05070a;
             border: none;
-            padding: 12px 25px;
-            font-size: 16px;
-            font-weight: bold;
+            padding: 14px 28px;
+            font-family: 'Montserrat', sans-serif;
+            font-size: 15px;
+            font-weight: 800;
+            letter-spacing: 1px;
+            text-transform: uppercase;
             border-radius: 8px;
             cursor: pointer;
-            transition: 0.2s;
-            box-shadow: 0 4px 15px rgba(83,252,24,0.3);
+            transition: all 0.2s ease;
+            box-shadow: 0 4px 18px rgba(83, 252, 24, 0.35);
             width: 100%;
-            margin-bottom: 10px;
         }
 
         .btn-kick:hover {
-            transform: scale(1.02);
-            background-color: #46db13;
-        }
-
-        .input-manual {
-            width: 70%;
-            padding: 10px;
-            border-radius: 6px;
-            border: 1px solid var(--gold);
-            background: #0f172a;
-            color: #fff;
-            font-size: 14px;
-            margin-right: 5px;
-        }
-
-        .btn-manual {
-            background: var(--gold);
-            color: #000;
-            border: none;
-            padding: 10px 15px;
-            font-weight: bold;
-            border-radius: 6px;
-            cursor: pointer;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 24px rgba(83, 252, 24, 0.55);
         }
 
         .btn-logout {
-            background: transparent;
-            border: 1px solid #64748b;
-            color: #94a3b8;
-            padding: 5px 12px;
+            background: rgba(114, 47, 55, 0.3);
+            border: 1px solid var(--burgundy);
+            color: var(--neon-pink);
+            padding: 6px 16px;
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 600;
             border-radius: 6px;
-            font-size: 12px;
+            font-size: 11px;
+            letter-spacing: 1px;
+            text-transform: uppercase;
             cursor: pointer;
-            margin-top: 12px;
+            margin-top: 16px;
+            transition: 0.2s;
         }
 
         .btn-logout:hover {
+            background: var(--burgundy);
             color: #fff;
-            border-color: #fff;
         }
 
         .avatar-container {
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 15px;
-            margin-bottom: 15px;
+            gap: 16px;
+            margin-bottom: 16px;
         }
 
         .user-avatar {
-            width: 60px;
-            height: 60px;
+            width: 68px;
+            height: 68px;
             border-radius: 50%;
-            border: 2px solid var(--gold);
+            border: 2px solid var(--gold-bright);
             object-fit: cover;
-            box-shadow: 0 0 10px rgba(212, 175, 55, 0.4);
+            box-shadow: 0 0 16px rgba(255, 174, 0, 0.45);
+        }
+
+        .coin-badge {
+            background: linear-gradient(90deg, rgba(114, 47, 55, 0.6), rgba(212, 175, 55, 0.2));
+            border: 1px solid var(--gold-bright);
+            padding: 8px 22px;
+            border-radius: 30px;
+            font-weight: 800;
+            color: var(--gold-bright);
+            display: inline-block;
+            font-size: 18px;
+            letter-spacing: 1px;
+            box-shadow: 0 0 12px rgba(255, 174, 0, 0.2);
         }
 
         .wheel-container {
@@ -130,110 +164,117 @@
 
         canvas {
             border-radius: 50%;
-            box-shadow: 0 0 25px rgba(168, 85, 247, 0.4);
-            background: var(--card-bg);
+            border: 3px solid var(--gold);
+            box-shadow: 0 0 30px rgba(168, 85, 247, 0.35), 0 0 15px rgba(212, 175, 55, 0.3);
+            background: var(--bg-dark);
         }
 
         .pointer {
             position: absolute;
-            top: -10px;
+            top: -12px;
             left: 50%;
             transform: translateX(-50%);
             width: 0;
             height: 0;
-            border-left: 15px solid transparent;
-            border-right: 15px solid transparent;
-            border-bottom: 30px solid var(--gold-light);
+            border-left: 16px solid transparent;
+            border-right: 16px solid transparent;
+            border-bottom: 32px solid var(--gold-bright);
             z-index: 10;
-            filter: drop-shadow(0 2px 4px rgba(0,0,0,0.5));
+            filter: drop-shadow(0 3px 6px rgba(0, 0, 0, 0.8));
         }
 
         .btn-spin {
-            background: linear-gradient(135deg, var(--gold), #b8860b);
-            color: #000;
+            background: linear-gradient(135deg, var(--gold-bright), var(--gold));
+            color: #090b10;
             border: none;
-            padding: 12px 30px;
-            font-size: 18px;
-            font-weight: bold;
+            padding: 14px 32px;
+            font-family: 'Montserrat', sans-serif;
+            font-size: 16px;
+            font-weight: 800;
+            letter-spacing: 1px;
+            text-transform: uppercase;
             border-radius: 8px;
             cursor: pointer;
-            transition: 0.2s;
-            box-shadow: 0 4px 15px rgba(212,175,55,0.3);
+            transition: all 0.2s ease;
+            box-shadow: 0 4px 18px rgba(255, 174, 0, 0.35);
             margin-top: 15px;
+            width: 100%;
         }
 
-        .btn-spin:hover { transform: scale(1.05); }
-        .btn-spin:disabled { background: #475569; color: #94a3b8; cursor: not-allowed; transform: none; box-shadow: none; }
+        .btn-spin:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 24px rgba(255, 174, 0, 0.55);
+        }
+
+        .btn-spin:disabled {
+            background: #283044;
+            color: #64748b;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
 
         #result {
-            margin-top: 15px;
-            font-size: 20px;
-            font-weight: bold;
-            color: var(--steel);
-            min-height: 30px;
-        }
-
-        .coin-badge {
-            background: rgba(212, 175, 55, 0.2);
-            border: 1px solid var(--gold);
-            padding: 6px 18px;
-            border-radius: 20px;
-            font-weight: bold;
-            color: var(--gold-light);
-            display: inline-block;
-            margin-top: 10px;
+            margin-top: 16px;
             font-size: 18px;
+            font-weight: 800;
+            letter-spacing: 0.5px;
+            color: var(--steel);
+            min-height: 28px;
+            text-shadow: 0 0 10px rgba(96, 165, 250, 0.4);
         }
     </style>
 </head>
 <body>
 
     <header>
-        <h1>⚡ THE BEYOND SHOW ⚡</h1>
-        <p style="color: var(--steel);">Official Community Hub</p>
+        <h1>THE BEYOND SHOW</h1>
+        <p class="subtitle">Official Community Hub</p>
     </header>
 
-    <!-- Authentication Box -->
-    <div id="auth-container" class="auth-box">
-        <p>Log in with your Kick account or connect directly with your pseudo:</p>
+    <!-- Kick OAuth Authentication -->
+    <div id="auth-container" class="panel-card">
+        <p style="color: #cbd5e1; font-size: 14px; line-height: 1.5; margin-top: 0; margin-bottom: 20px;">
+            Connect your official Kick account to earn TB-Coins, spin the wheel live, and claim exclusive stream rewards.
+        </p>
         <button class="btn-kick" onclick="loginWithKick()">Sign in with Kick</button>
-        <div style="margin-top: 15px; border-top: 1px solid #334155; padding-top: 15px;">
-            <p style="font-size: 13px; color: var(--steel); margin-bottom: 8px;">Connexion rapide par pseudo (Test)</p>
-            <input type="text" id="manualUsername" class="input-manual" placeholder="Ton pseudo...">
-            <button class="btn-manual" onclick="loginManual()">GO</button>
-        </div>
     </div>
 
-    <!-- User Profile (Hidden by default) -->
-    <div id="user-profile" class="profile-card" style="display:none;">
+    <!-- Authenticated User Profile -->
+    <div id="user-profile" class="panel-card" style="display:none;">
         <div class="avatar-container">
-            <img id="user-avatar-img" src="" alt="Avatar" class="user-avatar" style="display:none;">
+            <img id="user-avatar-img" src="" alt="Kick Avatar" class="user-avatar" style="display:none;">
             <div style="text-align: left;">
-                <h3 style="color: var(--gold-light); margin:0;">Welcome, <span id="username"></span>!</h3>
-                <p style="margin: 5px 0 0 0; font-size: 13px; color: var(--kick);">Connected to Hub</p>
+                <h3 style="font-family: 'Cinzel', serif; color: var(--gold-bright); margin: 0; font-size: 1.25rem;">
+                    Welcome, <span id="username"></span>
+                </h3>
+                <p style="margin: 5px 0 0 0; font-size: 12px; font-weight: 600; color: var(--kick-green); letter-spacing: 0.5px;">
+                    ● CONNECTED VIA KICK
+                </p>
             </div>
         </div>
-        <div class="coin-badge">⚡ <span id="user-coins">500</span> TB-Coins</div>
+        <div class="coin-badge">⚡ <span id="user-coins">500</span> TB-COINS</div>
         <br>
-        <button class="btn-logout" onclick="logout()">Sign out</button>
+        <button class="btn-logout" onclick="logout()">Sign Out</button>
     </div>
 
     <!-- The Beyond Wheel -->
-    <div class="auth-box">
-        <h3 style="color: var(--gold);">The Beyond Wheel</h3>
+    <div class="panel-card">
+        <h3 class="panel-title">The Beyond Wheel</h3>
         <div class="wheel-container">
             <div class="pointer"></div>
             <canvas id="canvas" width="320" height="320"></canvas>
         </div>
-        <button id="spinBtn" class="btn-spin" onclick="spinWheel()">SPIN THE WHEEL (100 Coins)</button>
+        <button id="spinBtn" class="btn-spin" onclick="spinWheel()">Spin the Wheel (100 Coins)</button>
         <div id="result"></div>
     </div>
 
-    <!-- Main Script -->
+    <!-- Main Script (Firebase v10 & Kick OAuth 2.1 PKCE) -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
         import { getDatabase, ref, set, get, update } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js";
 
+        // === 1. FIREBASE CONFIGURATION ===
         const firebaseConfig = {
             apiKey: "AIzaSyDkRuOlqwTcKo_KdcB-1XeJ9QBS9sEvlDY",
             authDomain: "tb-show-web.firebaseapp.com",
@@ -247,12 +288,13 @@
         const app = initializeApp(firebaseConfig);
         const db = getDatabase(app);
 
+        // === 2. KICK & CLOUDFLARE WORKER CONFIGURATION ===
         const CLIENT_ID = "01M775NPQP93VF5PGP6DJR4BQF";
-        const REDIRECT_URI = window.location.origin + window.location.pathname;
+        const REDIRECT_URI = "https://teebeeshow-cloud.github.io/tbshow/";
         const WORKER_URL = "https://nameless-base-1ca1.teebeeshow.workers.dev";
 
-        function generateCodeVerifier() {
-            const array = new Uint8Array(32);
+        function generateRandomString(length = 32) {
+            const array = new Uint8Array(length);
             window.crypto.getRandomValues(array);
             return btoa(String.fromCharCode.apply(null, array))
                 .replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '');
@@ -267,51 +309,31 @@
         }
 
         window.loginWithKick = async function() {
-            const codeVerifier = generateCodeVerifier();
+            const codeVerifier = generateRandomString(32);
+            const oauthState = generateRandomString(16);
+
             localStorage.setItem('kick_code_verifier', codeVerifier);
+            localStorage.setItem('kick_oauth_state', oauthState);
+
             const codeChallenge = await generateCodeChallenge(codeVerifier);
 
-            // Endpoint OAuth Kick mis à jour sans le sous-domaine id.
-            const authUrl = new URL("https://kick.com/oauth/authorize");
+            const authUrl = new URL("https://id.kick.com/oauth/authorize");
+            authUrl.searchParams.append("response_type", "code");
             authUrl.searchParams.append("client_id", CLIENT_ID);
             authUrl.searchParams.append("redirect_uri", REDIRECT_URI);
-            authUrl.searchParams.append("response_type", "code");
-            authUrl.searchParams.append("scope", "user:read channel:read chat:write");
+            authUrl.searchParams.append("scope", "user:read channel:read chat:write events:subscribe");
             authUrl.searchParams.append("code_challenge", codeChallenge);
             authUrl.searchParams.append("code_challenge_method", "S256");
+            authUrl.searchParams.append("state", oauthState);
 
-            console.log("Generated Kick Auth URL:", authUrl.toString());
+            console.log("Redirecting to Kick OAuth:", authUrl.toString());
             window.location.href = authUrl.toString();
-        }
-
-        // Connexion manuelle par pseudo de secours
-        window.loginManual = async function() {
-            const pseudo = document.getElementById('manualUsername').value.trim();
-            if (!pseudo) {
-                alert("Entre un pseudo valide !");
-                return;
-            }
-
-            const userId = "user_" + pseudo.toLowerCase().replace(/[^a-z0-9]/g, '_');
-            const userRef = ref(db, 'tbshow/users/' + userId);
-            const snapshot = await get(userRef);
-
-            let currentCoins = 500;
-            if (!snapshot.exists()) {
-                await set(userRef, { username: pseudo, profile_pic: "", coins: 500, last_seen: Date.now() });
-            } else {
-                currentCoins = snapshot.val().coins ?? 500;
-                await update(userRef, { last_seen: Date.now() });
-            }
-
-            const userObj = { id: userId, username: pseudo, profile_pic: "", coins: currentCoins };
-            localStorage.setItem('tb_current_user', JSON.stringify(userObj));
-            renderUserProfile(userObj);
         }
 
         window.logout = function() {
             localStorage.removeItem('tb_current_user');
             localStorage.removeItem('kick_code_verifier');
+            localStorage.removeItem('kick_oauth_state');
             window.location.reload();
         }
 
@@ -328,20 +350,33 @@
             }
         }
 
+        // OAuth Callback Handling
         window.addEventListener('DOMContentLoaded', async () => {
             const urlParams = new URLSearchParams(window.location.search);
             const authCode = urlParams.get('code');
+            const returnedState = urlParams.get('state');
+            const savedState = localStorage.getItem('kick_oauth_state');
             const codeVerifier = localStorage.getItem('kick_code_verifier');
 
             if (authCode && codeVerifier) {
-                document.getElementById('auth-container').innerHTML = "<p style='color:var(--gold-light);'>Connecting to The Beyond Show...</p>";
+                if (returnedState && savedState && returnedState !== savedState) {
+                    console.error("OAuth security error: state mismatch.");
+                    document.getElementById('auth-container').innerHTML = "<p style='color: #e0828a; font-weight: 600;'>Security verification failed. Please try again.</p><button class='btn-kick' onclick='loginWithKick()'>Retry Sign In</button>";
+                    return;
+                }
+
+                document.getElementById('auth-container').innerHTML = "<p style='color: var(--gold-bright); font-weight: 600;'>Authenticating with Kick...</p>";
                 window.history.replaceState({}, document.title, REDIRECT_URI);
 
                 try {
                     const response = await fetch(WORKER_URL, {
                         method: 'POST',
                         headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify({ code: authCode, code_verifier: codeVerifier, redirect_uri: REDIRECT_URI })
+                        body: JSON.stringify({
+                            code: authCode,
+                            code_verifier: codeVerifier,
+                            redirect_uri: REDIRECT_URI
+                        })
                     });
                     const rawData = await response.json();
 
@@ -352,24 +387,35 @@
 
                         const userRef = ref(db, 'tbshow/users/' + userId);
                         const snapshot = await get(userRef);
-                        
+
                         let currentCoins = 500;
                         if (!snapshot.exists()) {
-                            await set(userRef, { username, profile_pic: profilePic, coins: 500, last_seen: Date.now() });
+                            await set(userRef, {
+                                username: username,
+                                profile_pic: profilePic,
+                                coins: 500,
+                                last_seen: Date.now()
+                            });
                         } else {
                             currentCoins = snapshot.val().coins ?? 500;
-                            await update(userRef, { username, profile_pic: profilePic, last_seen: Date.now() });
+                            await update(userRef, {
+                                username: username,
+                                profile_pic: profilePic,
+                                last_seen: Date.now()
+                            });
                         }
 
                         const userObj = { id: userId, username: username, profile_pic: profilePic, coins: currentCoins };
                         localStorage.setItem('tb_current_user', JSON.stringify(userObj));
+                        localStorage.removeItem('kick_code_verifier');
+                        localStorage.removeItem('kick_oauth_state');
                         renderUserProfile(userObj);
                     } else {
-                        throw new Error("Empty user data");
+                        throw new Error("Invalid user payload from Kick");
                     }
                 } catch (err) {
                     console.error("Authentication error:", err);
-                    document.getElementById('auth-container').innerHTML = "<p style='color: #ef4444;'>Kick connection error. Check Redirect URI.</p><button class='btn-kick' onclick='loginWithKick()'>Try again</button>";
+                    document.getElementById('auth-container').innerHTML = "<p style='color: #e0828a; font-weight: 600;'>Kick token exchange failed.</p><button class='btn-kick' onclick='loginWithKick()'>Try Again</button>";
                 }
             } else {
                 const savedUser = localStorage.getItem('tb_current_user');
@@ -387,14 +433,14 @@
             }
         });
 
-        // Wheel logic
+        // === 3. WHEEL LOGIC & FIREBASE SYNC ===
         const sectors = [
-            { color: "#722f37", label: "500 Coins", rewardCoins: 500 },
-            { color: "#d4af37", label: "Free Sub", rewardCoins: 0 },
-            { color: "#1e293b", label: "Lost :-(", rewardCoins: 0 },
-            { color: "#60a5fa", label: "1000 Coins", rewardCoins: 1000 },
-            { color: "#a855f7", label: "VIP 24h", rewardCoins: 0 },
-            { color: "#1e293b", label: "Reroll", rewardCoins: 100 }
+            { color: "#722f37", label: "500 COINS", rewardCoins: 500 },
+            { color: "#d4af37", label: "FREE SUB", rewardCoins: 0 },
+            { color: "#121622", label: "NO LUCK", rewardCoins: 0 },
+            { color: "#60a5fa", label: "1000 COINS", rewardCoins: 1000 },
+            { color: "#a855f7", label: "VIP 24H", rewardCoins: 0 },
+            { color: "#e0828a", label: "FREE SPIN", rewardCoins: 100 }
         ];
 
         const canvas = document.getElementById("canvas");
@@ -408,10 +454,10 @@
             ctx.beginPath();
             ctx.fillStyle = sector.color;
             ctx.moveTo(160, 160);
-            ctx.arc(160, 160, 150, ang, ang + arc, false);
+            ctx.arc(160, 160, 152, ang, ang + arc, false);
             ctx.lineTo(160, 160);
             ctx.fill();
-            ctx.strokeStyle = "#d4af37";
+            ctx.strokeStyle = "#ffae00";
             ctx.lineWidth = 2;
             ctx.stroke();
             ctx.restore();
@@ -421,8 +467,10 @@
             ctx.rotate(ang + arc / 2);
             ctx.textAlign = "right";
             ctx.fillStyle = "#ffffff";
-            ctx.font = "bold 13px sans-serif";
-            ctx.fillText(sector.label, 135, 6);
+            ctx.font = "800 13px 'Montserrat', sans-serif";
+            ctx.shadowColor = "rgba(0, 0, 0, 0.85)";
+            ctx.shadowBlur = 4;
+            ctx.fillText(sector.label, 136, 5);
             ctx.restore();
         }
 
@@ -437,13 +485,13 @@
 
             const savedUserStr = localStorage.getItem('tb_current_user');
             if (!savedUserStr) {
-                alert("Connecte-toi d'abord avec ton pseudo ou Kick pour jouer !");
+                document.getElementById("result").innerText = "Please sign in with Kick first!";
                 return;
             }
 
             let user = JSON.parse(savedUserStr);
             if (user.coins < 100) {
-                document.getElementById("result").innerText = "Pas assez de TB-Coins (100 requis) !";
+                document.getElementById("result").innerText = "Insufficient TB-Coins (100 required)!";
                 return;
             }
 
@@ -454,7 +502,7 @@
 
             isSpinning = true;
             document.getElementById("spinBtn").disabled = true;
-            document.getElementById("result").innerText = "La roue tourne...";
+            document.getElementById("result").innerText = "Spinning...";
 
             const randomIndex = Math.floor(Math.random() * sectors.length);
             const arcSize = 360 / sectors.length;
@@ -477,7 +525,7 @@
                     isSpinning = false;
                     document.getElementById("spinBtn").disabled = false;
                     const winning = sectors[randomIndex];
-                    document.getElementById("result").innerText = `Résultat : ${winning.label} ! 🎉`;
+                    document.getElementById("result").innerText = `Result: ${winning.label}!`;
 
                     if (winning.rewardCoins > 0) {
                         user.coins += winning.rewardCoins;
@@ -487,6 +535,7 @@
                     }
 
                     set(ref(db, 'tbshow/latest_spin'), {
+                        user_id: user.id,
                         username: user.username,
                         reward: winning.label,
                         timestamp: Date.now()
