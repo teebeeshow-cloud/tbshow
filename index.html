@@ -81,7 +81,6 @@
             border-color: #fff;
         }
 
-        /* Style de l'avatar Kick */
         .avatar-container {
             display: flex;
             align-items: center;
@@ -171,13 +170,13 @@
         <p style="color: var(--steel);">Official Community Hub</p>
     </header>
 
-    <!-- Zone d'authentification Kick -->
+    <!-- Kick Authentication Box -->
     <div id="auth-container" class="auth-box">
         <p>Log in with your Kick account to participate and save your TB-Coins!</p>
         <button class="btn-kick" onclick="loginWithKick()">Sign in with Kick</button>
     </div>
 
-    <!-- Profil utilisateur avec Avatar Kick (Caché par défaut) -->
+    <!-- User Profile (Hidden by default) -->
     <div id="user-profile" class="profile-card" style="display:none;">
         <div class="avatar-container">
             <img id="user-avatar-img" src="" alt="Kick Avatar" class="user-avatar" style="display:none;">
@@ -191,7 +190,7 @@
         <button class="btn-logout" onclick="logout()">Sign out</button>
     </div>
 
-    <!-- Roue du TB Show -->
+    <!-- The Beyond Wheel -->
     <div class="auth-box">
         <h3 style="color: var(--gold);">The Beyond Wheel</h3>
         <div class="wheel-container">
@@ -202,12 +201,12 @@
         <div id="result"></div>
     </div>
 
-    <!-- Script Principal (Firebase v10 & Kick OAuth Logic) -->
+    <!-- Main Script (Firebase v10 & Kick OAuth Logic) -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
         import { getDatabase, ref, set, get, update } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js";
 
-        // === 1. CONFIGURATION FIREBASE ===
+        // === 1. FIREBASE CONFIGURATION ===
         const firebaseConfig = {
             apiKey: "AIzaSyDkRuOlqwTcKo_KdcB-1XeJ9QBS9sEvlDY",
             authDomain: "tb-show-web.firebaseapp.com",
@@ -221,7 +220,7 @@
         const app = initializeApp(firebaseConfig);
         const db = getDatabase(app);
 
-        // === 2. CONFIGURATION KICK & CLOUDFLARE ===
+        // === 2. KICK & CLOUDFLARE CONFIGURATION ===
         const CLIENT_ID = "01M775NPQP93VF5PGP6DJR4BQF";
         const REDIRECT_URI = window.location.origin + window.location.pathname;
         const WORKER_URL = "https://nameless-base-1ca1.teebeeshow.workers.dev";
@@ -247,6 +246,7 @@
             localStorage.setItem('kick_code_verifier', codeVerifier);
             const codeChallenge = await generateCodeChallenge(codeVerifier);
 
+            // Construction propre et sécurisée de l'URL Kick OAuth
             const authUrl = new URL("https://id.kick.com/oauth/authorize");
             authUrl.searchParams.append("client_id", CLIENT_ID);
             authUrl.searchParams.append("redirect_uri", REDIRECT_URI);
@@ -255,6 +255,7 @@
             authUrl.searchParams.append("code_challenge", codeChallenge);
             authUrl.searchParams.append("code_challenge_method", "S256");
 
+            console.log("Generated Kick Auth URL:", authUrl.toString());
             window.location.href = authUrl.toString();
         }
 
@@ -264,7 +265,6 @@
             window.location.reload();
         }
 
-        // Fonction pour afficher le profil utilisateur dans le DOM
         function renderUserProfile(userData) {
             document.getElementById('auth-container').style.display = 'none';
             document.getElementById('user-profile').style.display = 'block';
@@ -278,7 +278,6 @@
             }
         }
 
-        // Check on load / Kick redirect return
         window.addEventListener('DOMContentLoaded', async () => {
             const urlParams = new URLSearchParams(window.location.search);
             const authCode = urlParams.get('code');
@@ -301,7 +300,6 @@
                         const username = rawData.username;
                         const profilePic = rawData.profile_pic || "";
 
-                        // Sauvegarde / Chargement depuis Firebase
                         const userRef = ref(db, 'tbshow/users/' + userId);
                         const snapshot = await get(userRef);
                         
@@ -328,7 +326,6 @@
                 if (savedUser) {
                     const u = JSON.parse(savedUser);
                     
-                    // Synchronisation du solde en direct depuis Firebase
                     const userRef = ref(db, 'tbshow/users/' + u.id);
                     const snapshot = await get(userRef);
                     if (snapshot.exists()) {
@@ -401,7 +398,6 @@
                 return;
             }
 
-            // Deduct 100 coins stake
             user.coins -= 100;
             document.getElementById('user-coins').innerText = user.coins;
             localStorage.setItem('tb_current_user', JSON.stringify(user));
@@ -434,7 +430,6 @@
                     const winning = sectors[randomIndex];
                     document.getElementById("result").innerText = `Result: ${winning.label}! 🎉`;
 
-                    // Credit potential winnings
                     if (winning.rewardCoins > 0) {
                         user.coins += winning.rewardCoins;
                         document.getElementById('user-coins').innerText = user.coins;
@@ -442,7 +437,6 @@
                         update(ref(db, 'tbshow/users/' + user.id), { coins: user.coins });
                     }
 
-                    // Save latest spin to Firebase (for OBS alerts)
                     set(ref(db, 'tbshow/latest_spin'), {
                         username: user.username,
                         reward: winning.label,
