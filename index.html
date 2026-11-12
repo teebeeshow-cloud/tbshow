@@ -36,7 +36,6 @@
             min-height: 100vh;
         }
 
-        /* Top Header & Navigation Bar */
         header {
             max-width: 820px;
             margin: 0 auto 20px auto;
@@ -64,7 +63,6 @@
             margin: 0 0 15px 0;
         }
 
-        /* Tabs Navigation */
         .nav-tabs {
             display: flex;
             justify-content: center;
@@ -95,7 +93,6 @@
             box-shadow: 0 0 12px rgba(212, 175, 55, 0.3);
         }
 
-        /* Status Bar (Metrics) */
         .status-bar {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
@@ -129,7 +126,6 @@
             letter-spacing: 1px;
         }
 
-        /* Panels & Cards */
         .panel-card {
             background: linear-gradient(145deg, #161b29, var(--card-bg));
             border: 1px solid var(--gold);
@@ -225,7 +221,6 @@
             box-shadow: 0 0 12px rgba(255, 174, 0, 0.2);
         }
 
-        /* Wheel Styles */
         .wheel-container {
             position: relative;
             width: 300px;
@@ -304,7 +299,6 @@
             min-height: 20px;
         }
 
-        /* Tab Content Sections */
         .tab-content {
             display: none;
             max-width: 820px;
@@ -314,7 +308,6 @@
             display: block;
         }
 
-        /* Collection Grid & Cards */
         .collection-grid {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(210px, 1fr));
@@ -373,7 +366,6 @@
             letter-spacing: 1px;
         }
 
-        /* Armory Grid */
         .armory-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
@@ -395,7 +387,27 @@
             box-shadow: 0 0 15px rgba(212, 175, 55, 0.15);
         }
 
-        /* Leaderboard table style */
+        .cmd-box {
+            background: #090b10;
+            border: 1px dashed var(--gold);
+            border-radius: 8px;
+            padding: 12px 16px;
+            margin-bottom: 18px;
+            font-size: 13px;
+            color: #cbd5e1;
+            display: flex;
+            justify-content: space-around;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .cmd-tag {
+            color: var(--gold-bright);
+            font-family: 'Big Shoulders Display', sans-serif;
+            font-size: 16px;
+            letter-spacing: 1px;
+        }
+
         .leaderboard-table {
             width: 100%;
             border-collapse: collapse;
@@ -425,7 +437,6 @@
         <h1>THE BEYOND SHOW</h1>
         <p class="subtitle">Official Community Hub & RPG</p>
         
-        <!-- Navigation Tabs -->
         <div class="nav-tabs">
             <button class="tab-btn active" onclick="switchTab('hub', this)">The Hub & Wheel</button>
             <button class="tab-btn" onclick="switchTab('collection', this)">Collection</button>
@@ -449,14 +460,13 @@
             <div class="status-value" id="stat-spins">0</div>
         </div>
         <div class="status-box">
-            <div class="status-title">Stream Status</div>
-            <div class="status-value" style="color: var(--kick-green);">● LIVE READY</div>
+            <div class="status-title">Kick Stream Status</div>
+            <div class="status-value" id="stream-status-value" style="color: #94a3b8;">CHECKING...</div>
         </div>
     </div>
 
     <!-- TAB 1: HUB & WHEEL -->
     <div id="tab-hub" class="tab-content active">
-        <!-- Kick OAuth Authentication -->
         <div id="auth-container" class="panel-card">
             <p style="color: #cbd5e1; font-size: 14px; line-height: 1.5; margin-top: 0; margin-bottom: 20px;">
                 Connect your official Kick account to earn TB-Coins, spin the wheel live, and unlock dimensional artifacts.
@@ -464,7 +474,6 @@
             <button class="btn-kick" onclick="loginWithKick()">Sign in with Kick</button>
         </div>
 
-        <!-- Authenticated User Profile -->
         <div id="user-profile" class="panel-card" style="display:none;">
             <div class="avatar-container">
                 <img id="user-avatar-img" src="" alt="Kick Avatar" class="user-avatar" style="display:none;">
@@ -482,7 +491,6 @@
             <button class="btn-logout" onclick="logout()">Sign Out</button>
         </div>
 
-        <!-- The Beyond Wheel -->
         <div class="panel-card" style="max-width: 480px;">
             <h3 class="panel-title">The Beyond Wheel</h3>
             <div class="wheel-container">
@@ -500,7 +508,7 @@
         <div class="panel-card" style="max-width: 820px; text-align: left;">
             <h3 class="panel-title" style="text-align: center;">Beyond Artifacts Collection</h3>
             <p style="color: #94a3b8; font-size: 14px; text-align: center; margin-bottom: 20px;">
-                Every spin of The Beyond Wheel uncovers a dimensional relic. Collect all 6 artifacts to complete your archive!
+                Spin The Beyond Wheel or type <strong style="color: var(--gold-bright);">!hunt</strong> in Kick chat during live streams to discover dimensional relics!
             </p>
             <div id="collection-grid" class="collection-grid"></div>
         </div>
@@ -532,19 +540,20 @@
     <div id="tab-armory" class="tab-content">
         <div class="panel-card" style="max-width: 820px; text-align: left;">
             <h3 class="panel-title" style="text-align: center;">Beyond Boss Raids & Armory</h3>
-            <p style="color: #94a3b8; font-size: 14px; text-align: center; margin-bottom: 20px;">
-                Equip powerful weapons using your TB-Coins to deal massive damage during live stream boss encounters!
-            </p>
+            <div class="cmd-box">
+                <span><span class="cmd-tag">!hunt</span> — Explore & earn Coins/Relics</span>
+                <span><span class="cmd-tag">!attack</span> — Strike active Stream Boss</span>
+                <span><span class="cmd-tag">!coins</span> — Check live balance</span>
+            </div>
             <div id="armory-grid" class="armory-grid"></div>
         </div>
     </div>
 
-    <!-- Main Script (Firebase v10 & Kick OAuth 2.1 PKCE) -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
         import { getDatabase, ref, set, get, update, onValue } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js";
 
-        // === 1. FIREBASE CONFIGURATION (European Region) ===
+        // === 1. FIREBASE CONFIGURATION ===
         const firebaseConfig = {
             apiKey: "AIzaSyDkRuOlqwTcKo_KdcB-1XeJ9QBS9sEvlDY",
             authDomain: "tb-show-web.firebaseapp.com",
@@ -558,7 +567,30 @@
         const app = initializeApp(firebaseConfig);
         const db = getDatabase(app);
 
-        // === 2. CATALOGS (Artifacts & Weapons) ===
+        // === 2. LIVE KICK CHANNEL STATUS CHECKER ===
+        const KICK_CHANNEL_SLUG = "tbshow";
+
+        async function checkKickLiveStatus() {
+            const statusEl = document.getElementById('stream-status-value');
+            try {
+                const res = await fetch(`https://kick.com/api/v2/channels/${KICK_CHANNEL_SLUG}`);
+                if (!res.ok) throw new Error("Kick API unreachable");
+                const data = await res.json();
+                if (data && data.livestream) {
+                    statusEl.innerHTML = `<a href="https://kick.com/${KICK_CHANNEL_SLUG}" target="_blank" style="color: var(--kick-green); text-decoration: none;">● LIVE ON KICK</a>`;
+                } else {
+                    statusEl.innerText = "● OFFLINE";
+                    statusEl.style.color = "var(--neon-pink)";
+                }
+            } catch (e) {
+                statusEl.innerText = "● READY";
+                statusEl.style.color = "var(--gold-bright)";
+            }
+        }
+        checkKickLiveStatus();
+        setInterval(checkKickLiveStatus, 60000);
+
+        // === 3. CATALOGS ===
         const ARTIFACTS_CATALOG = [
             { id: "aether_orb", code: "#001", name: "Aether Orb", rarity: "Common", color: "#60a5fa", icon: "🔮", weight: 35 },
             { id: "beyond_core", code: "#002", name: "Beyond Core", rarity: "Uncommon", color: "#963d48", icon: "⚡", weight: 25 },
@@ -617,7 +649,7 @@
             document.getElementById('stat-artifacts').innerText = `${unlockedCount} / ${ARTIFACTS_CATALOG.length}`;
         }
 
-        function renderArmory(ownedWeapons = {}, userCoins = 500) {
+        function renderArmory(ownedWeapons = {}) {
             const grid = document.getElementById('armory-grid');
             grid.innerHTML = "";
 
@@ -639,7 +671,7 @@
             });
         }
 
-        // === 3. KICK & CLOUDFLARE WORKER CONFIGURATION ===
+        // === 4. KICK OAUTH & FIREBASE REALTIME SYNC ===
         const CLIENT_ID = "01M775NPQP93VF5PGP6DJR4BQF";
         const REDIRECT_URI = "https://teebeeshow-cloud.github.io/tbshow/";
         const WORKER_URL = "https://nameless-base-1ca1.teebeeshow.workers.dev";
@@ -670,12 +702,7 @@
             user.coins -= price;
             user.weapons[weaponId] = true;
 
-            document.getElementById('user-coins').innerText = user.coins;
-            document.getElementById('stat-coins').innerText = user.coins + " ⚡";
             localStorage.setItem('tb_current_user', JSON.stringify(user));
-
-            renderArmory(user.weapons, user.coins);
-
             await update(ref(db, 'tbshow/users/' + user.id), {
                 coins: user.coins,
                 weapons: user.weapons
@@ -727,6 +754,25 @@
             window.location.reload();
         }
 
+        function attachUserRealtimeListener(userId) {
+            const userRef = ref(db, 'tbshow/users/' + userId);
+            onValue(userRef, (snapshot) => {
+                if (!snapshot.exists()) return;
+                const val = snapshot.val();
+                const userObj = {
+                    id: userId,
+                    username: val.username,
+                    profile_pic: val.profile_pic || "",
+                    coins: val.coins ?? 500,
+                    total_spins: val.total_spins ?? 0,
+                    collection: val.collection ?? {},
+                    weapons: val.weapons ?? { steel_blaster: true }
+                };
+                localStorage.setItem('tb_current_user', JSON.stringify(userObj));
+                renderUserProfile(userObj);
+            });
+        }
+
         function renderUserProfile(userData) {
             document.getElementById('auth-container').style.display = 'none';
             document.getElementById('user-profile').style.display = 'block';
@@ -742,14 +788,12 @@
             }
 
             renderCollection(userData.collection || {});
-            renderArmory(userData.weapons || {}, userData.coins);
+            renderArmory(userData.weapons || {});
         }
 
-        // Initial render for guests
         renderCollection({});
-        renderArmory({}, 500);
+        renderArmory({});
 
-        // OAuth Callback Handling & Live Leaderboard listener
         window.addEventListener('DOMContentLoaded', async () => {
             const usersRef = ref(db, 'tbshow/users');
             onValue(usersRef, (snapshot) => {
@@ -783,7 +827,6 @@
 
             if (authCode && codeVerifier) {
                 if (returnedState && savedState && returnedState !== savedState) {
-                    console.error("OAuth security error: state mismatch.");
                     document.getElementById('auth-container').innerHTML = "<p style='color: #e0828a; font-weight: 600;'>Security verification failed. Please try again.</p><button class='btn-kick' onclick='loginWithKick()'>Retry Sign In</button>";
                     return;
                 }
@@ -811,11 +854,6 @@
                         const userRef = ref(db, 'tbshow/users/' + userId);
                         const snapshot = await get(userRef);
 
-                        let currentCoins = 500;
-                        let currentCollection = {};
-                        let currentWeapons = { steel_blaster: true };
-                        let currentSpins = 0;
-
                         if (!snapshot.exists()) {
                             await set(userRef, {
                                 username: username,
@@ -827,11 +865,6 @@
                                 last_seen: Date.now()
                             });
                         } else {
-                            const val = snapshot.val();
-                            currentCoins = val.coins ?? 500;
-                            currentCollection = val.collection ?? {};
-                            currentWeapons = val.weapons ?? { steel_blaster: true };
-                            currentSpins = val.total_spins ?? 0;
                             await update(userRef, {
                                 username: username,
                                 profile_pic: profilePic,
@@ -839,19 +872,9 @@
                             });
                         }
 
-                        const userObj = {
-                            id: userId,
-                            username: username,
-                            profile_pic: profilePic,
-                            coins: currentCoins,
-                            total_spins: currentSpins,
-                            collection: currentCollection,
-                            weapons: currentWeapons
-                        };
-                        localStorage.setItem('tb_current_user', JSON.stringify(userObj));
                         localStorage.removeItem('kick_code_verifier');
                         localStorage.removeItem('kick_oauth_state');
-                        renderUserProfile(userObj);
+                        attachUserRealtimeListener(userId);
                     } else {
                         throw new Error("Invalid user payload from Kick");
                     }
@@ -863,23 +886,12 @@
                 const savedUser = localStorage.getItem('tb_current_user');
                 if (savedUser) {
                     const u = JSON.parse(savedUser);
-                    const userRef = ref(db, 'tbshow/users/' + u.id);
-                    const snapshot = await get(userRef);
-                    if (snapshot.exists()) {
-                        const val = snapshot.val();
-                        u.coins = val.coins ?? u.coins;
-                        u.profile_pic = val.profile_pic ?? u.profile_pic;
-                        u.collection = val.collection ?? {};
-                        u.weapons = val.weapons ?? { steel_blaster: true };
-                        u.total_spins = val.total_spins ?? 0;
-                        localStorage.setItem('tb_current_user', JSON.stringify(u));
-                    }
-                    renderUserProfile(u);
+                    attachUserRealtimeListener(u.id);
                 }
             }
         });
 
-        // === 4. WHEEL LOGIC & ARTIFACT DROPS ===
+        // === 5. WHEEL LOGIC ===
         const sectors = [
             { color: "#722f37", label: "500 COINS", rewardCoins: 500 },
             { color: "#d4af37", label: "FREE SUB", rewardCoins: 0 },
@@ -943,11 +955,6 @@
 
             user.coins -= 100;
             user.total_spins = (user.total_spins || 0) + 1;
-            document.getElementById('user-coins').innerText = user.coins;
-            document.getElementById('stat-coins').innerText = user.coins + " ⚡";
-            document.getElementById('stat-spins').innerText = user.total_spins;
-            localStorage.setItem('tb_current_user', JSON.stringify(user));
-
             await update(ref(db, 'tbshow/users/' + user.id), {
                 coins: user.coins,
                 total_spins: user.total_spins
@@ -983,11 +990,8 @@
 
                     if (winning.rewardCoins > 0) {
                         user.coins += winning.rewardCoins;
-                        document.getElementById('user-coins').innerText = user.coins;
-                        document.getElementById('stat-coins').innerText = user.coins + " ⚡";
                     }
 
-                    // Roll a dimensional artifact on every spin
                     const droppedArtifact = rollRandomArtifact();
                     if (!user.collection) user.collection = {};
                     const isNew = !user.collection[droppedArtifact.id];
@@ -998,10 +1002,6 @@
                         : `Artifact found: ${droppedArtifact.icon} ${droppedArtifact.name} (x${user.collection[droppedArtifact.id]})`;
                     document.getElementById("artifact-drop").innerText = dropMsg;
                     document.getElementById("artifact-drop").style.color = droppedArtifact.color;
-
-                    localStorage.setItem('tb_current_user', JSON.stringify(user));
-                    renderCollection(user.collection);
-                    renderArmory(user.weapons || {}, user.coins);
 
                     update(ref(db, 'tbshow/users/' + user.id), {
                         coins: user.coins,
