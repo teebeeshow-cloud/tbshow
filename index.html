@@ -58,11 +58,34 @@
             cursor: pointer;
             transition: 0.2s;
             box-shadow: 0 4px 15px rgba(83,252,24,0.3);
+            width: 100%;
+            margin-bottom: 10px;
         }
 
         .btn-kick:hover {
-            transform: scale(1.05);
+            transform: scale(1.02);
             background-color: #46db13;
+        }
+
+        .input-manual {
+            width: 70%;
+            padding: 10px;
+            border-radius: 6px;
+            border: 1px solid var(--gold);
+            background: #0f172a;
+            color: #fff;
+            font-size: 14px;
+            margin-right: 5px;
+        }
+
+        .btn-manual {
+            background: var(--gold);
+            color: #000;
+            border: none;
+            padding: 10px 15px;
+            font-weight: bold;
+            border-radius: 6px;
+            cursor: pointer;
         }
 
         .btn-logout {
@@ -170,19 +193,24 @@
         <p style="color: var(--steel);">Official Community Hub</p>
     </header>
 
-    <!-- Kick Authentication Box -->
+    <!-- Authentication Box -->
     <div id="auth-container" class="auth-box">
-        <p>Log in with your Kick account to participate and save your TB-Coins!</p>
+        <p>Log in with your Kick account or connect directly with your pseudo:</p>
         <button class="btn-kick" onclick="loginWithKick()">Sign in with Kick</button>
+        <div style="margin-top: 15px; border-top: 1px solid #334155; padding-top: 15px;">
+            <p style="font-size: 13px; color: var(--steel); margin-bottom: 8px;">Connexion rapide par pseudo (Test)</p>
+            <input type="text" id="manualUsername" class="input-manual" placeholder="Ton pseudo...">
+            <button class="btn-manual" onclick="loginManual()">GO</button>
+        </div>
     </div>
 
     <!-- User Profile (Hidden by default) -->
     <div id="user-profile" class="profile-card" style="display:none;">
         <div class="avatar-container">
-            <img id="user-avatar-img" src="" alt="Kick Avatar" class="user-avatar" style="display:none;">
+            <img id="user-avatar-img" src="" alt="Avatar" class="user-avatar" style="display:none;">
             <div style="text-align: left;">
                 <h3 style="color: var(--gold-light); margin:0;">Welcome, <span id="username"></span>!</h3>
-                <p style="margin: 5px 0 0 0; font-size: 13px; color: var(--kick);">Connected via Kick</p>
+                <p style="margin: 5px 0 0 0; font-size: 13px; color: var(--kick);">Connected to Hub</p>
             </div>
         </div>
         <div class="coin-badge">⚡ <span id="user-coins">500</span> TB-Coins</div>
@@ -201,12 +229,11 @@
         <div id="result"></div>
     </div>
 
-    <!-- Main Script (Firebase v10 & Kick OAuth Logic) -->
+    <!-- Main Script -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
         import { getDatabase, ref, set, get, update } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js";
 
-        // === 1. FIREBASE CONFIGURATION ===
         const firebaseConfig = {
             apiKey: "AIzaSyDkRuOlqwTcKo_KdcB-1XeJ9QBS9sEvlDY",
             authDomain: "tb-show-web.firebaseapp.com",
@@ -220,12 +247,9 @@
         const app = initializeApp(firebaseConfig);
         const db = getDatabase(app);
 
-        // === 2. KICK & CLOUDFLARE CONFIGURATION ===
         const CLIENT_ID = "01M775NPQP93VF5PGP6DJR4BQF";
         const REDIRECT_URI = window.location.origin + window.location.pathname;
-        const WORKER_URL = "https://nameless-base-1ca1.teebeeshow.workers.dev";
 
-        // --- PKCE & KICK LOGIN MANAGEMENT ---
         function generateCodeVerifier() {
             const array = new Uint8Array(32);
             window.crypto.getRandomValues(array);
@@ -246,7 +270,6 @@
             localStorage.setItem('kick_code_verifier', codeVerifier);
             const codeChallenge = await generateCodeChallenge(codeVerifier);
 
-            // Construction propre et sécurisée de l'URL Kick OAuth
             const authUrl = new URL("https://id.kick.com/oauth/authorize");
             authUrl.searchParams.append("client_id", CLIENT_ID);
             authUrl.searchParams.append("redirect_uri", REDIRECT_URI);
@@ -255,8 +278,32 @@
             authUrl.searchParams.append("code_challenge", codeChallenge);
             authUrl.searchParams.append("code_challenge_method", "S256");
 
-            console.log("Generated Kick Auth URL:", authUrl.toString());
             window.location.href = authUrl.toString();
+        }
+
+        // Connexion manuelle par pseudo de secours
+        window.loginManual = async function() {
+            const pseudo = document.getElementById('manualUsername').value.trim();
+            if (!pseudo) {
+                alert("Entre un pseudo valide !");
+                return;
+            }
+
+            const userId = "user_" + pseudo.toLowerCase().replace(/[^a-z0-9]/g, '_');
+            const userRef = ref(db, 'tbshow/users/' + userId);
+            const snapshot = await get(userRef);
+
+            let currentCoins = 500;
+            if (!snapshot.exists()) {
+                await set(userRef, { username: pseudo, profile_pic: "", coins: 500, last_seen: Date.now() });
+            } else {
+                currentCoins = snapshot.val().coins ?? 500;
+                await update(userRef, { last_seen: Date.now() });
+            }
+
+            const userObj = { id: userId, username: pseudo, profile_pic: "", coins: currentCoins };
+            localStorage.setItem('tb_current_user', JSON.stringify(userObj));
+            renderUserProfile(userObj);
         }
 
         window.logout = function() {
@@ -279,66 +326,21 @@
         }
 
         window.addEventListener('DOMContentLoaded', async () => {
-            const urlParams = new URLSearchParams(window.location.search);
-            const authCode = urlParams.get('code');
-            const codeVerifier = localStorage.getItem('kick_code_verifier');
-
-            if (authCode && codeVerifier) {
-                document.getElementById('auth-container').innerHTML = "<p style='color:var(--gold-light);'>Connecting to The Beyond Show...</p>";
-                window.history.replaceState({}, document.title, REDIRECT_URI);
-
-                try {
-                    const response = await fetch(WORKER_URL, {
-                        method: 'POST',
-                        headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify({ code: authCode, code_verifier: codeVerifier, redirect_uri: REDIRECT_URI })
-                    });
-                    const rawData = await response.json();
-
-                    if (rawData && rawData.username) {
-                        const userId = rawData.id;
-                        const username = rawData.username;
-                        const profilePic = rawData.profile_pic || "";
-
-                        const userRef = ref(db, 'tbshow/users/' + userId);
-                        const snapshot = await get(userRef);
-                        
-                        let currentCoins = 500;
-                        if (!snapshot.exists()) {
-                            await set(userRef, { username, profile_pic: profilePic, coins: 500, last_seen: Date.now() });
-                        } else {
-                            currentCoins = snapshot.val().coins ?? 500;
-                            await update(userRef, { username, profile_pic: profilePic, last_seen: Date.now() });
-                        }
-
-                        const userObj = { id: userId, username: username, profile_pic: profilePic, coins: currentCoins };
-                        localStorage.setItem('tb_current_user', JSON.stringify(userObj));
-                        renderUserProfile(userObj);
-                    } else {
-                        throw new Error("Empty user data");
-                    }
-                } catch (err) {
-                    console.error("Authentication error:", err);
-                    document.getElementById('auth-container').innerHTML = "<p style='color: #ef4444;'>Kick connection error. Check Redirect URI.</p><button class='btn-kick' onclick='loginWithKick()'>Try again</button>";
+            const savedUser = localStorage.getItem('tb_current_user');
+            if (savedUser) {
+                const u = JSON.parse(savedUser);
+                const userRef = ref(db, 'tbshow/users/' + u.id);
+                const snapshot = await get(userRef);
+                if (snapshot.exists()) {
+                    u.coins = snapshot.val().coins ?? u.coins;
+                    u.profile_pic = snapshot.val().profile_pic ?? u.profile_pic;
+                    localStorage.setItem('tb_current_user', JSON.stringify(u));
                 }
-            } else {
-                const savedUser = localStorage.getItem('tb_current_user');
-                if (savedUser) {
-                    const u = JSON.parse(savedUser);
-                    
-                    const userRef = ref(db, 'tbshow/users/' + u.id);
-                    const snapshot = await get(userRef);
-                    if (snapshot.exists()) {
-                        u.coins = snapshot.val().coins ?? u.coins;
-                        u.profile_pic = snapshot.val().profile_pic ?? u.profile_pic;
-                        localStorage.setItem('tb_current_user', JSON.stringify(u));
-                    }
-                    renderUserProfile(u);
-                }
+                renderUserProfile(u);
             }
         });
 
-        // === 3. WHEEL LOGIC & FIREBASE POINTS ===
+        // Wheel logic
         const sectors = [
             { color: "#722f37", label: "500 Coins", rewardCoins: 500 },
             { color: "#d4af37", label: "Free Sub", rewardCoins: 0 },
@@ -388,13 +390,13 @@
 
             const savedUserStr = localStorage.getItem('tb_current_user');
             if (!savedUserStr) {
-                alert("Please log in with your Kick account first to play!");
+                alert("Connecte-toi d'abord avec ton pseudo ou Kick pour jouer !");
                 return;
             }
 
             let user = JSON.parse(savedUserStr);
             if (user.coins < 100) {
-                document.getElementById("result").innerText = "Not enough TB-Coins (100 required)!";
+                document.getElementById("result").innerText = "Pas assez de TB-Coins (100 requis) !";
                 return;
             }
 
@@ -405,7 +407,7 @@
 
             isSpinning = true;
             document.getElementById("spinBtn").disabled = true;
-            document.getElementById("result").innerText = "Wheel is spinning...";
+            document.getElementById("result").innerText = "La roue tourne...";
 
             const randomIndex = Math.floor(Math.random() * sectors.length);
             const arcSize = 360 / sectors.length;
@@ -428,7 +430,7 @@
                     isSpinning = false;
                     document.getElementById("spinBtn").disabled = false;
                     const winning = sectors[randomIndex];
-                    document.getElementById("result").innerText = `Result: ${winning.label}! 🎉`;
+                    document.getElementById("result").innerText = `Résultat : ${winning.label} ! 🎉`;
 
                     if (winning.rewardCoins > 0) {
                         user.coins += winning.rewardCoins;
