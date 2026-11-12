@@ -6,7 +6,7 @@
     <title>THE BEYOND SHOW — Community Hub & Wheel</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700;900&family=Montserrat:wght@400;600;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@700;900&family=Cinzel:wght@700;900&family=Montserrat:wght@400;600;800&display=swap" rel="stylesheet">
     <style>
         :root {
             --bg-dark: #090b10;
@@ -14,7 +14,8 @@
             --gold: #d4af37;
             --gold-bright: #ffae00;
             --burgundy: #722f37;
-            --amethyst: #a855f7;
+            --burgundy-dark: #4a1c22;
+            --burgundy-light: #963d48;
             --steel: #60a5fa;
             --neon-pink: #e0828a;
             --kick-green: #53fc18;
@@ -147,10 +148,11 @@
             border: 1px solid var(--gold-bright);
             padding: 8px 22px;
             border-radius: 30px;
-            font-weight: 800;
+            font-family: 'Big Shoulders Display', sans-serif;
+            font-weight: 900;
             color: var(--gold-bright);
             display: inline-block;
-            font-size: 18px;
+            font-size: 22px;
             letter-spacing: 1px;
             box-shadow: 0 0 12px rgba(255, 174, 0, 0.2);
         }
@@ -165,7 +167,7 @@
         canvas {
             border-radius: 50%;
             border: 3px solid var(--gold);
-            box-shadow: 0 0 30px rgba(168, 85, 247, 0.35), 0 0 15px rgba(212, 175, 55, 0.3);
+            box-shadow: 0 0 30px rgba(114, 47, 55, 0.4), 0 0 15px rgba(212, 175, 55, 0.3);
             background: var(--bg-dark);
         }
 
@@ -188,10 +190,10 @@
             color: #090b10;
             border: none;
             padding: 14px 32px;
-            font-family: 'Montserrat', sans-serif;
-            font-size: 16px;
-            font-weight: 800;
-            letter-spacing: 1px;
+            font-family: 'Big Shoulders Display', sans-serif;
+            font-size: 20px;
+            font-weight: 900;
+            letter-spacing: 1.5px;
             text-transform: uppercase;
             border-radius: 8px;
             cursor: pointer;
@@ -216,12 +218,13 @@
 
         #result {
             margin-top: 16px;
-            font-size: 18px;
-            font-weight: 800;
-            letter-spacing: 0.5px;
-            color: var(--steel);
+            font-family: 'Big Shoulders Display', sans-serif;
+            font-size: 22px;
+            font-weight: 900;
+            letter-spacing: 1px;
+            color: var(--gold-bright);
             min-height: 28px;
-            text-shadow: 0 0 10px rgba(96, 165, 250, 0.4);
+            text-shadow: 0 0 12px rgba(255, 174, 0, 0.4);
         }
     </style>
 </head>
@@ -433,14 +436,14 @@
             }
         });
 
-        // === 3. WHEEL LOGIC & FIREBASE SYNC ===
+        // === 3. WHEEL LOGIC (Gold & Burgundy Palette + Big Shoulders Font) ===
         const sectors = [
             { color: "#722f37", label: "500 COINS", rewardCoins: 500 },
             { color: "#d4af37", label: "FREE SUB", rewardCoins: 0 },
-            { color: "#121622", label: "NO LUCK", rewardCoins: 0 },
-            { color: "#60a5fa", label: "1000 COINS", rewardCoins: 1000 },
-            { color: "#a855f7", label: "VIP 24H", rewardCoins: 0 },
-            { color: "#e0828a", label: "FREE SPIN", rewardCoins: 100 }
+            { color: "#4a1c22", label: "NO LUCK", rewardCoins: 0 },
+            { color: "#ffae00", label: "1000 COINS", rewardCoins: 1000 },
+            { color: "#963d48", label: "VIP 24H", rewardCoins: 0 },
+            { color: "#b8860b", label: "FREE SPIN", rewardCoins: 100 }
         ];
 
         const canvas = document.getElementById("canvas");
@@ -458,7 +461,7 @@
             ctx.lineTo(160, 160);
             ctx.fill();
             ctx.strokeStyle = "#ffae00";
-            ctx.lineWidth = 2;
+            ctx.lineWidth = 2.5;
             ctx.stroke();
             ctx.restore();
 
@@ -467,10 +470,10 @@
             ctx.rotate(ang + arc / 2);
             ctx.textAlign = "right";
             ctx.fillStyle = "#ffffff";
-            ctx.font = "800 13px 'Montserrat', sans-serif";
-            ctx.shadowColor = "rgba(0, 0, 0, 0.85)";
-            ctx.shadowBlur = 4;
-            ctx.fillText(sector.label, 136, 5);
+            ctx.font = "900 17px 'Big Shoulders Display', sans-serif";
+            ctx.shadowColor = "rgba(0, 0, 0, 0.9)";
+            ctx.shadowBlur = 5;
+            ctx.fillText(sector.label, 138, 6);
             ctx.restore();
         }
 
