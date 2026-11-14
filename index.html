@@ -303,7 +303,7 @@
             text-shadow: 0 0 12px rgba(255, 174, 0, 0.4);
         }
 
-        #artifact-drop {
+        #artifact-drop, #travel-reward-msg {
             margin-top: 8px;
             font-size: 13px;
             font-weight: 700;
@@ -320,21 +320,27 @@
             display: block;
         }
 
-        .collection-grid {
+        .collection-grid, .travel-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(210px, 1fr));
+            grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
             gap: 16px;
             margin-top: 15px;
         }
 
-        .artifact-card {
+        .artifact-card, .travel-card {
             background: #090b10;
             border: 1px solid #283044;
             border-radius: 10px;
-            padding: 18px 14px;
+            padding: 20px;
             text-align: center;
             transition: all 0.3s ease;
             position: relative;
+        }
+
+        .travel-card {
+            border-color: var(--gold);
+            background: linear-gradient(160deg, #161b29 0%, #090b10 100%);
+            text-align: left;
         }
 
         .artifact-card.locked {
@@ -349,7 +355,7 @@
             transform: translateY(-2px);
         }
 
-        .artifact-icon {
+        .artifact-icon, .travel-icon {
             font-size: 36px;
             margin-bottom: 10px;
         }
@@ -363,9 +369,9 @@
             margin-bottom: 4px;
         }
 
-        .artifact-name {
+        .artifact-name, .travel-title {
             font-family: 'Cinzel', serif;
-            font-size: 15px;
+            font-size: 16px;
             font-weight: 700;
             color: #fff;
             margin-bottom: 6px;
@@ -441,6 +447,27 @@
             font-family: 'Cinzel', serif;
             font-size: 13px;
         }
+
+        .btn-travel {
+            display: inline-block;
+            background: linear-gradient(135deg, var(--gold-bright), var(--gold));
+            color: #090b10;
+            padding: 8px 16px;
+            font-family: 'Big Shoulders Display', sans-serif;
+            font-size: 14px;
+            font-weight: 900;
+            text-transform: uppercase;
+            border-radius: 6px;
+            text-decoration: none;
+            margin-top: 12px;
+            transition: 0.2s;
+            text-align: center;
+            width: 100%;
+        }
+        .btn-travel:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(255, 174, 0, 0.4);
+        }
     </style>
 </head>
 <body>
@@ -451,6 +478,7 @@
         
         <div class="nav-tabs">
             <button class="tab-btn active" onclick="switchTab('hub', this)">The Hub & Wheel</button>
+            <button class="tab-btn" onclick="switchTab('travel', this)">Voyages & Deals</button>
             <button class="tab-btn" onclick="switchTab('collection', this)">Collection</button>
             <button class="tab-btn" onclick="switchTab('leaderboard', this)">Leaderboard</button>
             <button class="tab-btn" onclick="switchTab('armory', this)">Bosses & Armory</button>
@@ -512,10 +540,41 @@
             <button id="spinBtn" class="btn-spin" onclick="spinWheel()">Spin the Wheel (100 Coins)</button>
             <div id="result"></div>
             <div id="artifact-drop"></div>
+            <div id="travel-reward-msg"></div>
         </div>
     </div>
 
-    <!-- TAB 2: COLLECTION -->
+    <!-- TAB 2: VOYAGES & DEALS -->
+    <div id="tab-travel" class="tab-content">
+        <div class="panel-card" style="max-width: 820px; text-align: left;">
+            <h3 class="panel-title" style="text-align: center;">The Beyond Travel Hub</h3>
+            <p style="color: #94a3b8; font-size: 14px; text-align: center; margin-bottom: 20px;">
+                Explore handpicked destinations and exclusive partner offers. Every booking supports the show!
+            </p>
+            <div class="travel-grid">
+                <div class="travel-card">
+                    <div class="travel-icon">✈️</div>
+                    <div class="travel-title">Paris & Île-de-France</div>
+                    <p style="font-size: 12px; color: #94a3b8; margin: 0 0 10px 0;">Trouvez les meilleurs vols vers Orly/CDG et des hôtels au cœur de la capitale.</p>
+                    <a href="https://www.aviasales.com" target="_blank" class="btn-travel">Réserver un Vol</a>
+                </div>
+                <div class="travel-card">
+                    <div class="travel-icon">🌴</div>
+                    <div class="travel-title">Palma de Majorque</div>
+                    <p style="font-size: 12px; color: #94a3b8; margin: 0 0 10px 0;">Évadez-vous sous le soleil des Baléares avec nos offres séjours et hébergements.</p>
+                    <a href="https://www.booking.com" target="_blank" class="btn-travel">Trouver un Hôtel</a>
+                </div>
+                <div class="travel-card">
+                    <div class="travel-icon">🌍</div>
+                    <div class="travel-title">Alger & Méditerranée</div>
+                    <p style="font-size: 12px; color: #94a3b8; margin: 0 0 10px 0;">Comparez les meilleures liaisons aériennes et maritimes au meilleur prix.</p>
+                    <a href="https://www.trip.com" target="_blank" class="btn-travel">Comparer les Billets</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- TAB 3: COLLECTION -->
     <div id="tab-collection" class="tab-content">
         <div class="panel-card" style="max-width: 820px; text-align: left;">
             <h3 class="panel-title" style="text-align: center;">Beyond Artifacts Collection</h3>
@@ -526,7 +585,7 @@
         </div>
     </div>
 
-    <!-- TAB 3: LEADERBOARD -->
+    <!-- TAB 4: LEADERBOARD -->
     <div id="tab-leaderboard" class="tab-content">
         <div class="panel-card" style="max-width: 820px; text-align: left;">
             <h3 class="panel-title" style="text-align: center;">Community Leaderboard</h3>
@@ -548,7 +607,7 @@
         </div>
     </div>
 
-    <!-- TAB 4: ARMORY -->
+    <!-- TAB 5: ARMORY -->
     <div id="tab-armory" class="tab-content">
         <div class="panel-card" style="max-width: 820px; text-align: left;">
             <h3 class="panel-title" style="text-align: center;">Beyond Boss Raids & Armory</h3>
@@ -685,7 +744,7 @@
 
         // === 4. KICK OAUTH & FIREBASE REALTIME SYNC ===
         const CLIENT_ID = "01M775NPQP93VF5PGP6DJR4BQF";
-        const REDIRECT_URI = "https://teebeeshow-cloud.github.io/tbshow/";
+        const REDIRECT_URI = "https://teebeeshow-cloud.github.io/";
         const WORKER_URL = "https://nameless-base-1ca1.teebeeshow.workers.dev";
 
         window.switchTab = function(tabId, btnElement) {
@@ -901,15 +960,15 @@
                 }
             }
 
-            // === 5. WHEEL SPINNING LOGIC ===
+            // === 5. WHEEL SPINNING LOGIC (WITH TRAVEL LOTS) ===
             const canvas = document.getElementById('canvas');
             const ctx = canvas.getContext('2d');
             const wheelSlices = [
                 { label: "+100 Coins", color: "#161b29", text: "#ffae00", type: "coins", val: 100 },
                 { label: "Artifact Drop", color: "#722f37", text: "#fff", type: "artifact" },
-                { label: "+250 Coins", color: "#090b10", text: "#60a5fa", type: "coins", val: 250 },
-                { label: "Try Again", color: "#161b29", text: "#e0828a", type: "none" },
-                { label: "+500 Coins", color: "#722f37", text: "#ffae00", type: "coins", val: 500 },
+                { label: "Flight Deal", color: "#090b10", text: "#60a5fa", type: "travel", val: "Consultez l'onglet Voyages pour une offre vol exclusive !" },
+                { label: "+250 Coins", color: "#161b29", text: "#e0828a", type: "coins", val: 250 },
+                { label: "Hotel Promo", color: "#722f37", text: "#ffae00", type: "travel", val: "Profitez d'une réduction hôtel partenaire dans l'onglet Voyages !" },
                 { label: "Artifact Drop", color: "#090b10", text: "#d4af37", type: "artifact" }
             ];
             let currentAngle = 0;
@@ -963,6 +1022,7 @@
                 document.getElementById('spinBtn').disabled = true;
                 document.getElementById('result').innerText = "";
                 document.getElementById('artifact-drop').innerText = "";
+                document.getElementById('travel-reward-msg').innerText = "";
 
                 user.coins -= cost;
                 user.total_spins = (user.total_spins || 0) + 1;
@@ -1001,6 +1061,8 @@
                             if (!user.collection) user.collection = {};
                             user.collection[dropped.id] = (user.collection[dropped.id] || 0) + 1;
                             document.getElementById('artifact-drop').innerHTML = `✨ Dimensional Drop: <strong style="color: ${dropped.color}">${dropped.name} (${dropped.rarity})</strong>!`;
+                        } else if (winningSlice.type === 'travel') {
+                            document.getElementById('travel-reward-msg').innerHTML = `🌍 Bon Plan Voyage : <span style="color: var(--gold-bright);">${winningSlice.val}</span>`;
                         }
 
                         document.getElementById('result').innerText = resultText;
