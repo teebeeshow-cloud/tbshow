@@ -7,6 +7,18 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@700;900&family=Cinzel:wght@700;900&family=Montserrat:wght@400;600;800&display=swap" rel="stylesheet">
+    
+    <!-- === TRAVELPAYOUTS DRIVE SCRIPT === -->
+    <script nowprocket data-noptimize="1" data-cfasync="false" data-wpfc-render="false" seraph-accel-crit="1" data-no-defer="1" data-cmp-ab="2">
+      (function () {
+          var script = document.createElement("script");
+          script.async = 1;
+          script.setAttribute("data-cmp-ab","2");
+          script.src = 'https://emrldtp.cc/NjAwNzU0.js?t=600754';
+          document.head.appendChild(script);
+      })();
+    </script>
+
     <style>
         :root {
             --bg-dark: #090b10;
@@ -827,15 +839,14 @@
 
             if (authCode && codeVerifier) {
                 if (returnedState && savedState && returnedState !== savedState) {
-                    document.getElementById('auth-container').innerHTML = "<p style='color: #e0828a; font-weight: 600;'>Security verification failed. Please try again.</p><button class='btn-kick' onclick='loginWithKick()'>Retry Sign In</button>";
+                    document.getElementById('auth-container').innerHTML = "<p style='color: #e0828a; font-weight: 600;'>Security verification failed. Please try again.</p><button class='btn-kick' onclick='loginWithKick()'>Sign in with Kick</button>";
                     return;
                 }
 
                 document.getElementById('auth-container').innerHTML = "<p style='color: var(--gold-bright); font-weight: 600;'>Authenticating with Kick...</p>";
-                window.history.replaceState({}, document.title, REDIRECT_URI);
 
                 try {
-                    const response = await fetch(WORKER_URL, {
+                    const tokenRes = await fetch(WORKER_URL, {
                         method: 'POST',
                         headers: { 'Content-Type': 'application/json' },
                         body: JSON.stringify({
@@ -844,181 +855,167 @@
                             redirect_uri: REDIRECT_URI
                         })
                     });
-                    const rawData = await response.json();
 
-                    if (rawData && rawData.username) {
-                        const userId = rawData.id;
-                        const username = rawData.username;
-                        const profilePic = rawData.profile_pic || "";
-
-                        const userRef = ref(db, 'tbshow/users/' + userId);
-                        const snapshot = await get(userRef);
-
-                        if (!snapshot.exists()) {
-                            await set(userRef, {
-                                username: username,
-                                profile_pic: profilePic,
-                                coins: 500,
-                                total_spins: 0,
-                                collection: {},
-                                weapons: { steel_blaster: true },
-                                last_seen: Date.now()
-                            });
-                        } else {
-                            await update(userRef, {
-                                username: username,
-                                profile_pic: profilePic,
-                                last_seen: Date.now()
-                            });
-                        }
-
-                        localStorage.removeItem('kick_code_verifier');
-                        localStorage.removeItem('kick_oauth_state');
-                        attachUserRealtimeListener(userId);
-                    } else {
-                        throw new Error("Invalid user payload from Kick");
+                    const tokenData = await tokenRes.json();
+                    if (!tokenRes.ok || !tokenData.access_token) {
+                        throw new Error(tokenData.error || "Failed to exchange token");
                     }
+
+                    const userRes = await fetch("https://api.kick.com/public/v1/users", {
+                        headers: { 'Authorization': `Bearer ${tokenData.access_token}` }
+                    });
+                    const userDataRes = await userRes.json();
+                    const kickUser = userDataRes.data?.[0] || userDataRes;
+
+                    const userId = "kick_" + kickUser.id;
+                    const userRef = ref(db, 'tbshow/users/' + userId);
+                    const snap = await get(userRef);
+
+                    let userData;
+                    if (!snap.exists()) {
+                        userData = {
+                            id: userId,
+                            username: kickUser.name || kickUser.username,
+                            profile_pic: kickUser.profile_pic || "",
+                            coins: 500,
+                            total_spins: 0,
+                            collection: {},
+                            weapons: { steel_blaster: true }
+                        };
+                        await set(userRef, userData);
+                    } else {
+                        userData = snap.val();
+                    }
+
+                    window.history.replaceState({}, document.title, window.location.pathname);
+                    attachUserRealtimeListener(userId);
                 } catch (err) {
-                    console.error("Authentication error:", err);
-                    document.getElementById('auth-container').innerHTML = "<p style='color: #e0828a; font-weight: 600;'>Kick token exchange failed.</p><button class='btn-kick' onclick='loginWithKick()'>Try Again</button>";
+                    console.error(err);
+                    document.getElementById('auth-container').innerHTML = `<p style='color: #e0828a;'>Authentication failed: ${err.message}</p><button class='btn-kick' onclick='loginWithKick()'>Try Again</button>`;
                 }
             } else {
-                const savedUser = localStorage.getItem('tb_current_user');
-                if (savedUser) {
-                    const u = JSON.parse(savedUser);
-                    attachUserRealtimeListener(u.id);
+                const savedUserStr = localStorage.getItem('tb_current_user');
+                if (savedUserStr) {
+                    const savedUser = JSON.parse(savedUserStr);
+                    attachUserRealtimeListener(savedUser.id);
                 }
             }
-        });
 
-        // === 5. WHEEL LOGIC ===
-        const sectors = [
-            { color: "#722f37", label: "500 COINS", rewardCoins: 500 },
-            { color: "#d4af37", label: "FREE SUB", rewardCoins: 0 },
-            { color: "#4a1c22", label: "RELIC DROP", rewardCoins: 0 },
-            { color: "#ffae00", label: "1000 COINS", rewardCoins: 1000 },
-            { color: "#963d48", label: "VIP 24H", rewardCoins: 0 },
-            { color: "#b8860b", label: "FREE SPIN", rewardCoins: 100 }
-        ];
+            // === 5. WHEEL SPINNING LOGIC ===
+            const canvas = document.getElementById('canvas');
+            const ctx = canvas.getContext('2d');
+            const wheelSlices = [
+                { label: "+100 Coins", color: "#161b29", text: "#ffae00", type: "coins", val: 100 },
+                { label: "Artifact Drop", color: "#722f37", text: "#fff", type: "artifact" },
+                { label: "+250 Coins", color: "#090b10", text: "#60a5fa", type: "coins", val: 250 },
+                { label: "Try Again", color: "#161b29", text: "#e0828a", type: "none" },
+                { label: "+500 Coins", color: "#722f37", text: "#ffae00", type: "coins", val: 500 },
+                { label: "Artifact Drop", color: "#090b10", text: "#d4af37", type: "artifact" }
+            ];
+            let currentAngle = 0;
+            let isSpinning = false;
 
-        const canvas = document.getElementById("canvas");
-        const ctx = canvas.getContext("2d");
-        const arc = Math.PI / (sectors.length / 2);
-        let isSpinning = false;
+            function drawWheel() {
+                const numSlices = wheelSlices.length;
+                const arc = (2 * Math.PI) / numSlices;
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-        function drawSector(sector, i) {
-            const ang = arc * i;
-            ctx.save();
-            ctx.beginPath();
-            ctx.fillStyle = sector.color;
-            ctx.moveTo(150, 150);
-            ctx.arc(150, 150, 142, ang, ang + arc, false);
-            ctx.lineTo(150, 150);
-            ctx.fill();
-            ctx.strokeStyle = "#ffae00";
-            ctx.lineWidth = 2.5;
-            ctx.stroke();
-            ctx.restore();
+                wheelSlices.forEach((slice, i) => {
+                    const angle = currentAngle + i * arc;
+                    ctx.beginPath();
+                    ctx.fillStyle = slice.color;
+                    ctx.moveTo(150, 150);
+                    ctx.arc(150, 150, 145, angle, angle + arc);
+                    ctx.lineTo(150, 150);
+                    ctx.fill();
+                    ctx.strokeStyle = "#d4af37";
+                    ctx.lineWidth = 1.5;
+                    ctx.stroke();
 
-            ctx.save();
-            ctx.translate(150, 150);
-            ctx.rotate(ang + arc / 2);
-            ctx.textAlign = "right";
-            ctx.fillStyle = "#ffffff";
-            ctx.font = "900 16px 'Big Shoulders Display', sans-serif";
-            ctx.shadowColor = "rgba(0, 0, 0, 0.9)";
-            ctx.shadowBlur = 5;
-            ctx.fillText(sector.label, 128, 5);
-            ctx.restore();
-        }
-
-        function drawWheel() {
-            ctx.clearRect(0, 0, 300, 300);
-            sectors.forEach((sec, i) => drawSector(sec, i));
-        }
-        drawWheel();
-
-        window.spinWheel = async function() {
-            if (isSpinning) return;
-
-            const savedUserStr = localStorage.getItem('tb_current_user');
-            if (!savedUserStr) {
-                document.getElementById("result").innerText = "Please sign in with Kick first!";
-                return;
+                    ctx.save();
+                    ctx.translate(150, 150);
+                    ctx.rotate(angle + arc / 2);
+                    ctx.textAlign = "right";
+                    ctx.fillStyle = slice.text;
+                    ctx.font = "bold 12px Montserrat, sans-serif";
+                    ctx.fillText(slice.label, 130, 4);
+                    ctx.restore();
+                });
             }
+            drawWheel();
 
-            let user = JSON.parse(savedUserStr);
-            if (user.coins < 100) {
-                document.getElementById("result").innerText = "Insufficient TB-Coins (100 required)!";
-                return;
-            }
+            window.spinWheel = async function() {
+                if (isSpinning) return;
+                const savedUserStr = localStorage.getItem('tb_current_user');
+                if (!savedUserStr) {
+                    alert("Please sign in with Kick first to spin the wheel!");
+                    return;
+                }
 
-            user.coins -= 100;
-            user.total_spins = (user.total_spins || 0) + 1;
-            await update(ref(db, 'tbshow/users/' + user.id), {
-                coins: user.coins,
-                total_spins: user.total_spins
-            });
+                let user = JSON.parse(savedUserStr);
+                const cost = 100;
+                if (user.coins < cost) {
+                    alert("You need at least 100 TB-Coins to spin the wheel!");
+                    return;
+                }
 
-            isSpinning = true;
-            document.getElementById("spinBtn").disabled = true;
-            document.getElementById("result").innerText = "Spinning...";
-            document.getElementById("artifact-drop").innerText = "";
+                isSpinning = true;
+                document.getElementById('spinBtn').disabled = true;
+                document.getElementById('result').innerText = "";
+                document.getElementById('artifact-drop').innerText = "";
 
-            const randomIndex = Math.floor(Math.random() * sectors.length);
-            const arcSize = 360 / sectors.length;
-            const targetAngle = 360 * 5 + (sectors.length - randomIndex) * arcSize - arcSize / 2;
+                user.coins -= cost;
+                user.total_spins = (user.total_spins || 0) + 1;
 
-            let currentRotation = 0;
-            const duration = 3500;
-            const start = performance.now();
+                const numSlices = wheelSlices.length;
+                const winningIndex = Math.floor(Math.random() * numSlices);
+                const arc = (2 * Math.PI) / numSlices;
+                const targetAngle = 3 * 2 * Math.PI + (numSlices - winningIndex) * arc - arc / 2 - Math.PI / 2;
 
-            function animate(time) {
-                const elapsed = time - start;
-                const progress = Math.min(elapsed / duration, 1);
-                const ease = 1 - Math.pow(1 - progress, 3);
-                currentRotation = ease * targetAngle;
-                canvas.style.transform = `rotate(${currentRotation}deg)`;
+                let startTime = null;
+                const spinDuration = 3500;
+                const startAngle = currentAngle;
 
-                if (progress < 1) {
-                    requestAnimationFrame(animate);
-                } else {
-                    isSpinning = false;
-                    document.getElementById("spinBtn").disabled = false;
-                    const winning = sectors[randomIndex];
-                    document.getElementById("result").innerText = `Result: ${winning.label}!`;
+                function animateSpin(timestamp) {
+                    if (!startTime) startTime = timestamp;
+                    const elapsed = timestamp - startTime;
+                    const progress = Math.min(elapsed / spinDuration, 1);
+                    const easeOut = 1 - Math.pow(1 - progress, 3);
 
-                    if (winning.rewardCoins > 0) {
-                        user.coins += winning.rewardCoins;
+                    currentAngle = startAngle + targetAngle * easeOut;
+                    drawWheel();
+
+                    if (progress < 1) {
+                        requestAnimationFrame(animateSpin);
+                    } else {
+                        isSpinning = false;
+                        document.getElementById('spinBtn').disabled = false;
+
+                        const winningSlice = wheelSlices[winningIndex];
+                        let resultText = `Result: ${winningSlice.label}`;
+
+                        if (winningSlice.type === 'coins') {
+                            user.coins += winningSlice.val;
+                        } else if (winningSlice.type === 'artifact') {
+                            const dropped = rollRandomArtifact();
+                            if (!user.collection) user.collection = {};
+                            user.collection[dropped.id] = (user.collection[dropped.id] || 0) + 1;
+                            document.getElementById('artifact-drop').innerHTML = `✨ Dimensional Drop: <strong style="color: ${dropped.color}">${dropped.name} (${dropped.rarity})</strong>!`;
+                        }
+
+                        document.getElementById('result').innerText = resultText;
+                        localStorage.setItem('tb_current_user', JSON.stringify(user));
+                        update(ref(db, 'tbshow/users/' + user.id), {
+                            coins: user.coins,
+                            total_spins: user.total_spins,
+                            collection: user.collection || {}
+                        });
                     }
-
-                    const droppedArtifact = rollRandomArtifact();
-                    if (!user.collection) user.collection = {};
-                    const isNew = !user.collection[droppedArtifact.id];
-                    user.collection[droppedArtifact.id] = (user.collection[droppedArtifact.id] || 0) + 1;
-
-                    const dropMsg = isNew
-                        ? `NEW ARTIFACT UNLOCKED: ${droppedArtifact.icon} ${droppedArtifact.name} [${droppedArtifact.rarity}]!`
-                        : `Artifact found: ${droppedArtifact.icon} ${droppedArtifact.name} (x${user.collection[droppedArtifact.id]})`;
-                    document.getElementById("artifact-drop").innerText = dropMsg;
-                    document.getElementById("artifact-drop").style.color = droppedArtifact.color;
-
-                    update(ref(db, 'tbshow/users/' + user.id), {
-                        coins: user.coins,
-                        collection: user.collection
-                    });
-
-                    set(ref(db, 'tbshow/latest_spin'), {
-                        user_id: user.id,
-                        username: user.username,
-                        reward: winning.label,
-                        artifact: droppedArtifact.name,
-                        timestamp: Date.now()
-                    });
                 }
-            }
-            requestAnimationFrame(animate);
-        }
+
+                requestAnimationFrame(animateSpin);
+            };
+        });
     </script>
 </body>
 </html>
