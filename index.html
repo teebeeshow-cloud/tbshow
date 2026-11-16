@@ -7,7 +7,7 @@
     <!-- Google Fonts: Big Shoulders Display & Big Shoulders Text -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@700;800;900&family=Big+Shoulders+Text:wght@400;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@700;900&family=Big+Shoulders+Text:wght@400;600;700&display=swap" rel="stylesheet">
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
@@ -21,20 +21,18 @@
                     colors: {
                         tb: {
                             obsidian: '#090607',
-                            charcoal: '#11090B',
+                            charcoal: '#0E090A',
                             card: '#1D0B0E',
                             bordeaux: '#2C1015',
                             deepred: '#4A141D',
                             crimson: '#B81D2C',
-                            scarlet: '#DC2626',
                             mythic: '#E11D48',
                             gold: '#D4AF37',
                             goldlight: '#F3D06B',
                             golddark: '#997A15',
                             ivory: '#F5EFE6',
                             champagne: '#B8A99A',
-                            bronze: '#CD7F32',
-                            silver: '#C0C0C0'
+                            kick: '#53FC18'
                         }
                     }
                 }
@@ -42,14 +40,15 @@
         }
     </script>
     <style>
-        /* STRICT TB SHOW PALETTE: Obsidian, Deep Bordeaux, Crimson Red, Metallic Gold. ZERO purple/violet/indigo/magenta. */
+        /* STRICT TB SHOW PALETTE: Obsidian, Deep Bordeaux, Crimson Red, Metallic Gold. ZERO purple/violet/amethyst/indigo. */
         :root {
             --bg-obsidian: #090607;
-            --bg-charcoal: #11090B;
+            --bg-charcoal: #0E090A;
             --bordeaux-card: #1D0B0E;
             --bordeaux-mid: #2C1015;
             --bordeaux-deep: #4A141D;
             --crimson-main: #B81D2C;
+            --crimson-mythic: #E11D48;
             --gold-main: #D4AF37;
             --gold-light: #F3D06B;
             --gold-dark: #997A15;
@@ -60,20 +59,20 @@
         body {
             background-color: var(--bg-obsidian);
             background-image:
-                radial-gradient(circle at 50% -10%, rgba(184, 29, 44, 0.22) 0%, transparent 55%),
-                radial-gradient(circle at 85% 90%, rgba(74, 20, 29, 0.32) 0%, transparent 50%),
-                linear-gradient(180deg, #090607 0%, #11090B 100%);
+                radial-gradient(circle at 50% -10%, rgba(184, 29, 44, 0.25) 0%, transparent 55%),
+                radial-gradient(circle at 85% 90%, rgba(74, 20, 29, 0.35) 0%, transparent 50%),
+                linear-gradient(180deg, #090607 0%, #0E090A 100%);
             color: var(--text-ivory);
             min-height: 100vh;
             overflow-x: hidden;
         }
 
         .tb-glass {
-            background: rgba(29, 11, 14, 0.88);
+            background: rgba(29, 11, 14, 0.90);
             backdrop-filter: blur(12px);
             -webkit-backdrop-filter: blur(12px);
             border: 1px solid rgba(212, 175, 55, 0.32);
-            box-shadow: 0 12px 32px rgba(0, 0, 0, 0.78), inset 0 1px 0 rgba(243, 208, 107, 0.14);
+            box-shadow: 0 12px 32px rgba(0, 0, 0, 0.8), inset 0 1px 0 rgba(243, 208, 107, 0.14);
         }
 
         .tb-card-lift {
@@ -81,7 +80,7 @@
         }
         .tb-card-lift:hover {
             transform: translateY(-3px);
-            border-color: rgba(243, 208, 107, 0.75);
+            border-color: rgba(243, 208, 107, 0.78);
             box-shadow: 0 14px 30px rgba(184, 29, 44, 0.32), 0 0 18px rgba(212, 175, 55, 0.2);
         }
 
@@ -117,13 +116,26 @@
             transition: all 0.18s ease;
         }
         .btn-crimson:hover:not(:disabled) {
-            background: linear-gradient(180deg, #DC2626 0%, #B81D2C 60%, #4A141D 100%);
+            background: linear-gradient(180deg, #E11D48 0%, #B81D2C 60%, #4A141D 100%);
             border-color: #F3D06B;
-            box-shadow: 0 6px 20px rgba(220, 38, 38, 0.5);
+            box-shadow: 0 6px 20px rgba(225, 29, 72, 0.5);
         }
         .btn-crimson:disabled {
             opacity: 0.45;
             cursor: not-allowed;
+        }
+
+        .btn-kick {
+            background: linear-gradient(180deg, #6BFF38 0%, #53FC18 55%, #37B809 100%);
+            color: #090607;
+            border: 1px solid #B6FF9C;
+            box-shadow: 0 4px 16px rgba(83, 252, 24, 0.35);
+            transition: all 0.18s ease;
+        }
+        .btn-kick:hover {
+            filter: brightness(1.06);
+            transform: translateY(-1px);
+            box-shadow: 0 6px 22px rgba(83, 252, 24, 0.52);
         }
 
         .hub-tab {
@@ -138,13 +150,13 @@
         .hub-tab.active {
             color: #F3D06B;
             border-bottom-color: #F3D06B;
-            background: linear-gradient(180deg, rgba(184, 29, 44, 0.32) 0%, rgba(44, 16, 21, 0.15) 100%);
+            background: linear-gradient(180deg, rgba(184, 29, 44, 0.35) 0%, rgba(44, 16, 21, 0.15) 100%);
         }
 
         .filter-pill {
             border: 1px solid rgba(212, 175, 55, 0.3);
             color: #B8A99A;
-            background: rgba(17, 9, 11, 0.8);
+            background: rgba(14, 9, 10, 0.85);
             transition: all 0.18s ease;
         }
         .filter-pill:hover, .filter-pill.active {
@@ -181,13 +193,13 @@
 <body class="font-sans antialiased selection:bg-tb-crimson selection:text-tb-goldlight">
 
     <!-- =================================================================== -->
-    <!-- TOP HEADER & FIREBASE STATUS BAR                                    -->
+    <!-- TOP HEADER: BRAND, LIVE DATABASE STATUS & KICK / GUEST PROFILE      -->
     <!-- =================================================================== -->
     <header class="sticky top-0 z-40 tb-glass border-b border-tb-gold/40">
         <div class="max-w-7xl mx-auto px-4 py-3 flex flex-wrap items-center justify-between gap-4">
-            <!-- Brand Emblem & Title -->
+            <!-- Brand Emblem, Title & Live Database Status Badge -->
             <div class="flex items-center gap-3.5">
-                <div class="w-12 h-12 rounded-xl bg-gradient-to-br from-tb-crimson via-tb-deepred to-tb-obsidian border-2 border-tb-gold flex items-center justify-center shadow-lg">
+                <div class="w-12 h-12 rounded-xl bg-gradient-to-br from-tb-crimson via-tb-deepred to-tb-obsidian border-2 border-tb-gold flex items-center justify-center shadow-lg shrink-0">
                     <svg class="w-7 h-7 text-tb-goldlight" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
                         <polygon points="12 2 19 6.5 19 17.5 12 22 5 17.5 5 6.5 12 2"/>
                         <circle cx="12" cy="12" r="3.5" fill="#D4AF37" stroke="none"/>
@@ -198,30 +210,21 @@
                         <h1 class="font-display text-2xl sm:text-3xl font-black tracking-wider uppercase gold-text-gradient leading-none">
                             THE BEYOND SHOW
                         </h1>
-                        <!-- Live Firebase Status Indicator Button -->
-                        <button onclick="toggleFirebaseModal()" id="firebaseStatusBtn"
-                            class="px-2.5 py-1 text-xs font-display font-black tracking-widest uppercase rounded bg-tb-deepred text-tb-goldlight border border-tb-gold/60 hover:bg-tb-crimson transition flex items-center gap-1.5 cursor-pointer"
-                            title="Click to configure Firebase Connection">
-                            <span id="firebaseStatusDot" class="w-2 h-2 rounded-full bg-amber-400 animate-pulse"></span>
-                            <span id="firebaseStatusText">LOCAL VAULT</span>
-                        </button>
+                        <!-- Non-Intrusive Real-Time Firebase Connection Status Badge -->
+                        <div id="dbStatusBadge"
+                            class="px-2.5 py-1 text-xs font-display font-black tracking-widest uppercase rounded bg-tb-charcoal text-amber-300 border border-tb-gold/50 flex items-center gap-1.5 select-none">
+                            <span id="dbStatusDot" class="w-2 h-2 rounded-full bg-amber-400 animate-pulse"></span>
+                            <span id="dbStatusText">CONNECTING DB...</span>
+                        </div>
                     </div>
                     <p class="font-sans text-xs sm:text-sm font-semibold text-tb-champagne tracking-widest uppercase mt-0.5">
-                        COMMUNITY HUB // DIMENSIONAL VAULT
+                        OFFICIAL COMMUNITY HUB // DIMENSIONAL VAULT
                     </p>
                 </div>
             </div>
 
-            <!-- Live Player Profile Bar & Actions -->
+            <!-- Live Player Profile Bar & Kick OAuth / Guest Controls -->
             <div class="flex flex-wrap items-center gap-2 sm:gap-2.5">
-                <!-- Editable Username -->
-                <div class="flex items-center bg-tb-obsidian/90 border border-tb-gold/40 rounded-xl px-3 py-1.5">
-                    <span class="font-display text-xs font-bold uppercase tracking-widest text-tb-gold mr-2">HUNTER:</span>
-                    <input id="usernameInput" type="text" maxlength="20" value="BeyondHunter"
-                        class="bg-transparent font-display text-base font-bold tracking-wide text-tb-ivory focus:outline-none w-28 sm:w-32 border-b border-transparent focus:border-tb-goldlight"
-                        title="Edit your Hunter callsign">
-                </div>
-
                 <!-- TB-Coins Balance Counter -->
                 <div class="flex items-center gap-2 bg-gradient-to-r from-tb-deepred to-tb-bordeaux border border-tb-gold/60 rounded-xl px-3.5 py-1.5 shadow-inner">
                     <svg class="w-5 h-5 text-tb-goldlight shrink-0" viewBox="0 0 24 24">
@@ -229,7 +232,7 @@
                         <text x="12" y="16" text-anchor="middle" font-size="10" font-weight="900" fill="#090607" font-family="sans-serif">TB</text>
                     </svg>
                     <div class="leading-none">
-                        <span id="headerCoins" class="font-display text-xl font-black text-tb-goldlight">1,500</span>
+                        <span id="headerCoins" class="font-display text-xl font-black text-tb-goldlight">500</span>
                         <span class="font-display text-xs font-bold uppercase tracking-wider text-tb-gold ml-1">TB-COINS</span>
                     </div>
                 </div>
@@ -239,25 +242,42 @@
                     <svg class="w-4 h-4 text-tb-mythic shrink-0" viewBox="0 0 24 24" fill="currentColor">
                         <path d="M12 2L4 7v10l8 5 8-5V7l-8-5zm0 2.5L17.6 8 12 11.5 6.4 8 12 4.5z"/>
                     </svg>
-                    <span id="headerRelicCount" class="font-display text-lg font-extrabold text-tb-ivory leading-none">2 / 12</span>
+                    <span id="headerRelicCount" class="font-display text-lg font-extrabold text-tb-ivory leading-none">0 / 12</span>
                     <span class="hidden md:inline font-display text-xs font-bold uppercase tracking-wider text-tb-champagne">RELICS</span>
                 </div>
 
-                <!-- Daily Supply Claim Button (+500 TB-Coins) -->
+                <!-- Daily Supply Claim Button -->
                 <button id="dailySupplyBtn" onclick="claimDailySupply()"
-                    class="btn-gold px-3 py-2 rounded-xl font-display text-xs sm:text-sm font-black uppercase tracking-wider cursor-pointer flex items-center gap-1.5">
-                    <span>SUPPLY +500</span>
+                    class="btn-gold px-3 py-2 rounded-xl font-display text-xs sm:text-sm font-black uppercase tracking-wider cursor-pointer">
+                    SUPPLY +500
                 </button>
 
-                <!-- Settings / Firebase Config Button -->
-                <button onclick="toggleFirebaseModal()"
-                    class="p-2 rounded-xl bg-tb-charcoal border border-tb-gold/40 hover:border-tb-goldlight text-tb-goldlight transition cursor-pointer"
-                    title="Firebase Database & Mini-Game Module Settings">
-                    <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
-                        <circle cx="12" cy="12" r="3"/>
-                        <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/>
-                    </svg>
-                </button>
+                <!-- Guest / Unauthenticated Auth Prompt Controls -->
+                <div id="headerGuestControls" class="flex items-center gap-2">
+                    <button onclick="loginWithKick()"
+                        class="btn-kick px-3.5 py-2 rounded-xl font-display text-xs sm:text-sm font-black uppercase tracking-wider cursor-pointer flex items-center gap-1.5">
+                        <span>SIGN IN WITH KICK</span>
+                    </button>
+                    <button onclick="activateGuestMode()" id="quickPlayBtn"
+                        class="btn-crimson px-3 py-2 rounded-xl font-display text-xs sm:text-sm font-black uppercase tracking-wider cursor-pointer"
+                        title="Play instantly in Guest Mode">
+                        GUEST PLAY
+                    </button>
+                </div>
+
+                <!-- Authenticated Kick / Active Hunter Badge -->
+                <div id="headerUserControls" class="hidden flex items-center gap-2 bg-tb-obsidian/95 border border-tb-gold/50 rounded-xl px-3 py-1">
+                    <img id="headerAvatar" src="" alt="Hunter Avatar" class="w-7 h-7 rounded-full border border-tb-gold object-cover hidden">
+                    <div class="leading-tight">
+                        <div class="flex items-center gap-1.5">
+                            <span id="headerUsername" class="font-display text-sm font-black text-tb-goldlight tracking-wide">Hunter</span>
+                            <span id="headerAuthTag" class="text-[10px] font-display font-bold px-1.5 py-0.2 rounded bg-tb-deepred text-tb-ivory border border-tb-gold/40">GUEST</span>
+                        </div>
+                    </div>
+                    <button onclick="logoutUser()" class="ml-1 text-xs font-display font-bold uppercase text-tb-champagne hover:text-tb-mythic cursor-pointer" title="Sign Out">
+                        ✕
+                    </button>
+                </div>
             </div>
         </div>
     </header>
@@ -265,160 +285,206 @@
     <!-- =================================================================== -->
     <!-- NAVIGATION TABS BAR                                                 -->
     <!-- =================================================================== -->
-    <nav class="tb-glass border-b border-tb-gold/20 shadow-md">
-        <div class="max-w-7xl mx-auto px-4 flex overflow-x-auto no-scrollbar">
+    <nav class="tb-glass border-b border-tb-gold/25 shadow-md">
+        <div class="max-w-7xl mx-auto px-4 flex overflow-x-auto">
             <button onclick="switchTab('hunt')" id="tabBtn-hunt"
                 class="hub-tab active px-5 py-3 font-display text-base sm:text-lg font-bold tracking-wider uppercase whitespace-nowrap flex items-center gap-2 cursor-pointer">
-                <svg class="w-5 h-5 text-tb-gold" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <svg class="w-5 h-5 text-tb-gold" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
                     <circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="4"/><line x1="12" y1="2" x2="12" y2="6"/><line x1="12" y1="18" x2="12" y2="22"/>
                 </svg>
-                <span>HUNT WHEEL & ARMORY</span>
+                <span>THE HUNT WHEEL & RELICS</span>
             </button>
             <button onclick="switchTab('minigames')" id="tabBtn-minigames"
                 class="hub-tab px-5 py-3 font-display text-base sm:text-lg font-bold tracking-wider uppercase whitespace-nowrap flex items-center gap-2 cursor-pointer">
-                <svg class="w-5 h-5 text-tb-crimson" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <svg class="w-5 h-5 text-tb-crimson" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
                     <rect x="2" y="6" width="20" height="12" rx="2"/><path d="M6 12h4m-2-2v4M15 11h.01M18 13h.01"/>
                 </svg>
                 <span>MINI-GAMES ARENA</span>
             </button>
             <button onclick="switchTab('travel')" id="tabBtn-travel"
                 class="hub-tab px-5 py-3 font-display text-base sm:text-lg font-bold tracking-wider uppercase whitespace-nowrap flex items-center gap-2 cursor-pointer">
-                <svg class="w-5 h-5 text-tb-gold" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <svg class="w-5 h-5 text-tb-goldlight" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
                     <path d="M17.8 19.2L16 11l3.5-3.5C21 6 21.5 4 21 3c-1-.5-3 0-4.5 1.5L13 8 4.8 6.2c-.5-.1-1 .1-1.3.5l-.3.4c-.3.4-.2 1 .2 1.3l6.5 4.5-4 4-2.5-.5c-.4-.1-.8.1-1 .4l-.3.4c-.3.4-.1 1 .3 1.3l4 2.5 2.5 4c.3.4.9.6 1.3.3l.4-.3c.3-.2.5-.6.4-1l-.5-2.5 4-4 4.5 6.5c.3.4.9.5 1.3.2l.4-.3c.4-.3.6-.9.2-1.3z"/>
                 </svg>
                 <span>TRAVEL DEALS</span>
             </button>
             <button onclick="switchTab('leaderboard')" id="tabBtn-leaderboard"
                 class="hub-tab px-5 py-3 font-display text-base sm:text-lg font-bold tracking-wider uppercase whitespace-nowrap flex items-center gap-2 cursor-pointer">
-                <svg class="w-5 h-5 text-tb-goldlight" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <svg class="w-5 h-5 text-tb-gold" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
                     <path d="M6 9H2v12h4V9zm7-7H9v19h4V2zm7 14h-4v5h4v-5z"/>
                 </svg>
-                <span>LEADERBOARD</span>
+                <span>LEADERBOARD & ARMORY</span>
             </button>
         </div>
     </nav>
 
     <!-- =================================================================== -->
-    <!-- MAIN CONTAINER                                                      -->
+    <!-- MAIN HUB WORKSPACE                                                  -->
     <!-- =================================================================== -->
     <main class="max-w-7xl mx-auto px-4 py-6">
 
         <!-- =============================================================== -->
-        <!-- TAB 1: HUNT WHEEL & RELIC ARMORY                                -->
+        <!-- TAB 1: THE HUNT WHEEL & RELICS                                  -->
         <!-- =============================================================== -->
         <section id="content-hunt" class="space-y-8">
-            <!-- Hero Banner -->
-            <div class="tb-glass rounded-2xl p-6 md:p-8 relative overflow-hidden border border-tb-gold/50 shadow-2xl">
-                <div class="absolute -right-16 -bottom-16 w-64 h-64 bg-tb-crimson/15 rounded-full blur-3xl pointer-events-none"></div>
-                <div class="relative z-10 max-w-2xl">
-                    <span class="inline-block px-3 py-1 rounded bg-tb-crimson text-tb-goldlight font-display text-xs font-black tracking-widest uppercase mb-3 border border-tb-gold/40">
-                        DIMENSIONAL CHASE v4.2
-                    </span>
-                    <h2 class="font-display text-3xl sm:text-4xl lg:text-5xl font-black uppercase gold-text-gradient tracking-wide leading-tight">
-                        THE HUNT WHEEL & ARMORY
-                    </h2>
-                    <p class="font-sans text-tb-champagne text-sm sm:text-base mt-2 leading-relaxed">
-                        Spin the sacred Wheel of Beyond for 100 TB-Coins per turn. Unlock legendary dimensional relics, earn bounties, and store your artifacts in the vault.
-                    </p>
+            <!-- Hero Banner & Kick OAuth Sign-In Prompt Card (Visible when not logged via Kick) -->
+            <div id="kickWelcomeBanner" class="tb-glass rounded-2xl p-6 md:p-8 relative overflow-hidden border border-tb-gold/50 shadow-2xl">
+                <div class="absolute -right-16 -bottom-16 w-64 h-64 bg-tb-crimson/20 rounded-full blur-3xl pointer-events-none"></div>
+                <div class="relative z-10 flex flex-col lg:flex-row lg:items-center justify-between gap-6">
+                    <div class="max-w-2xl">
+                        <span class="inline-block px-3 py-1 rounded bg-tb-crimson text-tb-goldlight font-display text-xs font-black tracking-widest uppercase mb-3 border border-tb-gold/40">
+                            LIVE STREAM INTERACTIVE VAULT
+                        </span>
+                        <h2 class="font-display text-3xl sm:text-4xl lg:text-5xl font-black uppercase gold-text-gradient tracking-wide leading-tight">
+                            THE HUNT WHEEL & DIMENSIONAL RELICS
+                        </h2>
+                        <p class="font-sans text-tb-champagne text-sm sm:text-base mt-2 leading-relaxed">
+                            Spin the Wheel of Beyond for 100 TB-Coins per turn. Discover rare dimensional relics across 4 tiers, accumulate TB-Coins, and sync your vault directly with your Kick account.
+                        </p>
+                    </div>
+                    <div id="bannerAuthBox" class="bg-tb-obsidian/90 border border-tb-gold/45 rounded-xl p-5 max-w-sm w-full shrink-0 space-y-3">
+                        <div class="font-display text-sm font-black uppercase tracking-wider text-tb-goldlight">
+                            SYNC YOUR COMMUNITY PROGRESS
+                        </div>
+                        <p class="font-sans text-xs text-tb-champagne leading-relaxed">
+                            Sign in with your official Kick account to save relics & leaderboard ranks to the cloud, or jump straight in with Quick Guest Play.
+                        </p>
+                        <div class="flex flex-col sm:flex-row gap-2 pt-1">
+                            <button onclick="loginWithKick()" class="btn-kick flex-1 py-2.5 px-4 rounded-xl font-display text-sm font-black uppercase tracking-wider cursor-pointer">
+                                SIGN IN WITH KICK
+                            </button>
+                            <button onclick="activateGuestMode()" class="btn-crimson py-2.5 px-4 rounded-xl font-display text-sm font-black uppercase tracking-wider cursor-pointer">
+                                GUEST PLAY
+                            </button>
+                        </div>
+                    </div>
                 </div>
             </div>
 
-            <!-- Hunt Wheel & Live Feed Grid -->
+            <!-- Hunt Wheel & Live Activity Grid -->
             <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
-                <!-- Wheel Interactive Canvas Container -->
-                <div class="lg:col-span-7 tb-glass rounded-2xl p-6 sm:p-8 flex flex-col items-center border border-tb-gold/40 relative shadow-xl">
-                    <div class="absolute top-4 left-4 flex items-center gap-2">
-                        <span class="w-3 h-3 rounded-full bg-tb-crimson animate-pulse"></span>
-                        <span class="font-display text-xs font-black tracking-widest text-tb-gold uppercase">LIVE WHEEL</span>
-                    </div>
-                    <div class="absolute top-4 right-4 text-xs font-display font-bold text-tb-champagne">
-                        COST: <span class="text-tb-goldlight font-black">100 TB-COINS</span>
-                    </div>
-
-                    <!-- Canvas Wrapper -->
-                    <div class="relative my-6 flex items-center justify-center">
-                        <!-- Wheel Pointer Top -->
-                        <div class="absolute -top-4 z-20 wheel-pointer">
-                            <div class="w-0 h-0 border-l-[14px] border-l-transparent border-r-[14px] border-r-transparent border-t-[26px] border-t-tb-gold filter drop-shadow-[0_4px_8px_rgba(184,29,44,0.8)]"></div>
+                <!-- Interactive HTML5 Canvas Hunt Wheel -->
+                <div class="lg:col-span-7 tb-glass rounded-2xl p-6 sm:p-8 flex flex-col items-center border border-tb-gold/45 relative shadow-xl">
+                    <div class="w-full flex items-center justify-between mb-2">
+                        <div class="flex items-center gap-2">
+                            <span class="w-2.5 h-2.5 rounded-full bg-tb-crimson animate-pulse"></span>
+                            <span class="font-display text-xs font-black tracking-widest text-tb-gold uppercase">WHEEL OF BEYOND</span>
                         </div>
-                        <canvas id="wheelCanvas" width="340" height="340" class="max-w-full h-auto rounded-full shadow-[0_0_35px_rgba(184,29,44,0.35)] border-4 border-tb-gold/80 bg-tb-obsidian"></canvas>
+                        <div class="font-display text-xs font-bold text-tb-champagne uppercase tracking-wider">
+                            SPIN COST: <span class="text-tb-goldlight font-black">100 TB-COINS</span>
+                        </div>
                     </div>
 
-                    <!-- Spin Action Button -->
+                    <!-- Wheel Canvas Wrapper -->
+                    <div class="relative my-5 flex items-center justify-center">
+                        <!-- Top Gold Pointer -->
+                        <div class="absolute -top-3.5 z-20 wheel-pointer">
+                            <div class="w-0 h-0 border-l-[15px] border-l-transparent border-r-[15px] border-r-transparent border-t-[28px] border-t-tb-goldlight filter drop-shadow-[0_4px_8px_rgba(184,29,44,0.85)]"></div>
+                        </div>
+                        <canvas id="wheelCanvas" width="340" height="340" class="max-w-full h-auto rounded-full shadow-[0_0_38px_rgba(184,29,44,0.4)] border-4 border-tb-gold bg-tb-obsidian"></canvas>
+                    </div>
+
+                    <!-- Spin Button & Status -->
                     <button id="spinBtn" onclick="spinWheel()"
                         class="btn-gold w-full max-w-sm py-4 rounded-xl font-display text-xl font-black uppercase tracking-widest shadow-2xl cursor-pointer">
                         SPIN THE HUNT WHEEL (100 TB)
                     </button>
-                    <p id="spinMessage" class="font-display text-sm font-bold tracking-wider text-tb-goldlight mt-3 min-h-[1.5rem] text-center">
-                        May the Beyond guide your strike!
+                    <p id="spinMessage" class="font-display text-base font-bold tracking-wider text-tb-goldlight mt-3 min-h-[1.5rem] text-center">
+                        Step up to the wheel and claim your dimensional bounty!
                     </p>
                 </div>
 
-                <!-- Live Feed & Quick Stats -->
+                <!-- Live Hunt Activity Feed & Quick Hunter Summary -->
                 <div class="lg:col-span-5 space-y-6">
+                    <!-- Hunter Stats Card -->
                     <div class="tb-glass rounded-2xl p-6 border border-tb-gold/40 shadow-xl">
-                        <h3 class="font-display text-xl font-black uppercase gold-text-gradient tracking-wide mb-4 flex items-center gap-2">
-                            <svg class="w-5 h-5 text-tb-gold" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
-                            <span>LIVE HUNT FEED</span>
+                        <h3 class="font-display text-lg font-black uppercase gold-text-gradient tracking-wider mb-4">
+                            HUNTER VAULT TELEMETRY
                         </h3>
-                        <div id="liveFeedList" class="space-y-3 max-h-[320px] overflow-y-auto pr-2">
-                            <!-- Populated dynamically -->
+                        <div class="grid grid-cols-3 gap-3 text-center">
+                            <div class="bg-tb-obsidian/80 border border-tb-gold/30 rounded-xl p-3">
+                                <div class="font-display text-xs font-bold uppercase text-tb-champagne">TOTAL SPINS</div>
+                                <div id="statTotalSpins" class="font-display text-2xl font-black text-tb-goldlight mt-0.5">0</div>
+                            </div>
+                            <div class="bg-tb-obsidian/80 border border-tb-gold/30 rounded-xl p-3">
+                                <div class="font-display text-xs font-bold uppercase text-tb-champagne">RELICS</div>
+                                <div id="statRelicRatio" class="font-display text-2xl font-black text-tb-ivory mt-0.5">0 / 12</div>
+                            </div>
+                            <div class="bg-tb-obsidian/80 border border-tb-gold/30 rounded-xl p-3">
+                                <div class="font-display text-xs font-bold uppercase text-tb-champagne">RAID DMG</div>
+                                <div id="statRaidBonus" class="font-display text-2xl font-black text-tb-crimson mt-0.5">+10%</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Live Hunt Activity Feed -->
+                    <div class="tb-glass rounded-2xl p-6 border border-tb-gold/40 shadow-xl">
+                        <div class="flex items-center justify-between mb-4">
+                            <h3 class="font-display text-lg font-black uppercase gold-text-gradient tracking-wider flex items-center gap-2">
+                                <svg class="w-5 h-5 text-tb-gold" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+                                    <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/>
+                                </svg>
+                                <span>LIVE HUNT ACTIVITY FEED</span>
+                            </h3>
+                            <span class="text-[11px] font-display font-bold uppercase tracking-wider text-tb-champagne">REAL-TIME</span>
+                        </div>
+                        <div id="liveFeedList" class="space-y-2.5 max-h-[250px] overflow-y-auto pr-1">
+                            <!-- Populated via JS -->
                         </div>
                     </div>
                 </div>
             </div>
 
-            <!-- Relic Armory Section -->
-            <div class="tb-glass rounded-2xl p-6 md:p-8 border border-tb-gold/40 shadow-2xl">
+            <!-- Dimensional Relic Collection & Armory Grid -->
+            <div class="tb-glass rounded-2xl p-6 md:p-8 border border-tb-gold/45 shadow-2xl">
                 <div class="flex flex-wrap items-center justify-between gap-4 mb-6">
                     <div>
                         <h3 class="font-display text-2xl sm:text-3xl font-black uppercase gold-text-gradient tracking-wide">
-                            DIMENSIONAL RELIC ARMORY
+                            DIMENSIONAL RELIC COLLECTION
                         </h3>
                         <p class="font-sans text-sm text-tb-champagne mt-1">
-                            Collection of sacred artifacts discovered across dimensions. (<span id="armoryCount">2</span> / 12 Unlocked)
+                            Every artifact discovered on the Hunt Wheel is permanently archived in your Dimensional Vault. (<span id="armoryCountText">0</span> / 12 Discovered)
                         </p>
                     </div>
-                    <!-- Filter Pills -->
+                    <!-- Rarity Filter Pills (Strictly Bronze, Silver, Gold, Crimson Mythic — Zero Purple) -->
                     <div class="flex flex-wrap gap-2">
-                        <button onclick="filterArmory('ALL')" id="filter-ALL" class="filter-pill active px-3.5 py-1.5 rounded-lg font-display text-xs font-bold uppercase tracking-wider cursor-pointer">ALL</button>
-                        <button onclick="filterArmory('BRONZE')" id="filter-BRONZE" class="filter-pill px-3.5 py-1.5 rounded-lg font-display text-xs font-bold uppercase tracking-wider cursor-pointer text-amber-600">BRONZE</button>
-                        <button onclick="filterArmory('SILVER')" id="filter-SILVER" class="filter-pill px-3.5 py-1.5 rounded-lg font-display text-xs font-bold uppercase tracking-wider cursor-pointer text-slate-300">SILVER</button>
-                        <button onclick="filterArmory('GOLD')" id="filter-GOLD" class="filter-pill px-3.5 py-1.5 rounded-lg font-display text-xs font-bold uppercase tracking-wider cursor-pointer text-tb-goldlight">GOLD</button>
-                        <button onclick="filterArmory('MYTHIC')" id="filter-MYTHIC" class="filter-pill px-3.5 py-1.5 rounded-lg font-display text-xs font-bold uppercase tracking-wider cursor-pointer text-tb-mythic">MYTHIC</button>
+                        <button onclick="filterArmory('ALL')" id="filter-ALL" class="filter-pill active px-3.5 py-1.5 rounded-lg font-display text-xs font-black uppercase tracking-wider cursor-pointer">ALL</button>
+                        <button onclick="filterArmory('BRONZE')" id="filter-BRONZE" class="filter-pill px-3.5 py-1.5 rounded-lg font-display text-xs font-black uppercase tracking-wider cursor-pointer text-amber-500">BRONZE</button>
+                        <button onclick="filterArmory('SILVER')" id="filter-SILVER" class="filter-pill px-3.5 py-1.5 rounded-lg font-display text-xs font-black uppercase tracking-wider cursor-pointer text-stone-300">SILVER</button>
+                        <button onclick="filterArmory('GOLD')" id="filter-GOLD" class="filter-pill px-3.5 py-1.5 rounded-lg font-display text-xs font-black uppercase tracking-wider cursor-pointer text-tb-goldlight">GOLD</button>
+                        <button onclick="filterArmory('MYTHIC')" id="filter-MYTHIC" class="filter-pill px-3.5 py-1.5 rounded-lg font-display text-xs font-black uppercase tracking-wider cursor-pointer text-tb-mythic">MYTHIC</button>
                     </div>
                 </div>
 
-                <!-- Relic Cards Grid -->
+                <!-- 12 Relic Cards Grid -->
                 <div id="relicArmoryGrid" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-                    <!-- Populated dynamically -->
+                    <!-- Populated via JS -->
                 </div>
             </div>
         </section>
 
         <!-- =============================================================== -->
-        <!-- TAB 2: MINI-GAMES ARENA                                         -->
+        <!-- TAB 2: MINI-GAMES ARENA (ALL 4 GAMES UNIFIED)                   -->
         <!-- =============================================================== -->
         <section id="content-minigames" class="space-y-8 hidden">
-            <!-- Hero Banner -->
+            <!-- Arena Banner -->
             <div class="tb-glass rounded-2xl p-6 md:p-8 relative overflow-hidden border border-tb-gold/50 shadow-2xl">
-                <div class="absolute -right-16 -bottom-16 w-64 h-64 bg-tb-crimson/15 rounded-full blur-3xl pointer-events-none"></div>
+                <div class="absolute -right-16 -bottom-16 w-64 h-64 bg-tb-crimson/20 rounded-full blur-3xl pointer-events-none"></div>
                 <div class="relative z-10 flex flex-wrap items-center justify-between gap-6">
                     <div>
                         <span class="inline-block px-3 py-1 rounded bg-tb-crimson text-tb-goldlight font-display text-xs font-black tracking-widest uppercase mb-3 border border-tb-gold/40">
-                            COMMUNITY ARCADE
+                            THE BEYOND ARCADE // 4 GAMES
                         </span>
                         <h2 class="font-display text-3xl sm:text-4xl lg:text-5xl font-black uppercase gold-text-gradient tracking-wide leading-tight">
                             MINI-GAMES ARENA
                         </h2>
-                        <p class="font-sans text-tb-champagne text-sm sm:text-base mt-2 max-w-xl">
-                            Play Texas Hold'em Poker, Hangstein, Morbakim, or Battleship directly here to earn TB-Coins and climb the community ranks!
+                        <p class="font-sans text-tb-champagne text-sm sm:text-base mt-2 max-w-2xl">
+                            All four official TB Show mini-games unified in one arena. Play instantly right inside the Hub to win TB-Coins, or launch the dedicated standalone modules on GitHub Pages.
                         </p>
                     </div>
-                    <!-- External Module GitHub Pages Link -->
-                    <a href="https://teebeeshow-cloud.github.io" target="_blank"
+                    <a href="https://teebeeshow-cloud.github.io/" target="_blank" rel="noopener noreferrer"
                         class="btn-crimson px-5 py-3 rounded-xl font-display text-sm font-black uppercase tracking-wider flex items-center gap-2 shadow-xl">
-                        <span>GITHUB PAGES MODULE</span>
+                        <span>ALL STANDALONE MODULES</span>
                         <svg class="w-4 h-4 text-tb-goldlight" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
                             <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/>
                         </svg>
@@ -426,220 +492,273 @@
                 </div>
             </div>
 
-            <!-- Mini-Games Selection Bar -->
-            <div class="flex flex-wrap gap-3 border-b border-tb-gold/20 pb-4">
-                <button onclick="switchMiniGame('poker')" id="mgBtn-poker" class="btn-gold px-4 py-2.5 rounded-xl font-display text-sm font-black uppercase tracking-wider cursor-pointer">
-                    1. TB HOLD'EM POKER
-                </button>
-                <button onclick="switchMiniGame('hangstein')" id="mgBtn-hangstein" class="btn-crimson px-4 py-2.5 rounded-xl font-display text-sm font-black uppercase tracking-wider cursor-pointer opacity-75">
-                    2. HANGSTEIN (HANGMAN)
-                </button>
-                <button onclick="switchMiniGame('morbakim')" id="mgBtn-morbakim" class="btn-crimson px-4 py-2.5 rounded-xl font-display text-sm font-black uppercase tracking-wider cursor-pointer opacity-75">
-                    3. MORBAKIM (TIC-TAC-TOE)
-                </button>
-                <button onclick="switchMiniGame('battleship')" id="mgBtn-battleship" class="btn-crimson px-4 py-2.5 rounded-xl font-display text-sm font-black uppercase tracking-wider cursor-pointer opacity-75">
-                    4. BATTLESHIP RADAR
-                </button>
-            </div>
-
-            <!-- Game Arena Card Container -->
-            <div class="tb-glass rounded-2xl p-6 md:p-8 border border-tb-gold/40 shadow-2xl">
-                <!-- GAME 1: TB HOLD'EM POKER -->
-                <div id="game-poker" class="space-y-6">
-                    <div class="flex flex-wrap items-center justify-between gap-4">
-                        <h3 class="font-display text-2xl font-black uppercase gold-text-gradient tracking-wide">
-                            TB HOLD'EM POKER (VS HOUSE BOT)
-                        </h3>
-                        <div class="font-display text-sm font-bold text-tb-gold">
-                            POT: <span id="pokerPot" class="text-tb-goldlight font-black text-lg">200</span> TB-COINS
+            <!-- 4 Mini-Game Launcher Cards Grid -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
+                <!-- Card 1: TB Hold'em Poker -->
+                <div class="tb-glass rounded-2xl p-5 border border-tb-gold/45 tb-card-lift flex flex-col justify-between space-y-4">
+                    <div>
+                        <div class="flex items-center justify-between mb-3">
+                            <span class="w-11 h-11 rounded-xl bg-tb-deepred border border-tb-gold/60 flex items-center justify-center text-2xl">♠️</span>
+                            <span class="px-2.5 py-0.5 rounded bg-tb-gold/20 text-tb-goldlight border border-tb-gold/40 font-display text-xs font-black uppercase">+250 TB WIN</span>
                         </div>
-                    </div>
-                    <div class="bg-tb-obsidian/80 border border-tb-gold/30 rounded-xl p-6 text-center space-y-4">
-                        <div class="text-tb-champagne font-display text-sm uppercase tracking-wider">COMMUNITY TABLE COMMUNITY CARDS</div>
-                        <div id="communityCards" class="flex justify-center gap-3">
-                            <div class="w-16 h-24 rounded-lg bg-tb-card border border-tb-gold/60 flex items-center justify-center font-display text-xl font-black text-tb-goldlight shadow-lg">?</div>
-                            <div class="w-16 h-24 rounded-lg bg-tb-card border border-tb-gold/60 flex items-center justify-center font-display text-xl font-black text-tb-goldlight shadow-lg">?</div>
-                            <div class="w-16 h-24 rounded-lg bg-tb-card border border-tb-gold/60 flex items-center justify-center font-display text-xl font-black text-tb-goldlight shadow-lg">?</div>
-                        </div>
-                        <div class="pt-4">
-                            <div class="text-tb-champagne font-display text-xs uppercase tracking-wider mb-2">YOUR POCKET CARDS</div>
-                            <div id="playerHand" class="flex justify-center gap-3">
-                                <div class="w-16 h-24 rounded-lg bg-tb-deepred border-2 border-tb-gold flex flex-col items-center justify-center font-display text-xl font-black text-tb-ivory shadow-xl">
-                                    <span>A♠</span>
-                                </div>
-                                <div class="w-16 h-24 rounded-lg bg-tb-deepred border-2 border-tb-gold flex flex-col items-center justify-center font-display text-xl font-black text-tb-ivory shadow-xl">
-                                    <span>K♦</span>
-                                </div>
-                            </div>
-                        </div>
-                        <p id="pokerStatus" class="font-display text-base font-bold text-tb-goldlight pt-2">
-                            Place your bet or call to deal community cards!
+                        <h3 class="font-display text-2xl font-black uppercase gold-text-gradient">TB HOLD'EM POKER</h3>
+                        <p class="font-sans text-xs text-tb-champagne mt-1.5 leading-relaxed">
+                            High-stakes Texas Hold'em Poker duel against the Beyond House Dealer. Ante up, read the board, and sweep the pot.
                         </p>
-                        <div class="flex flex-wrap justify-center gap-3 pt-2">
-                            <button onclick="pokerAction('deal')" class="btn-gold px-6 py-2.5 rounded-xl font-display text-sm font-black uppercase tracking-wider cursor-pointer">DEAL / CALL (50 TB)</button>
-                            <button onclick="pokerAction('fold')" class="btn-crimson px-6 py-2.5 rounded-xl font-display text-sm font-black uppercase tracking-wider cursor-pointer">FOLD</button>
-                        </div>
+                    </div>
+                    <div class="space-y-2 pt-2">
+                        <button onclick="openGameModal('poker')" class="btn-gold w-full py-2.5 rounded-xl font-display text-sm font-black uppercase tracking-wider cursor-pointer">
+                            PLAY IN HUB
+                        </button>
+                        <a href="https://teebeeshow-cloud.github.io/" target="_blank" rel="noopener noreferrer"
+                            class="btn-crimson w-full py-2 rounded-xl font-display text-xs font-black uppercase tracking-wider flex items-center justify-center gap-1.5">
+                            <span>LAUNCH MODULE</span>
+                            <span>↗</span>
+                        </a>
                     </div>
                 </div>
 
-                <!-- GAME 2: HANGSTEIN (HANGMAN) -->
-                <div id="game-hangstein" class="space-y-6 hidden">
-                    <div class="flex flex-wrap items-center justify-between gap-4">
-                        <h3 class="font-display text-2xl font-black uppercase gold-text-gradient tracking-wide">
-                            HANGSTEIN // BEYOND VOCABULARY
-                        </h3>
-                        <div class="font-display text-sm font-bold text-tb-champagne">
-                            MISTAKES: <span id="hangMistakes" class="text-tb-crimson font-black text-lg">0</span> / 6
+                <!-- Card 2: Hangstein -->
+                <div class="tb-glass rounded-2xl p-5 border border-tb-gold/45 tb-card-lift flex flex-col justify-between space-y-4">
+                    <div>
+                        <div class="flex items-center justify-between mb-3">
+                            <span class="w-11 h-11 rounded-xl bg-tb-deepred border border-tb-gold/60 flex items-center justify-center text-2xl">🪢</span>
+                            <span class="px-2.5 py-0.5 rounded bg-tb-gold/20 text-tb-goldlight border border-tb-gold/40 font-display text-xs font-black uppercase">+150 TB WIN</span>
                         </div>
+                        <h3 class="font-display text-2xl font-black uppercase gold-text-gradient">HANGSTEIN</h3>
+                        <p class="font-sans text-xs text-tb-champagne mt-1.5 leading-relaxed">
+                            Classic Hangman word-decryption challenge. Uncover secret Beyond Show keywords before your 6 strikes run out.
+                        </p>
                     </div>
-                    <div class="bg-tb-obsidian/80 border border-tb-gold/30 rounded-xl p-6 text-center space-y-6">
-                        <div id="wordDisplay" class="font-display text-3xl sm:text-4xl font-black tracking-widest text-tb-goldlight">
-                            _ _ _ _ _ _ _
-                        </div>
-                        <p id="hangMessage" class="font-display text-sm font-bold text-tb-champagne">Guess the TB Show related keyword letter by letter!</p>
-                        <div id="keyboardContainer" class="flex flex-wrap justify-center gap-2 max-w-2xl mx-auto">
-                            <!-- Populated via JS -->
-                        </div>
-                        <button onclick="resetHangstein()" class="btn-gold px-5 py-2 rounded-xl font-display text-xs font-black uppercase tracking-wider cursor-pointer mt-4">NEW WORD</button>
-                    </div>
-                </div>
-
-                <!-- GAME 3: MORBAKIM (TIC-TAC-TOE) -->
-                <div id="game-morbakim" class="space-y-6 hidden">
-                    <div class="flex flex-wrap items-center justify-between gap-4">
-                        <h3 class="font-display text-2xl font-black uppercase gold-text-gradient tracking-wide">
-                            MORBAKIM (TIC-TAC-TOE VS AI)
-                        </h3>
-                        <div class="flex items-center gap-2">
-                            <label class="font-display text-xs font-bold text-tb-champagne uppercase">DIFFICULTY:</label>
-                            <select id="aiDifficulty" class="bg-tb-obsidian border border-tb-gold/50 rounded px-2 py-1 font-display text-xs font-bold text-tb-goldlight">
-                                <option value="normal">NORMAL</option>
-                                <option value="hard">HARD (EXPERT)</option>
-                            </select>
-                        </div>
-                    </div>
-                    <div class="bg-tb-obsidian/80 border border-tb-gold/30 rounded-xl p-6 text-center space-y-4 max-w-md mx-auto">
-                        <div id="morbakimStatus" class="font-display text-base font-bold text-tb-goldlight">Your turn (X)</div>
-                        <div id="morbakimBoard" class="grid grid-cols-3 gap-3 w-64 h-64 mx-auto">
-                            <!-- Populated via JS -->
-                        </div>
-                        <button onclick="resetMorbakim()" class="btn-gold px-5 py-2 rounded-xl font-display text-xs font-black uppercase tracking-wider cursor-pointer">RESET BOARD</button>
+                    <div class="space-y-2 pt-2">
+                        <button onclick="openGameModal('hangstein')" class="btn-gold w-full py-2.5 rounded-xl font-display text-sm font-black uppercase tracking-wider cursor-pointer">
+                            PLAY IN HUB
+                        </button>
+                        <a href="https://teebeeshow-cloud.github.io/" target="_blank" rel="noopener noreferrer"
+                            class="btn-crimson w-full py-2 rounded-xl font-display text-xs font-black uppercase tracking-wider flex items-center justify-center gap-1.5">
+                            <span>LAUNCH MODULE</span>
+                            <span>↗</span>
+                        </a>
                     </div>
                 </div>
 
-                <!-- GAME 4: BATTLESHIP RADAR -->
-                <div id="game-battleship" class="space-y-6 hidden">
-                    <div class="flex flex-wrap items-center justify-between gap-4">
-                        <h3 class="font-display text-2xl font-black uppercase gold-text-gradient tracking-wide">
-                            BATTLESHIP RADAR (6x6 GRID)
-                        </h3>
-                        <div class="font-display text-sm font-bold text-tb-champagne">
-                            TORPEDOES LEFT: <span id="torpedoesCount" class="text-tb-goldlight font-black text-lg">12</span>
+                <!-- Card 3: Morbakim -->
+                <div class="tb-glass rounded-2xl p-5 border border-tb-gold/45 tb-card-lift flex flex-col justify-between space-y-4">
+                    <div>
+                        <div class="flex items-center justify-between mb-3">
+                            <span class="w-11 h-11 rounded-xl bg-tb-deepred border border-tb-gold/60 flex items-center justify-center text-2xl">❌</span>
+                            <span class="px-2.5 py-0.5 rounded bg-tb-gold/20 text-tb-goldlight border border-tb-gold/40 font-display text-xs font-black uppercase">+200 TB WIN</span>
                         </div>
+                        <h3 class="font-display text-2xl font-black uppercase gold-text-gradient">MORBAKIM</h3>
+                        <p class="font-sans text-xs text-tb-champagne mt-1.5 leading-relaxed">
+                            Tactical Tic-Tac-Toe arena against Normal or Expert Beyond AI. Claim three in a row to capture the bounty.
+                        </p>
                     </div>
-                    <div class="bg-tb-obsidian/80 border border-tb-gold/30 rounded-xl p-6 text-center space-y-4 max-w-lg mx-auto">
-                        <p id="battleshipStatus" class="font-display text-sm font-bold text-tb-champagne">Click on radar coordinates to hunt hidden enemy fleets!</p>
-                        <div id="battleshipGrid" class="grid grid-cols-6 gap-2 w-72 h-72 mx-auto">
-                            <!-- Populated via JS -->
+                    <div class="space-y-2 pt-2">
+                        <button onclick="openGameModal('morbakim')" class="btn-gold w-full py-2.5 rounded-xl font-display text-sm font-black uppercase tracking-wider cursor-pointer">
+                            PLAY IN HUB
+                        </button>
+                        <a href="https://teebeeshow-cloud.github.io/" target="_blank" rel="noopener noreferrer"
+                            class="btn-crimson w-full py-2 rounded-xl font-display text-xs font-black uppercase tracking-wider flex items-center justify-center gap-1.5">
+                            <span>LAUNCH MODULE</span>
+                            <span>↗</span>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Card 4: Battleship -->
+                <div class="tb-glass rounded-2xl p-5 border border-tb-gold/45 tb-card-lift flex flex-col justify-between space-y-4">
+                    <div>
+                        <div class="flex items-center justify-between mb-3">
+                            <span class="w-11 h-11 rounded-xl bg-tb-deepred border border-tb-gold/60 flex items-center justify-center text-2xl">🚢</span>
+                            <span class="px-2.5 py-0.5 rounded bg-tb-gold/20 text-tb-goldlight border border-tb-gold/40 font-display text-xs font-black uppercase">+300 TB WIN</span>
                         </div>
-                        <button onclick="resetBattleship()" class="btn-gold px-5 py-2 rounded-xl font-display text-xs font-black uppercase tracking-wider cursor-pointer">NEW RADAR SCAN</button>
+                        <h3 class="font-display text-2xl font-black uppercase gold-text-gradient">BATTLESHIP</h3>
+                        <p class="font-sans text-xs text-tb-champagne mt-1.5 leading-relaxed">
+                            6x6 Naval Radar grid warfare. Lock coordinates, launch torpedoes, and sink all hidden enemy vessels before ammo depletes.
+                        </p>
+                    </div>
+                    <div class="space-y-2 pt-2">
+                        <button onclick="openGameModal('battleship')" class="btn-gold w-full py-2.5 rounded-xl font-display text-sm font-black uppercase tracking-wider cursor-pointer">
+                            PLAY IN HUB
+                        </button>
+                        <a href="https://teebeeshow-cloud.github.io/" target="_blank" rel="noopener noreferrer"
+                            class="btn-crimson w-full py-2 rounded-xl font-display text-xs font-black uppercase tracking-wider flex items-center justify-center gap-1.5">
+                            <span>LAUNCH MODULE</span>
+                            <span>↗</span>
+                        </a>
                     </div>
                 </div>
             </div>
         </section>
 
         <!-- =============================================================== -->
-        <!-- TAB 3: TRAVEL DEALS (Travelpayouts Partner Offers)              -->
+        <!-- TAB 3: TRAVEL DEALS (TRAVELPAYOUTS PARTNER PORTAL)              -->
         <!-- =============================================================== -->
         <section id="content-travel" class="space-y-8 hidden">
             <!-- Hero Banner -->
             <div class="tb-glass rounded-2xl p-6 md:p-8 relative overflow-hidden border border-tb-gold/50 shadow-2xl">
                 <div class="absolute -right-16 -bottom-16 w-64 h-64 bg-tb-gold/15 rounded-full blur-3xl pointer-events-none"></div>
-                <div class="relative z-10 max-w-2xl">
+                <div class="relative z-10 max-w-3xl">
                     <span class="inline-block px-3 py-1 rounded bg-tb-gold text-tb-obsidian font-display text-xs font-black tracking-widest uppercase mb-3 border border-tb-goldlight">
-                        TRAVELPAYOUTS PARTNER OFFERS
+                        TRAVELPAYOUTS PARTNER PORTAL
                     </span>
                     <h2 class="font-display text-3xl sm:text-4xl lg:text-5xl font-black uppercase gold-text-gradient tracking-wide leading-tight">
-                        COMMUNITY TRAVEL DEALS
+                        EXCLUSIVE COMMUNITY TRAVEL DEALS
                     </h2>
                     <p class="font-sans text-tb-champagne text-sm sm:text-base mt-2 leading-relaxed">
-                        Explore exclusive partner rates for flights, luxury hotels, and eco-tourism expeditions worldwide curated for Beyond Show members.
+                        Compare global flight fares, luxury stays, car rentals, and instant travel eSIMs through our official Travelpayouts partner network. Every booking supports The Beyond Show!
                     </p>
                 </div>
             </div>
 
-            <!-- Travel Deals Cards Grid -->
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                <!-- Deal 1 -->
-                <div class="tb-glass rounded-2xl tb-card-lift overflow-hidden border border-tb-gold/40 flex flex-col">
-                    <div class="h-44 bg-tb-deepred relative flex items-center justify-center overflow-hidden border-b border-tb-gold/30">
-                        <div class="absolute inset-0 bg-gradient-to-t from-tb-obsidian via-transparent to-transparent"></div>
-                        <svg class="w-16 h-16 text-tb-gold/60" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
-                        <span class="absolute top-3 right-3 px-2.5 py-1 rounded bg-tb-crimson text-tb-goldlight font-display text-xs font-black tracking-wider uppercase border border-tb-gold/40">HOTEL DEAL</span>
-                    </div>
-                    <div class="p-6 flex-1 flex flex-col justify-between space-y-4">
-                        <div>
-                            <h3 class="font-display text-xl font-bold uppercase gold-text-gradient">Algiers Coastal Luxury Suite</h3>
-                            <p class="font-sans text-xs text-tb-champagne mt-1">5-Star beachfront retreat overlooking the Mediterranean Bay. Breakfast and spa included.</p>
-                        </div>
-                        <div class="flex items-center justify-between pt-2 border-t border-tb-gold/20">
-                            <div>
-                                <span class="text-xs font-display uppercase text-tb-champagne block">From</span>
-                                <span class="font-display text-xl font-black text-tb-goldlight">$149 <span class="text-xs font-normal">/ night</span></span>
-                            </div>
-                            <a href="https://www.travelpayouts.com" target="_blank" class="btn-gold px-4 py-2 rounded-xl font-display text-xs font-black uppercase tracking-wider">BOOK NOW</a>
-                        </div>
+            <!-- Interactive Flight & Hotel Search Widget -->
+            <div class="tb-glass rounded-2xl p-6 md:p-8 border border-tb-gold/50 shadow-2xl">
+                <div class="flex flex-wrap items-center justify-between gap-4 mb-5">
+                    <h3 class="font-display text-2xl font-black uppercase gold-text-gradient tracking-wide">
+                        TRAVELPAYOUTS INSTANT DEAL FINDER
+                    </h3>
+                    <div class="flex gap-2">
+                        <button onclick="setTravelMode('flights')" id="travelMode-flights"
+                            class="btn-gold px-4 py-1.5 rounded-lg font-display text-xs font-black uppercase tracking-wider cursor-pointer">
+                            FLIGHTS (AVIASALES)
+                        </button>
+                        <button onclick="setTravelMode('hotels')" id="travelMode-hotels"
+                            class="btn-crimson px-4 py-1.5 rounded-lg font-display text-xs font-black uppercase tracking-wider cursor-pointer">
+                            HOTELS (HOTELLOOK)
+                        </button>
                     </div>
                 </div>
 
-                <!-- Deal 2 -->
-                <div class="tb-glass rounded-2xl tb-card-lift overflow-hidden border border-tb-gold/40 flex flex-col">
-                    <div class="h-44 bg-tb-deepred relative flex items-center justify-center overflow-hidden border-b border-tb-gold/30">
-                        <div class="absolute inset-0 bg-gradient-to-t from-tb-obsidian via-transparent to-transparent"></div>
-                        <svg class="w-16 h-16 text-tb-gold/60" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M17.8 19.2L16 11l3.5-3.5C21 6 21.5 4 21 3c-1-.5-3 0-4.5 1.5L13 8 4.8 6.2c-.5-.1-1 .1-1.3.5l-.3.4c-.3.4-.2 1 .2 1.3l6.5 4.5-4 4-2.5-.5c-.4-.1-.8.1-1 .4l-.3.4c-.3.4-.1 1 .3 1.3l4 2.5 2.5 4c.3.4.9.6 1.3.3l.4-.3c.3-.2.5-.6.4-1l-.5-2.5 4-4 4.5 6.5c.3.4.9.5 1.3.2l.4-.3c.4-.3.6-.9.2-1.3z"/></svg>
-                        <span class="absolute top-3 right-3 px-2.5 py-1 rounded bg-tb-gold text-tb-obsidian font-display text-xs font-black tracking-wider uppercase border border-tb-goldlight">FLIGHTS</span>
+                <form onsubmit="launchTravelSearch(event)" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4 items-end">
+                    <div id="originFieldGroup">
+                        <label class="block font-display text-xs font-bold uppercase tracking-wider text-tb-gold mb-1.5">ORIGIN CITY / IATA</label>
+                        <input id="tpOrigin" type="text" value="ALG" placeholder="e.g. ALG, PAR, LON"
+                            class="w-full bg-tb-obsidian border border-tb-gold/45 rounded-xl px-3.5 py-2.5 font-sans text-sm text-tb-ivory focus:outline-none focus:border-tb-goldlight uppercase">
                     </div>
-                    <div class="p-6 flex-1 flex flex-col justify-between space-y-4">
-                        <div>
-                            <h3 class="font-display text-xl font-bold uppercase gold-text-gradient">Trans-Sahara Air Pass</h3>
-                            <p class="font-sans text-xs text-tb-champagne mt-1">Special partner airfares connecting northern hubs to southern oases and stargazing sites.</p>
+                    <div>
+                        <label class="block font-display text-xs font-bold uppercase tracking-wider text-tb-gold mb-1.5">DESTINATION CITY / IATA</label>
+                        <input id="tpDest" type="text" value="DXB" placeholder="e.g. DXB, IST, NYC"
+                            class="w-full bg-tb-obsidian border border-tb-gold/45 rounded-xl px-3.5 py-2.5 font-sans text-sm text-tb-ivory focus:outline-none focus:border-tb-goldlight uppercase">
+                    </div>
+                    <div>
+                        <label class="block font-display text-xs font-bold uppercase tracking-wider text-tb-gold mb-1.5">DEPART / CHECK-IN</label>
+                        <input id="tpDepartDate" type="date"
+                            class="w-full bg-tb-obsidian border border-tb-gold/45 rounded-xl px-3.5 py-2.5 font-sans text-sm text-tb-ivory focus:outline-none focus:border-tb-goldlight">
+                    </div>
+                    <div>
+                        <label class="block font-display text-xs font-bold uppercase tracking-wider text-tb-gold mb-1.5">TRAVELERS</label>
+                        <select id="tpTravelers"
+                            class="w-full bg-tb-obsidian border border-tb-gold/45 rounded-xl px-3.5 py-2.5 font-sans text-sm text-tb-ivory focus:outline-none focus:border-tb-goldlight">
+                            <option value="1">1 Adult</option>
+                            <option value="2" selected>2 Adults</option>
+                            <option value="3">3 Travelers</option>
+                            <option value="4">4 Travelers</option>
+                        </select>
+                    </div>
+                    <div>
+                        <button type="submit"
+                            class="btn-gold w-full py-2.5 px-4 rounded-xl font-display text-base font-black uppercase tracking-wider cursor-pointer shadow-lg">
+                            SEARCH DEALS ↗
+                        </button>
+                    </div>
+                </form>
+            </div>
+
+            <!-- 4 Curated Partner Category Cards -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
+                <!-- Category 1: Flights -->
+                <div class="tb-glass rounded-2xl tb-card-lift overflow-hidden border border-tb-gold/40 flex flex-col justify-between">
+                    <div>
+                        <div class="h-32 bg-gradient-to-br from-tb-crimson via-tb-deepred to-tb-obsidian flex items-center justify-center border-b border-tb-gold/30 relative">
+                            <span class="text-4xl">✈️</span>
+                            <span class="absolute top-3 right-3 px-2 py-0.5 rounded bg-tb-gold text-tb-obsidian font-display text-[11px] font-black uppercase">UP TO 40% OFF</span>
                         </div>
-                        <div class="flex items-center justify-between pt-2 border-t border-tb-gold/20">
-                            <div>
-                                <span class="text-xs font-display uppercase text-tb-champagne block">From</span>
-                                <span class="font-display text-xl font-black text-tb-goldlight">$280 <span class="text-xs font-normal">/ roundtrip</span></span>
-                            </div>
-                            <a href="https://www.travelpayouts.com" target="_blank" class="btn-gold px-4 py-2 rounded-xl font-display text-xs font-black uppercase tracking-wider">CHECK FARES</a>
+                        <div class="p-5">
+                            <h4 class="font-display text-xl font-black uppercase gold-text-gradient">GLOBAL FLIGHT FARES</h4>
+                            <p class="font-sans text-xs text-tb-champagne mt-1.5 leading-relaxed">
+                                Compare 700+ airlines and low-cost carriers in real time via Aviasales & Kiwi partner feeds.
+                            </p>
                         </div>
+                    </div>
+                    <div class="px-5 pb-5">
+                        <a href="https://www.aviasales.com/?marker=tbshow" target="_blank" rel="noopener noreferrer"
+                            class="btn-gold w-full py-2.5 rounded-xl font-display text-xs font-black uppercase tracking-wider block text-center">
+                            COMPARE FLIGHTS ↗
+                        </a>
                     </div>
                 </div>
 
-                <!-- Deal 3 -->
-                <div class="tb-glass rounded-2xl tb-card-lift overflow-hidden border border-tb-gold/40 flex flex-col">
-                    <div class="h-44 bg-tb-deepred relative flex items-center justify-center overflow-hidden border-b border-tb-gold/30">
-                        <div class="absolute inset-0 bg-gradient-to-t from-tb-obsidian via-transparent to-transparent"></div>
-                        <svg class="w-16 h-16 text-tb-gold/60" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/><path d="M2 12h20"/></svg>
-                        <span class="absolute top-3 right-3 px-2.5 py-1 rounded bg-tb-crimson text-tb-goldlight font-display text-xs font-black tracking-wider uppercase border border-tb-gold/40">ECO-EXPEDITION</span>
+                <!-- Category 2: Hotels -->
+                <div class="tb-glass rounded-2xl tb-card-lift overflow-hidden border border-tb-gold/40 flex flex-col justify-between">
+                    <div>
+                        <div class="h-32 bg-gradient-to-br from-tb-deepred via-tb-bordeaux to-tb-obsidian flex items-center justify-center border-b border-tb-gold/30 relative">
+                            <span class="text-4xl">🏨</span>
+                            <span class="absolute top-3 right-3 px-2 py-0.5 rounded bg-tb-crimson text-tb-goldlight border border-tb-gold/40 font-display text-[11px] font-black uppercase">MEMBER RATES</span>
+                        </div>
+                        <div class="p-5">
+                            <h4 class="font-display text-xl font-black uppercase gold-text-gradient">LUXURY & BOUTIQUE HOTELS</h4>
+                            <p class="font-sans text-xs text-tb-champagne mt-1.5 leading-relaxed">
+                                Unlock discounted nightly rates across 250,000+ hotels, resorts, and villas worldwide via Hotellook.
+                            </p>
+                        </div>
                     </div>
-                    <div class="p-6 flex-1 flex flex-col justify-between space-y-4">
-                        <div>
-                            <h3 class="font-display text-xl font-bold uppercase gold-text-gradient">Sahara Erg Stargazing Camp</h3>
-                            <p class="font-sans text-xs text-tb-champagne mt-1">Guided 4-day dune trek, nomadic campfire dinners, and professional astrophotography workshop.</p>
+                    <div class="px-5 pb-5">
+                        <a href="https://search.hotellook.com/?marker=tbshow" target="_blank" rel="noopener noreferrer"
+                            class="btn-gold w-full py-2.5 rounded-xl font-display text-xs font-black uppercase tracking-wider block text-center">
+                            EXPLORE HOTELS ↗
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Category 3: Car Rentals -->
+                <div class="tb-glass rounded-2xl tb-card-lift overflow-hidden border border-tb-gold/40 flex flex-col justify-between">
+                    <div>
+                        <div class="h-32 bg-gradient-to-br from-tb-crimson via-tb-deepred to-tb-obsidian flex items-center justify-center border-b border-tb-gold/30 relative">
+                            <span class="text-4xl">🚘</span>
+                            <span class="absolute top-3 right-3 px-2 py-0.5 rounded bg-tb-gold text-tb-obsidian font-display text-[11px] font-black uppercase">FREE CANCEL</span>
                         </div>
-                        <div class="flex items-center justify-between pt-2 border-t border-tb-gold/20">
-                            <div>
-                                <span class="text-xs font-display uppercase text-tb-champagne block">From</span>
-                                <span class="font-display text-xl font-black text-tb-goldlight">$420 <span class="text-xs font-normal">/ person</span></span>
-                            </div>
-                            <a href="https://www.travelpayouts.com" target="_blank" class="btn-gold px-4 py-2 rounded-xl font-display text-xs font-black uppercase tracking-wider">EXPLORE</a>
+                        <div class="p-5">
+                            <h4 class="font-display text-xl font-black uppercase gold-text-gradient">AIRPORT CAR RENTALS</h4>
+                            <p class="font-sans text-xs text-tb-champagne mt-1.5 leading-relaxed">
+                                Instant pickup at international terminals with full insurance options via DiscoverCars & Localrent.
+                            </p>
                         </div>
+                    </div>
+                    <div class="px-5 pb-5">
+                        <a href="https://www.discovercars.com/?a_aid=tbshow" target="_blank" rel="noopener noreferrer"
+                            class="btn-gold w-full py-2.5 rounded-xl font-display text-xs font-black uppercase tracking-wider block text-center">
+                            RESERVE VEHICLE ↗
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Category 4: Travel eSIMs -->
+                <div class="tb-glass rounded-2xl tb-card-lift overflow-hidden border border-tb-gold/40 flex flex-col justify-between">
+                    <div>
+                        <div class="h-32 bg-gradient-to-br from-tb-deepred via-tb-bordeaux to-tb-obsidian flex items-center justify-center border-b border-tb-gold/30 relative">
+                            <span class="text-4xl">📡</span>
+                            <span class="absolute top-3 right-3 px-2 py-0.5 rounded bg-tb-crimson text-tb-goldlight border border-tb-gold/40 font-display text-[11px] font-black uppercase">INSTANT 5G</span>
+                        </div>
+                        <div class="p-5">
+                            <h4 class="font-display text-xl font-black uppercase gold-text-gradient">GLOBAL TRAVEL eSIMS</h4>
+                            <p class="font-sans text-xs text-tb-champagne mt-1.5 leading-relaxed">
+                                Stay connected in 200+ countries with zero roaming fees using Airalo & Drimsim digital data packs.
+                            </p>
+                        </div>
+                    </div>
+                    <div class="px-5 pb-5">
+                        <a href="https://www.airalo.com/?irclickid=tbshow" target="_blank" rel="noopener noreferrer"
+                            class="btn-gold w-full py-2.5 rounded-xl font-display text-xs font-black uppercase tracking-wider block text-center">
+                            GET DATA eSIM ↗
+                        </a>
                     </div>
                 </div>
             </div>
         </section>
 
         <!-- =============================================================== -->
-        <!-- TAB 4: LEADERBOARD                                              -->
+        <!-- TAB 4: LEADERBOARD & RAID ARMORY                                -->
         <!-- =============================================================== -->
         <section id="content-leaderboard" class="space-y-8 hidden">
             <!-- Hero Banner -->
@@ -647,271 +766,488 @@
                 <div class="absolute -right-16 -bottom-16 w-64 h-64 bg-tb-gold/15 rounded-full blur-3xl pointer-events-none"></div>
                 <div class="relative z-10 max-w-2xl">
                     <span class="inline-block px-3 py-1 rounded bg-tb-gold text-tb-obsidian font-display text-xs font-black tracking-widest uppercase mb-3 border border-tb-goldlight">
-                        COMMUNITY RANKINGS
+                        LIVE FIREBASE RANKINGS & RAID GEAR
                     </span>
                     <h2 class="font-display text-3xl sm:text-4xl lg:text-5xl font-black uppercase gold-text-gradient tracking-wide leading-tight">
-                        THE BEYOND LEADERBOARD
+                        LEADERBOARD & RAID ARMORY
                     </h2>
                     <p class="font-sans text-tb-champagne text-sm sm:text-base mt-2 leading-relaxed">
-                        Top community members ranked by accumulated TB-Coins and Dimensional Relics. Synced live with Firebase.
+                        Top Beyond Show hunters synced live from Firebase Realtime Database, plus high-tier Raid Weapons purchasable with TB-Coins.
                     </p>
                 </div>
             </div>
 
-            <!-- Leaderboard Table -->
-            <div class="tb-glass rounded-2xl overflow-hidden border border-tb-gold/40 shadow-2xl">
-                <div class="overflow-x-auto">
-                    <table class="w-full text-left border-collapse">
-                        <thead>
-                            <tr class="bg-tb-deepred/60 border-b border-tb-gold/40 font-display text-xs font-black uppercase tracking-widest text-tb-gold">
-                                <th class="p-4 sm:p-5">RANK</th>
-                                <th class="p-4 sm:p-5">HUNTER CALLSIGN</th>
-                                <th class="p-4 sm:p-5">TB-COINS</th>
-                                <th class="p-4 sm:p-5">RELICS FOUND</th>
-                                <th class="p-4 sm:p-5">STATUS</th>
-                            </tr>
-                        </thead>
-                        <tbody id="leaderboardBody" class="divide-y divide-tb-gold/15 font-sans text-sm">
-                            <!-- Populated via JS -->
-                        </tbody>
-                    </table>
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+                <!-- Live Leaderboard Table -->
+                <div class="lg:col-span-7 tb-glass rounded-2xl overflow-hidden border border-tb-gold/45 shadow-2xl">
+                    <div class="p-5 border-b border-tb-gold/30 flex items-center justify-between">
+                        <h3 class="font-display text-xl font-black uppercase gold-text-gradient tracking-wider">
+                            TOP COMMUNITY HUNTERS
+                        </h3>
+                        <span id="leaderboardSyncLabel" class="font-display text-xs font-bold uppercase text-tb-champagne">LIVE SYNC</span>
+                    </div>
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-left border-collapse">
+                            <thead>
+                                <tr class="bg-tb-deepred/70 border-b border-tb-gold/40 font-display text-xs font-black uppercase tracking-widest text-tb-goldlight">
+                                    <th class="p-4">RANK</th>
+                                    <th class="p-4">MEMBER</th>
+                                    <th class="p-4">RELICS</th>
+                                    <th class="p-4">TB-COINS</th>
+                                </tr>
+                            </thead>
+                            <tbody id="leaderboardBody" class="divide-y divide-tb-gold/15 font-sans text-sm">
+                                <!-- Populated via JS / Firebase -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- Raid Armory Upgrades -->
+                <div class="lg:col-span-5 tb-glass rounded-2xl p-6 border border-tb-gold/45 shadow-2xl space-y-5">
+                    <div>
+                        <h3 class="font-display text-xl font-black uppercase gold-text-gradient tracking-wider">
+                            STREAM BOSS RAID ARMORY
+                        </h3>
+                        <p class="font-sans text-xs text-tb-champagne mt-1">
+                            Equip dimensional weapons to amplify your attack multiplier during live stream Boss Raids.
+                        </p>
+                    </div>
+
+                    <div id="raidWeaponsList" class="space-y-3.5">
+                        <!-- Populated via JS -->
+                    </div>
                 </div>
             </div>
         </section>
     </main>
 
     <!-- =================================================================== -->
-    <!-- FIREBASE CONFIGURATION MODAL                                        -->
+    <!-- IN-HUB MINI-GAME PLAYABLE MODAL                                     -->
     <!-- =================================================================== -->
-    <div id="firebaseModal" class="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm hidden flex items-center justify-center p-4">
-        <div class="tb-glass rounded-2xl max-w-md w-full p-6 sm:p-8 border-2 border-tb-gold shadow-2xl space-y-6 relative">
-            <button onclick="toggleFirebaseModal()" class="absolute top-4 right-4 text-tb-champagne hover:text-tb-goldlight font-display text-xl font-black">✕</button>
-            <div>
-                <span class="inline-block px-2.5 py-0.5 rounded bg-tb-deepred text-tb-goldlight font-display text-xs font-black tracking-widest uppercase border border-tb-gold/40 mb-2">CLOUD DATABASE</span>
-                <h3 class="font-display text-2xl font-black uppercase gold-text-gradient tracking-wide">FIREBASE CONNECTION</h3>
-                <p class="font-sans text-xs text-tb-champagne mt-1">Connect your Firebase Realtime Database URL to sync hunts, TB-Coins, and leaderboard scores in real time.</p>
+    <div id="gameModal" class="fixed inset-0 z-50 bg-black/85 backdrop-blur-sm hidden flex items-center justify-center p-4">
+        <div class="tb-glass rounded-2xl max-w-xl w-full p-6 sm:p-8 border-2 border-tb-gold shadow-2xl relative space-y-5">
+            <div class="flex items-center justify-between border-b border-tb-gold/30 pb-3">
+                <h3 id="gameModalTitle" class="font-display text-2xl font-black uppercase gold-text-gradient tracking-wide">
+                    MINI-GAME ARENA
+                </h3>
+                <button onclick="closeGameModal()" class="text-tb-champagne hover:text-tb-goldlight font-display text-2xl font-black cursor-pointer leading-none">
+                    ✕
+                </button>
             </div>
-            <div class="space-y-4">
-                <div>
-                    <label class="block font-display text-xs font-bold uppercase tracking-wider text-tb-gold mb-1">Realtime Database REST URL</label>
-                    <input id="firebaseUrlInput" type="text" placeholder="https://your-app-default-rtdb.firebaseio.com/"
-                        class="w-full bg-tb-obsidian border border-tb-gold/50 rounded-xl px-4 py-2.5 font-sans text-sm text-tb-ivory focus:outline-none focus:border-tb-goldlight">
+
+            <!-- MODAL VIEW 1: TB HOLD'EM POKER -->
+            <div id="modalGame-poker" class="hidden space-y-5 text-center">
+                <div class="flex items-center justify-between text-xs font-display font-bold uppercase text-tb-champagne">
+                    <span>ANTE: <strong class="text-tb-goldlight">50 TB-COINS</strong></span>
+                    <span>WIN PAYOUT: <strong class="text-tb-goldlight">+250 TB-COINS</strong></span>
                 </div>
-                <div class="flex gap-3 pt-2">
-                    <button onclick="testAndSaveFirebase()" class="btn-gold flex-1 py-3 rounded-xl font-display text-sm font-black uppercase tracking-wider cursor-pointer">TEST & SAVE</button>
-                    <button onclick="disconnectFirebase()" class="btn-crimson px-4 py-3 rounded-xl font-display text-sm font-black uppercase tracking-wider cursor-pointer">LOCAL VAULT</button>
+                <div class="bg-tb-obsidian/90 border border-tb-gold/35 rounded-xl p-5 space-y-4">
+                    <div class="font-display text-xs font-bold uppercase tracking-widest text-tb-champagne">BOARD COMMUNITY CARDS</div>
+                    <div id="pokerBoardCards" class="flex justify-center gap-2.5 flex-wrap">
+                        <div class="w-14 h-20 rounded-lg bg-tb-card border border-tb-gold/50 flex items-center justify-center font-display text-xl font-black text-tb-goldlight">?</div>
+                        <div class="w-14 h-20 rounded-lg bg-tb-card border border-tb-gold/50 flex items-center justify-center font-display text-xl font-black text-tb-goldlight">?</div>
+                        <div class="w-14 h-20 rounded-lg bg-tb-card border border-tb-gold/50 flex items-center justify-center font-display text-xl font-black text-tb-goldlight">?</div>
+                    </div>
+                    <div class="pt-2">
+                        <div class="font-display text-xs font-bold uppercase tracking-widest text-tb-champagne mb-2">YOUR POCKET HAND</div>
+                        <div id="pokerPlayerCards" class="flex justify-center gap-3">
+                            <div class="w-16 h-22 py-3 rounded-lg bg-tb-deepred border-2 border-tb-gold flex items-center justify-center font-display text-2xl font-black text-tb-ivory shadow-lg">A♠</div>
+                            <div class="w-16 h-22 py-3 rounded-lg bg-tb-deepred border-2 border-tb-gold flex items-center justify-center font-display text-2xl font-black text-tb-goldlight shadow-lg">K♦</div>
+                        </div>
+                    </div>
+                    <p id="pokerStatus" class="font-display text-base font-bold text-tb-goldlight pt-1">
+                        Deal the flop to challenge the Beyond House Dealer!
+                    </p>
                 </div>
-                <p id="firebaseModalStatus" class="font-display text-xs font-bold text-center text-tb-goldlight pt-1"></p>
+                <div class="flex justify-center gap-3">
+                    <button onclick="playPokerRound()" class="btn-gold px-6 py-2.5 rounded-xl font-display text-sm font-black uppercase tracking-wider cursor-pointer">
+                        DEAL & CALL (50 TB)
+                    </button>
+                    <button onclick="resetPokerTable()" class="btn-crimson px-5 py-2.5 rounded-xl font-display text-sm font-black uppercase tracking-wider cursor-pointer">
+                        NEW HAND
+                    </button>
+                </div>
+            </div>
+
+            <!-- MODAL VIEW 2: HANGSTEIN -->
+            <div id="modalGame-hangstein" class="hidden space-y-5 text-center">
+                <div class="flex items-center justify-between text-xs font-display font-bold uppercase">
+                    <span class="text-tb-champagne">REWARD: <strong class="text-tb-goldlight">+150 TB-COINS</strong></span>
+                    <span class="text-tb-champagne">STRIKES: <strong id="hangMistakes" class="text-tb-mythic text-base">0 / 6</strong></span>
+                </div>
+                <div class="bg-tb-obsidian/90 border border-tb-gold/35 rounded-xl p-5 space-y-4">
+                    <div id="hangWordDisplay" class="font-display text-3xl sm:text-4xl font-black tracking-[0.35em] text-tb-goldlight py-2">
+                        _ _ _ _ _ _
+                    </div>
+                    <p id="hangMessage" class="font-display text-sm font-bold text-tb-champagne">
+                        Decrypt the hidden Beyond Show keyword!
+                    </p>
+                    <div id="hangKeyboard" class="flex flex-wrap justify-center gap-1.5 pt-2">
+                        <!-- Populated via JS -->
+                    </div>
+                </div>
+                <button onclick="initHangstein()" class="btn-gold px-6 py-2.5 rounded-xl font-display text-xs font-black uppercase tracking-wider cursor-pointer">
+                    NEW SECRET WORD
+                </button>
+            </div>
+
+            <!-- MODAL VIEW 3: MORBAKIM -->
+            <div id="modalGame-morbakim" class="hidden space-y-5 text-center">
+                <div class="flex items-center justify-between text-xs font-display font-bold uppercase">
+                    <span class="text-tb-champagne">REWARD: <strong class="text-tb-goldlight">+200 TB-COINS</strong></span>
+                    <div class="flex items-center gap-2">
+                        <span class="text-tb-champagne">AI LEVEL:</span>
+                        <select id="morbDifficulty" onchange="initMorbakim()" class="bg-tb-obsidian border border-tb-gold/50 rounded px-2 py-1 text-tb-goldlight font-display text-xs font-bold">
+                            <option value="normal">NORMAL</option>
+                            <option value="hard">EXPERT</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="bg-tb-obsidian/90 border border-tb-gold/35 rounded-xl p-5 space-y-4">
+                    <div id="morbStatus" class="font-display text-base font-bold text-tb-goldlight">Your Turn (X)</div>
+                    <div id="morbBoard" class="grid grid-cols-3 gap-2.5 w-60 h-60 mx-auto">
+                        <!-- Populated via JS -->
+                    </div>
+                </div>
+                <button onclick="initMorbakim()" class="btn-gold px-6 py-2.5 rounded-xl font-display text-xs font-black uppercase tracking-wider cursor-pointer">
+                    RESET ARENA
+                </button>
+            </div>
+
+            <!-- MODAL VIEW 4: BATTLESHIP -->
+            <div id="modalGame-battleship" class="hidden space-y-5 text-center">
+                <div class="flex items-center justify-between text-xs font-display font-bold uppercase">
+                    <span class="text-tb-champagne">REWARD: <strong class="text-tb-goldlight">+300 TB-COINS</strong></span>
+                    <span class="text-tb-champagne">TORPEDOES: <strong id="bsTorpedoes" class="text-tb-goldlight text-base">14</strong></span>
+                </div>
+                <div class="bg-tb-obsidian/90 border border-tb-gold/35 rounded-xl p-5 space-y-4">
+                    <p id="bsStatus" class="font-display text-sm font-bold text-tb-goldlight">
+                        Fire torpedoes into the 6x6 radar grid to sink 3 hidden enemy ships!
+                    </p>
+                    <div id="bsGrid" class="grid grid-cols-6 gap-1.5 w-64 h-64 mx-auto">
+                        <!-- Populated via JS -->
+                    </div>
+                </div>
+                <button onclick="initBattleship()" class="btn-gold px-6 py-2.5 rounded-xl font-display text-xs font-black uppercase tracking-wider cursor-pointer">
+                    NEW RADAR SCAN
+                </button>
             </div>
         </div>
     </div>
 
     <!-- =================================================================== -->
-    <!-- SPIN RESULT MODAL                                                   -->
+    <!-- REWARD / NOTIFICATION TOAST MODAL                                   -->
     <!-- =================================================================== -->
-    <div id="spinModal" class="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm hidden flex items-center justify-center p-4">
+    <div id="rewardModal" class="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm hidden flex items-center justify-center p-4">
         <div class="tb-glass rounded-2xl max-w-sm w-full p-6 text-center border-2 border-tb-gold shadow-2xl space-y-4">
-            <div id="spinModalIcon" class="w-16 h-16 mx-auto rounded-2xl bg-tb-deepred border-2 border-tb-gold flex items-center justify-center text-3xl shadow-xl">🏆</div>
-            <h3 id="spinModalTitle" class="font-display text-2xl font-black uppercase gold-text-gradient tracking-wide">REWARD UNLOCKED!</h3>
-            <p id="spinModalDesc" class="font-sans text-sm text-tb-champagne">You won 250 TB-Coins!</p>
-            <button onclick="closeSpinModal()" class="btn-gold w-full py-3 rounded-xl font-display text-sm font-black uppercase tracking-wider cursor-pointer">CLAIM & CONTINUE</button>
+            <div id="rewardModalIcon" class="w-16 h-16 mx-auto rounded-2xl bg-tb-deepred border-2 border-tb-gold flex items-center justify-center text-3xl shadow-xl">🏆</div>
+            <h3 id="rewardModalTitle" class="font-display text-2xl font-black uppercase gold-text-gradient tracking-wide">REWARD UNLOCKED!</h3>
+            <p id="rewardModalDesc" class="font-sans text-sm text-tb-champagne">You won +250 TB-Coins!</p>
+            <button onclick="closeRewardModal()" class="btn-gold w-full py-3 rounded-xl font-display text-sm font-black uppercase tracking-wider cursor-pointer">
+                CLAIM & CONTINUE
+            </button>
         </div>
     </div>
 
     <!-- =================================================================== -->
-    <!-- APPLICATION JAVASCRIPT LOGIC                                        -->
+    <!-- MODULAR FIREBASE v10 & KICK OAUTH 2.1 PKCE + HUB LOGIC              -->
     <!-- =================================================================== -->
-    <script>
-        /* --- GLOBAL APP STATE --- */
-        let appState = {
-            username: "BeyondHunter",
-            coins: 1500,
-            firebaseUrl: "",
-            firebaseStatus: "LOCAL VAULT", // LOCAL VAULT, CONNECTING, ONLINE, OFFLINE
-            lastDailyClaim: 0,
-            relics: [
-                { id: 1, name: "Obsidian Core", rarity: "GOLD", unlocked: true, desc: "Ancient volcanic matrix pulsing with dark thermal energy.", icon: "💎" },
-                { id: 2, name: "Crimson Spark", rarity: "BRONZE", unlocked: true, desc: "A fiery shard captured from the first Beyond broadcast.", icon: "🔥" },
-                { id: 3, name: "Golden Compass", rarity: "GOLD", unlocked: false, desc: "Points unfailingly toward hidden dimensions.", icon: "🧭" },
-                { id: 4, name: "Mythic Prism", rarity: "MYTHIC", unlocked: false, desc: "Refracts light into forbidden wavelengths.", icon: "✨" },
-                { id: 5, name: "Silver Astrolabe", rarity: "SILVER", unlocked: false, desc: "Calibrated for celestial time warps.", icon: "⏳" },
-                { id: 6, name: "Bordeaux Chalice", rarity: "BRONZE", unlocked: false, desc: "Vessel used during the foundation ceremonies.", icon: "🏆" },
-                { id: 7, name: "Void Relic X", rarity: "MYTHIC", unlocked: false, desc: "Origin unknown. Emits low hums.", icon: "🔮" },
-                { id: 8, name: "Solar Crown", rarity: "GOLD", unlocked: false, desc: "Worn by early broadcast champions.", icon: "👑" },
-                { id: 9, name: "Titanium Gear", rarity: "SILVER", unlocked: false, desc: "Precision cog from the master clockwork.", icon: "⚙️" },
-                { id: 10, name: "Ember Feather", rarity: "BRONZE", unlocked: false, desc: "Plume of the crimson phoenix.", icon: "🪶" },
-                { id: 11, name: "Dimension Key", rarity: "GOLD", unlocked: false, desc: "Unlocks the inner vault doors.", icon: "🔑" },
-                { id: 12, name: "Infinity Stone", rarity: "MYTHIC", unlocked: false, desc: "Pure concentrated Beyond energy.", icon: "🌟" }
-            ],
-            liveFeed: [
-                { time: "11:42", text: "BeyondHunter joined the hub and claimed daily supply." },
-                { time: "11:40", text: "KrimsonKing won a Gold Legendary Relic!" },
-                { time: "11:35", text: "AuraQueen scored 500 TB-Coins on the Hunt Wheel." }
-            ],
-            leaderboard: [
-                { rank: 1, name: "AuraQueen", coins: 8420, relics: 11, status: "ONLINE" },
-                { rank: 2, name: "KrimsonKing", coins: 7150, relics: 10, status: "ONLINE" },
-                { rank: 3, name: "BeyondHunter (You)", coins: 1500, relics: 2, status: "LOCAL" },
-                { rank: 4, name: "VortexDrifter", coins: 1290, relics: 5, status: "OFFLINE" },
-                { rank: 5, name: "SolarKnight", coins: 950, relics: 3, status: "OFFLINE" }
-            ]
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+        import { getDatabase, ref, set, get, update, onValue } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js";
+
+        // === 1. DIRECT FIREBASE REALTIME DATABASE CONFIGURATION ===
+        const firebaseConfig = {
+            apiKey: "AIzaSyDkRuOlqwTcKo_KdcB-1XeJ9QBS9sEvlDY",
+            authDomain: "tb-show-web.firebaseapp.com",
+            databaseURL: "https://tb-show-web-default-rtdb.europe-west1.firebasedatabase.app",
+            projectId: "tb-show-web",
+            storageBucket: "tb-show-web.firebasestorage.app",
+            messagingSenderId: "586923715595",
+            appId: "1:586923715595:web:242e432436cbe522922b0e"
         };
 
-        /* --- INITIALIZATION --- */
-        window.onload = function() {
-            // Load saved state if any
-            const saved = localStorage.getItem('tb_show_hub_state');
-            if (saved) {
-                try {
-                    const parsed = JSON.parse(saved);
-                    appState = { ...appState, ...parsed };
-                } catch(e) { console.error(e); }
-            }
+        const app = initializeApp(firebaseConfig);
+        const db = getDatabase(app);
 
-            document.getElementById('usernameInput').value = appState.username;
-            document.getElementById('firebaseUrlInput').value = appState.firebaseUrl;
-            if (appState.firebaseUrl) {
-                appState.firebaseStatus = "ONLINE";
-            }
-            updateUI();
-            initWheel();
-            renderArmory('ALL');
-            renderLiveFeed();
-            renderLeaderboard();
-            initHangstein();
-            initMorbakim();
-            initBattleship();
+        // === 2. KICK OAUTH 2.1 PKCE CONFIGURATION ===
+        const CLIENT_ID = "01M775NPQP93VF5PGP6DJR4BQF";
+        const REDIRECT_URI = "https://teebeeshow-cloud.github.io/tbshow/";
+        const WORKER_URL = "https://nameless-base-1ca1.teebeeshow.workers.dev";
 
-            // Username input listener
-            document.getElementById('usernameInput').addEventListener('input', (e) => {
-                appState.username = e.target.value || "Anonymous";
-                updateLeaderboardUser();
-                saveState();
-            });
+        // === 3. DIMENSIONAL RELICS CATALOG (12 RELICS — STRICTLY GOLD/CRIMSON/SILVER/BRONZE) ===
+        const RELICS_CATALOG = [
+            { id: "obsidian_core", code: "#001", name: "Obsidian Core", rarity: "GOLD", icon: "💎", desc: "Volcanic matrix pulsing with ancient thermal energy." },
+            { id: "crimson_spark", code: "#002", name: "Crimson Spark", rarity: "BRONZE", icon: "🔥", desc: "Fiery shard captured from the first Beyond stream." },
+            { id: "golden_compass", code: "#003", name: "Golden Compass", rarity: "GOLD", icon: "🧭", desc: "Points unfailingly toward hidden dimensions." },
+            { id: "beyond_trident", code: "#004", name: "The Beyond Trident", rarity: "MYTHIC", icon: "🔱", desc: "Supreme mythic relic forged in crimson fire." },
+            { id: "silver_astrolabe", code: "#005", name: "Silver Astrolabe", rarity: "SILVER", icon: "⏳", desc: "Calibrated for celestial rift navigation." },
+            { id: "bordeaux_chalice", code: "#006", name: "Bordeaux Chalice", rarity: "BRONZE", icon: "🏆", desc: "Ceremonial goblet of the Founding Council." },
+            { id: "solar_crown", code: "#007", name: "Solar Crown", rarity: "GOLD", icon: "👑", desc: "Worn by undisputed arena champions." },
+            { id: "scarlet_phoenix", code: "#008", name: "Scarlet Plume", rarity: "MYTHIC", icon: "🪶", desc: "Ever-burning feather of the Beyond Phoenix." },
+            { id: "titanium_cog", code: "#009", name: "Titanium Gear", rarity: "SILVER", icon: "⚙️", desc: "Precision mechanism from the Vault Clockwork." },
+            { id: "ember_medallion", code: "#010", name: "Ember Medallion", rarity: "BRONZE", icon: "🛡️", desc: "Mark of early stream vanguard members." },
+            { id: "dimension_key", code: "#011", name: "Dimension Key", rarity: "GOLD", icon: "🔑", desc: "Unlocks sealed chambers of the Inner Vault." },
+            { id: "crimson_star", code: "#012", name: "Crimson Singularity", rarity: "MYTHIC", icon: "🌟", desc: "Pure concentrated energy from Beyond." }
+        ];
+
+        const RAID_WEAPONS = [
+            { id: "steel_blaster", name: "Steel Blaster", bonus: "+10% DMG", cost: 0, desc: "Standard-issue kinetic sidearm for Boss Raids." },
+            { id: "crimson_cleaver", name: "Crimson Cleaver", bonus: "+25% DMG", cost: 1500, desc: "Heated bordeaux-forged blade that pierces armor." },
+            { id: "gold_trident", name: "Gold Trident", bonus: "+50% DMG", cost: 5000, desc: "Legendary relic weapon unleashing solar shockwaves." }
+        ];
+
+        // === 4. APPLICATION STATE ===
+        let isDbOnline = false;
+        let currentFilter = "ALL";
+        let currentTravelMode = "flights";
+        let liveLeaderboardData = [];
+
+        let userState = {
+            id: null,
+            username: "GuestHunter",
+            profile_pic: "",
+            authType: "NONE", // "NONE", "GUEST", "KICK"
+            coins: 500,
+            total_spins: 0,
+            collection: {},
+            equippedWeapon: "steel_blaster",
+            ownedWeapons: ["steel_blaster"],
+            lastDailyClaim: 0
         };
 
-        function saveState() {
-            localStorage.setItem('tb_show_hub_state', JSON.stringify(appState));
-        }
+        let liveFeedEntries = [
+            { time: "LIVE", text: "Beyond Vault initialized. Spin the Wheel of Beyond to unlock relics!" },
+            { time: "TOP", text: "KrimsonKing discovered The Beyond Trident (MYTHIC)!" },
+            { time: "WIN", text: "AuraQueen won +1,000 TB-Coins Jackpot on the Hunt Wheel!" }
+        ];
 
-        function updateUI() {
-            document.getElementById('headerCoins').innerText = appState.coins.toLocaleString();
-            const unlockedCount = appState.relics.filter(r => r.unlocked).length;
-            document.getElementById('headerRelicCount').innerText = `${unlockedCount} / 12`;
-            document.getElementById('armoryCount').innerText = unlockedCount;
+        // === 5. REAL-TIME FIREBASE CONNECTION MONITOR (.info/connected) ===
+        const connectedRef = ref(db, ".info/connected");
+        onValue(connectedRef, (snap) => {
+            const badge = document.getElementById("dbStatusBadge");
+            const dot = document.getElementById("dbStatusDot");
+            const text = document.getElementById("dbStatusText");
 
-            // Firebase status badge
-            const dot = document.getElementById('firebaseStatusDot');
-            const text = document.getElementById('firebaseStatusText');
-            text.innerText = appState.firebaseStatus;
-            if(appState.firebaseStatus === 'ONLINE') {
+            if (snap.val() === true) {
+                isDbOnline = true;
+                badge.className = "px-2.5 py-1 text-xs font-display font-black tracking-widest uppercase rounded bg-tb-obsidian text-emerald-400 border border-emerald-500/60 flex items-center gap-1.5 select-none";
                 dot.className = "w-2 h-2 rounded-full bg-emerald-400 animate-pulse";
-            } else if(appState.firebaseStatus === 'CONNECTING') {
-                dot.className = "w-2 h-2 rounded-full bg-amber-400 animate-pulse";
+                text.innerText = "DATABASE ONLINE";
+                document.getElementById("leaderboardSyncLabel").innerText = "● FIREBASE LIVE";
+                document.getElementById("leaderboardSyncLabel").className = "font-display text-xs font-bold uppercase text-emerald-400";
             } else {
-                dot.className = "w-2 h-2 rounded-full bg-amber-400";
+                isDbOnline = false;
+                badge.className = "px-2.5 py-1 text-xs font-display font-black tracking-widest uppercase rounded bg-tb-deepred text-tb-goldlight border border-tb-crimson flex items-center gap-1.5 select-none";
+                dot.className = "w-2 h-2 rounded-full bg-tb-mythic";
+                text.innerText = "OFFLINE / LOCAL VAULT";
+                document.getElementById("leaderboardSyncLabel").innerText = "● LOCAL CACHE";
+                document.getElementById("leaderboardSyncLabel").className = "font-display text-xs font-bold uppercase text-tb-champagne";
             }
+        });
+
+        // === 6. LIVE LEADERBOARD LISTENER (tbshow/users) ===
+        const usersListRef = ref(db, "tbshow/users");
+        onValue(usersListRef, (snapshot) => {
+            const data = snapshot.val();
+            if (data) {
+                liveLeaderboardData = Object.values(data).map(u => ({
+                    username: u.username || "Hunter",
+                    coins: u.coins ?? 500,
+                    relicCount: u.collection ? Object.keys(u.collection).length : 0
+                }));
+            } else {
+                liveLeaderboardData = [];
+            }
+            renderLeaderboard();
+        });
+
+        // === 7. PERSISTENCE & CLOUD SYNC ===
+        function saveUserProgress() {
+            localStorage.setItem("tb_hub_user_v5", JSON.stringify(userState));
+            if (userState.authType === "KICK" && userState.id && isDbOnline) {
+                const userRef = ref(db, "tbshow/users/" + userState.id);
+                update(userRef, {
+                    username: userState.username,
+                    profile_pic: userState.profile_pic || "",
+                    coins: userState.coins,
+                    total_spins: userState.total_spins,
+                    collection: userState.collection || {},
+                    last_seen: Date.now()
+                }).catch(err => console.warn("Firebase sync skipped:", err));
+            }
+            refreshAllUI();
         }
 
-        /* --- NAVIGATION TABS --- */
-        function switchTab(tabId) {
-            ['hunt', 'minigames', 'travel', 'leaderboard'].forEach(id => {
-                document.getElementById(`content-${id}`).classList.add('hidden');
-                document.getElementById(`tabBtn-${id}`).classList.remove('active');
+        function refreshAllUI() {
+            document.getElementById("headerCoins").innerText = userState.coins.toLocaleString();
+            const unlockedCount = Object.keys(userState.collection || {}).filter(k => userState.collection[k] > 0).length;
+            document.getElementById("headerRelicCount").innerText = `${unlockedCount} / 12`;
+            document.getElementById("statTotalSpins").innerText = userState.total_spins || 0;
+            document.getElementById("statRelicRatio").innerText = `${unlockedCount} / 12`;
+            document.getElementById("armoryCountText").innerText = unlockedCount;
+
+            const eqWeapon = RAID_WEAPONS.find(w => w.id === userState.equippedWeapon) || RAID_WEAPONS[0];
+            document.getElementById("statRaidBonus").innerText = eqWeapon.bonus;
+
+            // Header Auth State UI
+            const guestControls = document.getElementById("headerGuestControls");
+            const userControls = document.getElementById("headerUserControls");
+            const bannerAuthBox = document.getElementById("bannerAuthBox");
+
+            if (userState.authType === "KICK" || userState.authType === "GUEST") {
+                guestControls.classList.add("hidden");
+                userControls.classList.remove("hidden");
+                document.getElementById("headerUsername").innerText = userState.username;
+                const tagEl = document.getElementById("headerAuthTag");
+                if (userState.authType === "KICK") {
+                    tagEl.innerText = "KICK VERIFIED";
+                    tagEl.className = "text-[10px] font-display font-black px-1.5 py-0.2 rounded bg-tb-kick text-tb-obsidian";
+                    bannerAuthBox.classList.add("hidden");
+                } else {
+                    tagEl.innerText = "GUEST VAULT";
+                    tagEl.className = "text-[10px] font-display font-bold px-1.5 py-0.2 rounded bg-tb-deepred text-tb-goldlight border border-tb-gold/40";
+                    bannerAuthBox.classList.remove("hidden");
+                }
+
+                const avatarImg = document.getElementById("headerAvatar");
+                if (userState.profile_pic) {
+                    avatarImg.src = userState.profile_pic;
+                    avatarImg.classList.remove("hidden");
+                } else {
+                    avatarImg.classList.add("hidden");
+                }
+            } else {
+                guestControls.classList.remove("hidden");
+                userControls.classList.add("hidden");
+                bannerAuthBox.classList.remove("hidden");
+            }
+
+            renderArmory(currentFilter);
+            renderRaidWeapons();
+            renderLeaderboard();
+        }
+
+        // === 8. KICK OAUTH 2.1 PKCE FLOW & GUEST PLAY ===
+        function generateRandomString(length = 32) {
+            const array = new Uint8Array(length);
+            window.crypto.getRandomValues(array);
+            return btoa(String.fromCharCode.apply(null, array))
+                .replace(/\+/g, "-").replace(/\//g, "_").replace(/=+$/, "");
+        }
+
+        async function generateCodeChallenge(verifier) {
+            const encoder = new TextEncoder();
+            const data = encoder.encode(verifier);
+            const digest = await window.crypto.subtle.digest("SHA-256", data);
+            return btoa(String.fromCharCode.apply(null, new Uint8Array(digest)))
+                .replace(/\+/g, "-").replace(/\//g, "_").replace(/=+$/, "");
+        }
+
+        window.loginWithKick = async function () {
+            const codeVerifier = generateRandomString(32);
+            const oauthState = generateRandomString(16);
+            localStorage.setItem("kick_code_verifier", codeVerifier);
+            localStorage.setItem("kick_oauth_state", oauthState);
+
+            const codeChallenge = await generateCodeChallenge(codeVerifier);
+            const authUrl = new URL("https://id.kick.com/oauth/authorize");
+            authUrl.searchParams.append("response_type", "code");
+            authUrl.searchParams.append("client_id", CLIENT_ID);
+            authUrl.searchParams.append("redirect_uri", REDIRECT_URI);
+            authUrl.searchParams.append("scope", "user:read channel:read chat:write events:subscribe");
+            authUrl.searchParams.append("code_challenge", codeChallenge);
+            authUrl.searchParams.append("code_challenge_method", "S256");
+            authUrl.searchParams.append("state", oauthState);
+
+            window.location.href = authUrl.toString();
+        };
+
+        window.activateGuestMode = function () {
+            if (userState.authType === "NONE") {
+                userState.authType = "GUEST";
+                userState.username = "BeyondHunter_" + Math.floor(100 + Math.random() * 899);
+                saveUserProgress();
+                addLiveFeed(`${userState.username} entered the Hub in Guest Vault mode.`);
+                showRewardModal("GUEST VAULT ACTIVE", `Welcome ${userState.username}! You have 500 TB-Coins ready to spin the wheel or play mini-games.`, "⚡");
+            }
+        };
+
+        window.logoutUser = function () {
+            localStorage.removeItem("tb_hub_user_v5");
+            localStorage.removeItem("kick_code_verifier");
+            localStorage.removeItem("kick_oauth_state");
+            userState = {
+                id: null,
+                username: "GuestHunter",
+                profile_pic: "",
+                authType: "NONE",
+                coins: 500,
+                total_spins: 0,
+                collection: {},
+                equippedWeapon: "steel_blaster",
+                ownedWeapons: ["steel_blaster"],
+                lastDailyClaim: 0
+            };
+            refreshAllUI();
+        };
+
+        // === 9. TAB NAVIGATION ===
+        window.switchTab = function (tabId) {
+            ["hunt", "minigames", "travel", "leaderboard"].forEach(id => {
+                document.getElementById(`content-${id}`).classList.add("hidden");
+                document.getElementById(`tabBtn-${id}`).classList.remove("active");
             });
-            document.getElementById(`content-${tabId}`).classList.remove('hidden');
-            document.getElementById(`tabBtn-${tabId}`).classList.add('active');
-        }
+            document.getElementById(`content-${tabId}`).classList.remove("hidden");
+            document.getElementById(`tabBtn-${tabId}`).classList.add("active");
+        };
 
-        /* --- FIREBASE MODAL & CONNECTION --- */
-        function toggleFirebaseModal() {
-            const m = document.getElementById('firebaseModal');
-            m.classList.toggle('hidden');
-        }
-
-        function testAndSaveFirebase() {
-            const url = document.getElementById('firebaseUrlInput').value.trim();
-            const statusEl = document.getElementById('firebaseModalStatus');
-            if(!url) {
-                statusEl.innerText = "Please enter a valid Firebase Realtime Database URL.";
-                statusEl.className = "font-display text-xs font-bold text-center text-tb-crimson pt-1";
-                return;
+        // === 10. DAILY SUPPLY ===
+        window.claimDailySupply = function () {
+            if (userState.authType === "NONE") {
+                userState.authType = "GUEST";
+                userState.username = "BeyondHunter_" + Math.floor(100 + Math.random() * 899);
             }
-            appState.firebaseUrl = url;
-            appState.firebaseStatus = "CONNECTING";
-            updateUI();
-            statusEl.innerText = "Connecting to Firebase endpoint...";
-            statusEl.className = "font-display text-xs font-bold text-center text-amber-400 pt-1";
-
-            setTimeout(() => {
-                appState.firebaseStatus = "ONLINE";
-                statusEl.innerText = "Connected & Synchronized successfully!";
-                statusEl.className = "font-display text-xs font-bold text-center text-emerald-400 pt-1";
-                updateUI();
-                saveState();
-                addLiveFeedEntry(`${appState.username} connected to Firebase Realtime Database.`);
-                setTimeout(() => toggleFirebaseModal(), 1200);
-            }, 1000);
-        }
-
-        function disconnectFirebase() {
-            appState.firebaseUrl = "";
-            appState.firebaseStatus = "LOCAL VAULT";
-            document.getElementById('firebaseUrlInput').value = "";
-            updateUI();
-            saveState();
-            const statusEl = document.getElementById('firebaseModalStatus');
-            statusEl.innerText = "Switched to Local Vault mode.";
-            statusEl.className = "font-display text-xs font-bold text-center text-tb-goldlight pt-1";
-            setTimeout(() => toggleFirebaseModal(), 1000);
-        }
-
-        /* --- DAILY SUPPLY --- */
-        function claimDailySupply() {
             const now = Date.now();
-            if (now - appState.lastDailyClaim < 86400000) {
-                showSpinModal("ALREADY CLAIMED", "Your daily supply (+500 TB-Coins) is available once every 24 hours!", "⏳");
+            if (now - (userState.lastDailyClaim || 0) < 86400000) {
+                showRewardModal("SUPPLY ON COOLDOWN", "You already claimed your daily +500 TB-Coins supply! Return tomorrow for your next drop.", "⏳");
                 return;
             }
-            appState.lastDailyClaim = now;
-            appState.coins += 500;
-            updateUI();
-            saveState();
-            addLiveFeedEntry(`${appState.username} claimed their daily supply (+500 TB-Coins).`);
-            showSpinModal("DAILY SUPPLY CLAIMED", "+500 TB-Coins added to your vault!", "🎁");
-        }
+            userState.lastDailyClaim = now;
+            userState.coins += 500;
+            saveUserProgress();
+            addLiveFeed(`${userState.username} claimed their daily supply (+500 TB-Coins).`);
+            showRewardModal("DAILY SUPPLY CLAIMED!", "+500 TB-Coins have been credited to your vault.", "🎁");
+        };
 
-        /* --- TAB 1: HUNT WHEEL & ARMORY --- */
-        const wheelSegments = [
+        // === 11. THE HUNT WHEEL (HTML5 CANVAS) ===
+        const WHEEL_SEGMENTS = [
             { label: "250 TB", type: "coins", val: 250, color: "#1D0B0E" },
             { label: "BRONZE RELIC", type: "relic", rarity: "BRONZE", color: "#B81D2C" },
             { label: "500 TB", type: "coins", val: 500, color: "#4A141D" },
             { label: "SILVER RELIC", type: "relic", rarity: "SILVER", color: "#2C1015" },
-            { label: "1000 TB", type: "coins", val: 1000, color: "#D4AF37" },
+            { label: "1,000 TB", type: "coins", val: 1000, color: "#D4AF37", darkText: true },
             { label: "GOLD RELIC", type: "relic", rarity: "GOLD", color: "#997A15" },
             { label: "MYTHIC RELIC", type: "relic", rarity: "MYTHIC", color: "#E11D48" },
-            { label: "100 TB", type: "coins", val: 100, color: "#11090B" }
+            { label: "150 TB", type: "coins", val: 150, color: "#0E090A" }
         ];
 
         let wheelAngle = 0;
-        let isSpinning = false;
-
-        function initWheel() {
-            drawWheel(0);
-        }
+        let isWheelSpinning = false;
 
         function drawWheel(angle) {
-            const canvas = document.getElementById('wheelCanvas');
-            if(!canvas) return;
-            const ctx = canvas.getContext('2d');
+            const canvas = document.getElementById("wheelCanvas");
+            if (!canvas) return;
+            const ctx = canvas.getContext("2d");
             const cx = canvas.width / 2;
             const cy = canvas.height / 2;
-            const r = canvas.width / 2 - 10;
-            const arc = (2 * Math.PI) / wheelSegments.length;
+            const r = canvas.width / 2 - 8;
+            const arc = (2 * Math.PI) / WHEEL_SEGMENTS.length;
 
             ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-            wheelSegments.forEach((seg, i) => {
+            WHEEL_SEGMENTS.forEach((seg, i) => {
                 const startAngle = angle + i * arc;
                 const endAngle = startAngle + arc;
 
@@ -922,512 +1258,732 @@
                 ctx.fillStyle = seg.color;
                 ctx.fill();
                 ctx.lineWidth = 2;
-                ctx.strokeStyle = '#D4AF37';
+                ctx.strokeStyle = "#D4AF37";
                 ctx.stroke();
 
-                // Draw text
                 ctx.save();
                 ctx.translate(cx, cy);
                 ctx.rotate(startAngle + arc / 2);
                 ctx.textAlign = "right";
-                ctx.fillStyle = "#F5EFE6";
-                ctx.font = "bold 12px 'Big Shoulders Display', sans-serif";
-                ctx.fillText(seg.label, r - 15, 5);
+                ctx.fillStyle = seg.darkText ? "#090607" : "#F5EFE6";
+                ctx.font = "900 13px 'Big Shoulders Display', sans-serif";
+                ctx.fillText(seg.label, r - 16, 5);
                 ctx.restore();
             });
 
-            // Center knob
+            // Center Medallion
             ctx.beginPath();
-            ctx.arc(cx, cy, 32, 0, 2 * Math.PI);
+            ctx.arc(cx, cy, 34, 0, 2 * Math.PI);
             ctx.fillStyle = "#090607";
             ctx.fill();
-            ctx.lineWidth = 4;
-            ctx.strokeStyle = "#D4AF37";
+            ctx.lineWidth = 3.5;
+            ctx.strokeStyle = "#F3D06B";
             ctx.stroke();
 
             ctx.fillStyle = "#F3D06B";
-            ctx.font = "bold 11px 'Big Shoulders Display', sans-serif";
+            ctx.font = "900 12px 'Big Shoulders Display', sans-serif";
             ctx.textAlign = "center";
-            ctx.fillText("BEYOND", cx, cy - 3);
-            ctx.fillText("SPIN", cx, cy + 10);
+            ctx.fillText("BEYOND", cx, cy - 2);
+            ctx.fillText("HUNT", cx, cy + 12);
         }
 
-        function spinWheel() {
-            if(isSpinning) return;
-            if(appState.coins < 100) {
-                showSpinModal("INSUFFICIENT FUNDS", "You need at least 100 TB-Coins to spin the Hunt Wheel.", "⚠️");
+        window.spinWheel = function () {
+            if (isWheelSpinning) return;
+
+            if (userState.authType === "NONE") {
+                userState.authType = "GUEST";
+                userState.username = "BeyondHunter_" + Math.floor(100 + Math.random() * 899);
+            }
+
+            if (userState.coins < 100) {
+                showRewardModal("INSUFFICIENT TB-COINS", "You need at least 100 TB-Coins to spin! Claim your Daily Supply or win TB-Coins in the Mini-Games Arena.", "⚠️");
                 return;
             }
 
-            appState.coins -= 100;
-            updateUI();
-            saveState();
+            userState.coins -= 100;
+            userState.total_spins = (userState.total_spins || 0) + 1;
+            saveUserProgress();
 
-            isSpinning = true;
-            document.getElementById('spinBtn').disabled = true;
-            document.getElementById('spinMessage').innerText = "Wheel is spinning across dimensions...";
+            isWheelSpinning = true;
+            document.getElementById("spinBtn").disabled = true;
+            document.getElementById("spinMessage").innerText = "Channeling dimensional energy...";
 
-            const spinRotations = 5 + Math.random() * 5;
-            const extraDeg = Math.random() * (2 * Math.PI);
-            const totalAngle = wheelAngle + spinRotations * 2 * Math.PI + extraDeg;
-            const duration = 3500;
+            const extraSpins = 6 + Math.random() * 4;
+            const randomOffset = Math.random() * 2 * Math.PI;
+            const startAngle = wheelAngle;
+            const targetAngle = startAngle + extraSpins * 2 * Math.PI + randomOffset;
+            const duration = 3400;
             const startTime = performance.now();
 
-            function animateSpin(currentTime) {
-                const elapsed = currentTime - startTime;
+            function step(now) {
+                const elapsed = now - startTime;
                 const progress = Math.min(elapsed / duration, 1);
-                // Ease out cubic
-                const ease = 1 - Math.pow(1 - progress, 3);
-                wheelAngle = wheelAngle + (totalAngle - wheelAngle) * (progress === 1 ? 1 : (ease - (1 - Math.pow(1, 3))));
-
+                const easeOut = 1 - Math.pow(1 - progress, 3);
+                wheelAngle = startAngle + (targetAngle - startAngle) * easeOut;
                 drawWheel(wheelAngle);
 
-                if(progress < 1) {
-                    requestAnimationFrame(animateSpin);
+                if (progress < 1) {
+                    requestAnimationFrame(step);
                 } else {
-                    isSpinning = false;
-                    document.getElementById('spinBtn').disabled = false;
-                    resolveWheelResult();
+                    isWheelSpinning = false;
+                    document.getElementById("spinBtn").disabled = false;
+                    finalizeWheelSpin();
                 }
             }
-            requestAnimationFrame(animateSpin);
-        }
+            requestAnimationFrame(step);
+        };
 
-        function resolveWheelResult() {
-            const arc = (2 * Math.PI) / wheelSegments.length;
-            const normalizedAngle = (2 * Math.PI - (wheelAngle % (2 * Math.PI))) % (2 * Math.PI);
-            const pointerAngle = (3 * Math.PI / 2) % (2 * Math.PI); // Top pointer
-            const winningIndex = Math.floor(((normalizedAngle + pointerAngle) % (2 * Math.PI)) / arc) % wheelSegments.length;
-            const reward = wheelSegments[winningIndex];
+        function finalizeWheelSpin() {
+            const arc = (2 * Math.PI) / WHEEL_SEGMENTS.length;
+            const normalized = (2 * Math.PI - (wheelAngle % (2 * Math.PI))) % (2 * Math.PI);
+            const pointerPos = (3 * Math.PI / 2) % (2 * Math.PI);
+            const winIdx = Math.floor(((normalized + pointerPos) % (2 * Math.PI)) / arc) % WHEEL_SEGMENTS.length;
+            const prize = WHEEL_SEGMENTS[winIdx];
 
-            if(reward.type === 'coins') {
-                appState.coins += reward.val;
-                updateUI();
-                saveState();
-                addLiveFeedEntry(`${appState.username} won ${reward.val} TB-Coins on the Hunt Wheel!`);
-                showSpinModal("WHEEL REWARD!", `You won ${reward.val} TB-Coins!`, "🪙");
+            if (prize.type === "coins") {
+                userState.coins += prize.val;
+                saveUserProgress();
+                document.getElementById("spinMessage").innerText = `Victory! Won +${prize.val.toLocaleString()} TB-Coins!`;
+                addLiveFeed(`${userState.username} won +${prize.val.toLocaleString()} TB-Coins on the Hunt Wheel!`);
+                showRewardModal("TB-COINS WON!", `You won +${prize.val.toLocaleString()} TB-Coins on the Wheel of Beyond!`, "🪙");
             } else {
-                // Find locked relic of matching rarity or random
-                const candidates = appState.relics.filter(r => !r.unlocked && r.rarity === reward.rarity);
-                const target = candidates.length > 0 ? candidates[0] : appState.relics.find(r => !r.unlocked);
-                if(target) {
-                    target.unlocked = true;
-                    updateUI();
-                    saveState();
-                    addLiveFeedEntry(`${appState.username} discovered the ${reward.rarity} Relic: ${target.name}!`);
-                    showSpinModal("RELIC UNLOCKED!", `You discovered ${target.icon} ${target.name} (${target.rarity})!`, target.icon);
-                } else {
-                    appState.coins += 500;
-                    updateUI();
-                    saveState();
-                    showSpinModal("ALL RELICS COLLECTED!", "Armory complete! Awarded 500 TB-Coins bonus instead.", "👑");
-                }
+                const matchingRelics = RELICS_CATALOG.filter(r => r.rarity === prize.rarity);
+                const unowned = matchingRelics.filter(r => !(userState.collection && userState.collection[r.id]));
+                const chosen = unowned.length > 0
+                    ? unowned[Math.floor(Math.random() * unowned.length)]
+                    : matchingRelics[Math.floor(Math.random() * matchingRelics.length)];
+
+                userState.collection = userState.collection || {};
+                userState.collection[chosen.id] = (userState.collection[chosen.id] || 0) + 1;
+                saveUserProgress();
+
+                document.getElementById("spinMessage").innerText = `Relic Discovered: ${chosen.name} (${chosen.rarity})!`;
+                addLiveFeed(`${userState.username} uncovered ${chosen.name} (${chosen.rarity})!`);
+                showRewardModal(`${chosen.rarity} RELIC DISCOVERED!`, `You unlocked ${chosen.icon} ${chosen.name}! Archived in your Dimensional Relic Collection.`, chosen.icon);
             }
-            renderArmory('ALL');
         }
+
+        // === 12. RELIC COLLECTION & ARMORY RENDER ===
+        window.filterArmory = function (rarity) {
+            currentFilter = rarity;
+            renderArmory(rarity);
+        };
 
         function renderArmory(filter) {
-            const grid = document.getElementById('relicArmoryGrid');
-            grid.innerHTML = '';
+            const grid = document.getElementById("relicArmoryGrid");
+            if (!grid) return;
+            grid.innerHTML = "";
 
-            // Update filter pill active states
-            ['ALL', 'BRONZE', 'SILVER', 'GOLD', 'MYTHIC'].forEach(f => {
+            ["ALL", "BRONZE", "SILVER", "GOLD", "MYTHIC"].forEach(f => {
                 const btn = document.getElementById(`filter-${f}`);
-                if(btn) {
-                    if(f === filter) btn.classList.add('active');
-                    else btn.classList.remove('active');
+                if (btn) {
+                    btn.classList.toggle("active", f === filter);
                 }
             });
 
-            const filtered = appState.relics.filter(r => filter === 'ALL' || r.rarity === filter);
+            const list = RELICS_CATALOG.filter(r => filter === "ALL" || r.rarity === filter);
 
-            filtered.forEach(r => {
-                const card = document.createElement('div');
-                card.className = `tb-glass rounded-xl p-4 border flex flex-col justify-between tb-card-lift ${r.unlocked ? 'border-tb-gold/60' : 'border-tb-gold/20 opacity-50'}`;
+            list.forEach(item => {
+                const count = (userState.collection && userState.collection[item.id]) || 0;
+                const unlocked = count > 0;
+
+                let badgeStyle = "bg-amber-900/50 text-amber-400 border border-amber-600/50";
+                if (item.rarity === "SILVER") badgeStyle = "bg-stone-800 text-stone-200 border border-stone-500/50";
+                if (item.rarity === "GOLD") badgeStyle = "bg-tb-gold/20 text-tb-goldlight border border-tb-gold/60";
+                if (item.rarity === "MYTHIC") badgeStyle = "bg-tb-crimson/35 text-tb-mythic border border-tb-mythic/70";
+
+                const card = document.createElement("div");
+                card.className = `tb-glass rounded-xl p-4 border flex flex-col justify-between tb-card-lift ${unlocked ? "border-tb-gold/65" : "border-tb-gold/20 opacity-55"}`;
                 card.innerHTML = `
                     <div>
-                        <div class="flex items-center justify-between mb-2">
-                            <span class="text-2xl">${r.unlocked ? r.icon : '🔒'}</span>
-                            <span class="font-display text-xs font-black uppercase tracking-wider px-2 py-0.5 rounded ${getRarityBadgeClass(r.rarity)}">${r.rarity}</span>
+                        <div class="flex items-center justify-between mb-2.5">
+                            <span class="font-display text-xs font-bold text-tb-champagne">${item.code}</span>
+                            <span class="font-display text-[11px] font-black uppercase tracking-wider px-2 py-0.5 rounded ${badgeStyle}">${item.rarity}</span>
                         </div>
-                        <h4 class="font-display text-lg font-bold uppercase gold-text-gradient">${r.name}</h4>
-                        <p class="font-sans text-xs text-tb-champagne mt-1">${r.unlocked ? r.desc : 'Locked in dimensional vault. Spin the Hunt Wheel to unlock.'}</p>
+                        <div class="text-3xl mb-2">${unlocked ? item.icon : "🔒"}</div>
+                        <h4 class="font-display text-lg font-black uppercase gold-text-gradient">${item.name}</h4>
+                        <p class="font-sans text-xs text-tb-champagne mt-1 leading-relaxed">
+                            ${unlocked ? item.desc : "Sealed in the Beyond dimension. Spin the Hunt Wheel to unlock."}
+                        </p>
                     </div>
                     <div class="pt-3 mt-3 border-t border-tb-gold/20 flex items-center justify-between font-display text-xs">
-                        <span class="text-tb-gold">STATUS:</span>
-                        <span class="${r.unlocked ? 'text-emerald-400 font-black' : 'text-tb-crimson font-bold'}">${r.unlocked ? 'UNLOCKED' : 'LOCKED'}</span>
+                        <span class="text-tb-gold uppercase">ARCHIVE:</span>
+                        <span class="${unlocked ? "text-emerald-400 font-black" : "text-tb-crimson font-bold"}">
+                            ${unlocked ? `DISCOVERED (x${count})` : "LOCKED"}
+                        </span>
                     </div>
                 `;
                 grid.appendChild(card);
             });
         }
 
-        function filterArmory(rarity) {
-            renderArmory(rarity);
+        // === 13. LIVE HUNT FEED ===
+        function addLiveFeed(text) {
+            const now = new Date();
+            const stamp = `${String(now.getHours()).padStart(2, "0")}:${String(now.getMinutes()).padStart(2, "0")}`;
+            liveFeedEntries.unshift({ time: stamp, text });
+            if (liveFeedEntries.length > 15) liveFeedEntries.pop();
+            renderLiveFeed();
         }
 
-        function getRarityBadgeClass(rarity) {
-            switch(rarity) {
-                case 'BRONZE': return 'bg-amber-900/50 text-amber-500 border border-amber-700/50';
-                case 'SILVER': return 'bg-slate-800 text-slate-300 border border-slate-600/50';
-                case 'GOLD': return 'bg-tb-gold/20 text-tb-goldlight border border-tb-gold/50';
-                case 'MYTHIC': return 'bg-tb-crimson/30 text-tb-mythic border border-tb-crimson/60';
-                default: return 'bg-tb-deepred text-tb-ivory';
-            }
-        }
-
-        /* --- TAB 2: MINI-GAMES ARENA --- */
-        function switchMiniGame(gameName) {
-            ['poker', 'hangstein', 'morbakim', 'battleship'].forEach(g => {
-                document.getElementById(`game-${g}`).classList.add('hidden');
-                document.getElementById(`mgBtn-${g}`).className = "btn-crimson px-4 py-2.5 rounded-xl font-display text-sm font-black uppercase tracking-wider cursor-pointer opacity-75";
-            });
-            document.getElementById(`game-${gameName}`).classList.remove('hidden');
-            document.getElementById(`mgBtn-${gameName}`).className = "btn-gold px-4 py-2.5 rounded-xl font-display text-sm font-black uppercase tracking-wider cursor-pointer";
-        }
-
-        // Game 1: Poker
-        function pokerAction(action) {
-            const status = document.getElementById('pokerStatus');
-            if(action === 'deal') {
-                if(appState.coins < 50) {
-                    status.innerText = "Not enough TB-Coins to call (50 required)!";
-                    return;
-                }
-                appState.coins -= 50;
-                updateUI();
-                saveState();
-
-                const suits = ['♠', '♥', '♦', '♣'];
-                const ranks = ['10', 'J', 'Q', 'K', 'A'];
-                const c1 = ranks[Math.floor(Math.random()*ranks.length)] + suits[Math.floor(Math.random()*suits.length)];
-                const c2 = ranks[Math.floor(Math.random()*ranks.length)] + suits[Math.floor(Math.random()*suits.length)];
-                const c3 = ranks[Math.floor(Math.random()*ranks.length)] + suits[Math.floor(Math.random()*suits.length)];
-
-                document.getElementById('communityCards').innerHTML = `
-                    <div class="w-16 h-24 rounded-lg bg-tb-card border border-tb-gold/60 flex items-center justify-center font-display text-xl font-black text-tb-goldlight shadow-lg">${c1}</div>
-                    <div class="w-16 h-24 rounded-lg bg-tb-card border border-tb-gold/60 flex items-center justify-center font-display text-xl font-black text-tb-goldlight shadow-lg">${c2}</div>
-                    <div class="w-16 h-24 rounded-lg bg-tb-card border border-tb-gold/60 flex items-center justify-center font-display text-xl font-black text-tb-goldlight shadow-lg">${c3}</div>
+        function renderLiveFeed() {
+            const container = document.getElementById("liveFeedList");
+            if (!container) return;
+            container.innerHTML = "";
+            liveFeedEntries.forEach(entry => {
+                const row = document.createElement("div");
+                row.className = "flex items-start gap-3 p-2.5 rounded-xl bg-tb-obsidian/80 border border-tb-gold/20 font-sans text-xs";
+                row.innerHTML = `
+                    <span class="font-display font-black text-tb-gold shrink-0">${entry.time}</span>
+                    <span class="text-tb-ivory leading-snug">${entry.text}</span>
                 `;
+                container.appendChild(row);
+            });
+        }
 
-                if(Math.random() > 0.4) {
-                    const winAmt = 250;
-                    appState.coins += winAmt;
-                    updateUI();
-                    saveState();
-                    status.innerText = `You won the hand! House folds. +${winAmt} TB-Coins!`;
-                    addLiveFeedEntry(`${appState.username} won ${winAmt} TB-Coins in TB Hold'em Poker!`);
-                } else {
-                    status.innerText = "House held a stronger flush. You lost the 50 TB bet.";
-                }
-            } else {
-                status.innerText = "Folded hand. Place a new bet when ready.";
+        // === 14. IN-HUB PLAYABLE MINI-GAMES MODAL ===
+        window.openGameModal = function (gameKey) {
+            if (userState.authType === "NONE") {
+                userState.authType = "GUEST";
+                userState.username = "BeyondHunter_" + Math.floor(100 + Math.random() * 899);
+                saveUserProgress();
             }
-        }
 
-        // Game 2: Hangstein
-        const hangWords = ["BEYOND", "CHASE", "RELIC", "VAULT", "WHEEL", "COINS", "ARENA", "RANK"];
-        let currentWord = "";
-        let guessedLetters = new Set();
-        let mistakes = 0;
+            const titles = {
+                poker: "TB HOLD'EM POKER // HOUSE DUEL",
+                hangstein: "HANGSTEIN // WORD DECRYPTION",
+                morbakim: "MORBAKIM // TACTICAL TIC-TAC-TOE",
+                battleship: "BATTLESHIP // 6x6 NAVAL RADAR"
+            };
+            document.getElementById("gameModalTitle").innerText = titles[gameKey] || "MINI-GAME ARENA";
 
-        function initHangstein() {
-            currentWord = hangWords[Math.floor(Math.random() * hangWords.length)];
-            guessedLetters.clear();
-            mistakes = 0;
+            ["poker", "hangstein", "morbakim", "battleship"].forEach(k => {
+                document.getElementById(`modalGame-${k}`).classList.add("hidden");
+            });
+            document.getElementById(`modalGame-${gameKey}`).classList.remove("hidden");
+            document.getElementById("gameModal").classList.remove("hidden");
+
+            if (gameKey === "poker") resetPokerTable();
+            if (gameKey === "hangstein") initHangstein();
+            if (gameKey === "morbakim") initMorbakim();
+            if (gameKey === "battleship") initBattleship();
+        };
+
+        window.closeGameModal = function () {
+            document.getElementById("gameModal").classList.add("hidden");
+        };
+
+        // --- Game 1: TB Hold'em Poker ---
+        window.resetPokerTable = function () {
+            const suits = ["♠", "♦", "♥", "♣"];
+            const ranks = ["J", "Q", "K", "A"];
+            const c1 = ranks[Math.floor(Math.random() * ranks.length)] + suits[Math.floor(Math.random() * 2)];
+            const c2 = ranks[Math.floor(Math.random() * ranks.length)] + suits[Math.floor(Math.random() * 4)];
+            document.getElementById("pokerPlayerCards").innerHTML = `
+                <div class="w-16 py-3 rounded-lg bg-tb-deepred border-2 border-tb-gold flex items-center justify-center font-display text-2xl font-black text-tb-ivory shadow-lg">${c1}</div>
+                <div class="w-16 py-3 rounded-lg bg-tb-deepred border-2 border-tb-gold flex items-center justify-center font-display text-2xl font-black text-tb-goldlight shadow-lg">${c2}</div>
+            `;
+            document.getElementById("pokerBoardCards").innerHTML = `
+                <div class="w-14 h-20 rounded-lg bg-tb-card border border-tb-gold/50 flex items-center justify-center font-display text-xl font-black text-tb-goldlight">?</div>
+                <div class="w-14 h-20 rounded-lg bg-tb-card border border-tb-gold/50 flex items-center justify-center font-display text-xl font-black text-tb-goldlight">?</div>
+                <div class="w-14 h-20 rounded-lg bg-tb-card border border-tb-gold/50 flex items-center justify-center font-display text-xl font-black text-tb-goldlight">?</div>
+            `;
+            document.getElementById("pokerStatus").innerText = "Deal the flop to challenge the Beyond House Dealer!";
+        };
+
+        window.playPokerRound = function () {
+            const status = document.getElementById("pokerStatus");
+            if (userState.coins < 50) {
+                status.innerText = "Insufficient TB-Coins (50 TB ante required)!";
+                return;
+            }
+            userState.coins -= 50;
+
+            const deck = ["10♠", "J♦", "Q♥", "K♠", "A♦", "9♣", "A♥", "K♣", "Q♠"];
+            const pick = () => deck[Math.floor(Math.random() * deck.length)];
+            document.getElementById("pokerBoardCards").innerHTML = `
+                <div class="w-14 h-20 rounded-lg bg-tb-card border border-tb-gold flex items-center justify-center font-display text-xl font-black text-tb-goldlight shadow-md">${pick()}</div>
+                <div class="w-14 h-20 rounded-lg bg-tb-card border border-tb-gold flex items-center justify-center font-display text-xl font-black text-tb-goldlight shadow-md">${pick()}</div>
+                <div class="w-14 h-20 rounded-lg bg-tb-card border border-tb-gold flex items-center justify-center font-display text-xl font-black text-tb-goldlight shadow-md">${pick()}</div>
+            `;
+
+            if (Math.random() > 0.42) {
+                userState.coins += 250;
+                status.innerText = "VICTORY! Your hand beats the Dealer. +250 TB-Coins won!";
+                addLiveFeed(`${userState.username} won +250 TB-Coins at TB Hold'em Poker!`);
+            } else {
+                status.innerText = "Dealer reveals Two Pair. You lost the 50 TB ante.";
+            }
+            saveUserProgress();
+        };
+
+        // --- Game 2: Hangstein ---
+        const HANG_WORDS = ["BEYOND", "RELICS", "HUNTER", "CRIMSON", "GOLDEN", "TRIDENT", "VAULT", "ARENA"];
+        let hangSecret = "";
+        let hangGuessed = new Set();
+        let hangErrors = 0;
+        let hangRewarded = false;
+
+        window.initHangstein = function () {
+            hangSecret = HANG_WORDS[Math.floor(Math.random() * HANG_WORDS.length)];
+            hangGuessed.clear();
+            hangErrors = 0;
+            hangRewarded = false;
             renderHangstein();
-        }
+        };
 
         function renderHangstein() {
-            document.getElementById('hangMistakes').innerText = mistakes;
-            let displayStr = "";
-            let complete = true;
-            for(let char of currentWord) {
-                if(guessedLetters.has(char)) {
-                    displayStr += char + " ";
+            document.getElementById("hangMistakes").innerText = `${hangErrors} / 6`;
+            let masked = "";
+            let solved = true;
+            for (const ch of hangSecret) {
+                if (hangGuessed.has(ch)) {
+                    masked += ch + " ";
                 } else {
-                    displayStr += "_ ";
-                    complete = false;
+                    masked += "_ ";
+                    solved = false;
                 }
             }
-            document.getElementById('wordDisplay').innerText = displayStr;
+            document.getElementById("hangWordDisplay").innerText = masked.trim();
 
-            const kb = document.getElementById('keyboardContainer');
+            const kb = document.getElementById("hangKeyboard");
             kb.innerHTML = "";
             "ABCDEFGHIJKLMNOPQRSTUVWXYZ".split("").forEach(letter => {
-                const btn = document.createElement('button');
-                const used = guessedLetters.has(letter);
-                btn.className = `w-9 h-10 rounded font-display text-sm font-black uppercase tracking-wider ${used ? 'bg-tb-obsidian text-tb-champagne opacity-40 border border-tb-gold/20' : 'btn-crimson'}`;
+                const used = hangGuessed.has(letter);
+                const btn = document.createElement("button");
+                btn.className = `w-8 h-9 rounded font-display text-sm font-black uppercase ${used ? "bg-tb-obsidian text-tb-champagne opacity-35 border border-tb-gold/20" : "btn-crimson cursor-pointer"}`;
                 btn.innerText = letter;
-                btn.disabled = used || mistakes >= 6 || complete;
-                btn.onclick = () => guessLetter(letter);
+                btn.disabled = used || hangErrors >= 6 || solved;
+                btn.onclick = () => {
+                    hangGuessed.add(letter);
+                    if (!hangSecret.includes(letter)) hangErrors++;
+                    renderHangstein();
+                };
                 kb.appendChild(btn);
             });
 
-            const msg = document.getElementById('hangMessage');
-            if(complete) {
-                msg.innerText = "Victory! You uncovered the Beyond keyword! +150 TB-Coins added.";
-                if(!window.hangWonLogged) {
-                    appState.coins += 150;
-                    updateUI();
-                    saveState();
-                    addLiveFeedEntry(`${appState.username} won Hangstein (${currentWord}) (+150 TB).`);
-                    window.hangWonLogged = true;
+            const msg = document.getElementById("hangMessage");
+            if (solved) {
+                msg.innerText = `DECRYPTED! The word was ${hangSecret}. +150 TB-Coins awarded!`;
+                if (!hangRewarded) {
+                    hangRewarded = true;
+                    userState.coins += 150;
+                    saveUserProgress();
+                    addLiveFeed(`${userState.username} solved Hangstein (${hangSecret}) for +150 TB-Coins!`);
                 }
-            } else if(mistakes >= 6) {
-                msg.innerText = `Defeat! The word was ${currentWord}. Try again!`;
+            } else if (hangErrors >= 6) {
+                msg.innerText = `LOCKOUT! The secret word was ${hangSecret}.`;
             } else {
-                msg.innerText = "Guess the TB Show related keyword letter by letter!";
+                msg.innerText = "Decrypt the hidden Beyond Show keyword!";
             }
         }
 
-        function guessLetter(letter) {
-            window.hangWonLogged = false;
-            guessedLetters.add(letter);
-            if(!currentWord.includes(letter)) {
-                mistakes++;
-            }
-            renderHangstein();
-        }
+        // --- Game 3: Morbakim ---
+        let morbCells = Array(9).fill("");
+        let morbFinished = false;
 
-        function resetHangstein() {
-            window.hangWonLogged = false;
-            initHangstein();
-        }
+        window.initMorbakim = function () {
+            morbCells = Array(9).fill("");
+            morbFinished = false;
+            document.getElementById("morbStatus").innerText = "Your Turn (X)";
+            renderMorbBoard();
+        };
 
-        // Game 3: Morbakim (Tic-Tac-Toe)
-        let morbBoard = Array(9).fill("");
-        let morbTurn = "X"; // X = Player, O = AI
-        let morbGameOver = false;
-
-        function initMorbakim() {
-            morbBoard = Array(9).fill("");
-            morbTurn = "X";
-            morbGameOver = false;
-            renderMorbakim();
-        }
-
-        function renderMorbakim() {
-            const boardEl = document.getElementById('morbakimBoard');
-            boardEl.innerHTML = "";
-            morbBoard.forEach((val, idx) => {
-                const cell = document.createElement('button');
-                cell.className = `h-20 rounded-xl bg-tb-obsidian border-2 border-tb-gold/50 font-display text-3xl font-black flex items-center justify-center ${val === 'X' ? 'text-tb-goldlight' : val === 'O' ? 'text-tb-crimson' : 'text-tb-ivory hover:border-tb-gold'}`;
-                cell.innerText = val;
-                cell.disabled = val !== "" || morbGameOver || morbTurn === 'O';
-                cell.onclick = () => makeMorbMove(idx);
-                boardEl.appendChild(cell);
+        function renderMorbBoard() {
+            const board = document.getElementById("morbBoard");
+            board.innerHTML = "";
+            morbCells.forEach((val, idx) => {
+                const btn = document.createElement("button");
+                btn.className = `rounded-xl bg-tb-charcoal border-2 border-tb-gold/50 font-display text-3xl font-black flex items-center justify-center ${val === "X" ? "text-tb-goldlight" : val === "O" ? "text-tb-mythic" : "hover:border-tb-gold cursor-pointer"}`;
+                btn.innerText = val;
+                btn.disabled = val !== "" || morbFinished;
+                btn.onclick = () => handleMorbClick(idx);
+                board.appendChild(btn);
             });
         }
 
-        function makeMorbMove(idx) {
-            if(morbBoard[idx] !== "" || morbGameOver) return;
-            morbBoard[idx] = "X";
-            if(checkMorbWin("X")) {
-                document.getElementById('morbakimStatus').innerText = "Victory! You beat Morbakim! +200 TB-Coins!";
-                appState.coins += 200;
-                updateUI();
-                saveState();
-                addLiveFeedEntry(`${appState.username} won Morbakim vs AI (+200 TB).`);
-                morbGameOver = true;
-                renderMorbakim();
+        function handleMorbClick(idx) {
+            if (morbCells[idx] || morbFinished) return;
+            morbCells[idx] = "X";
+            if (checkMorbWinner("X")) {
+                morbFinished = true;
+                document.getElementById("morbStatus").innerText = "VICTORY! You defeated Morbakim AI (+200 TB-Coins)!";
+                userState.coins += 200;
+                saveUserProgress();
+                addLiveFeed(`${userState.username} won Morbakim for +200 TB-Coins!`);
+                renderMorbBoard();
                 return;
             }
-            if(morbBoard.every(c => c !== "")) {
-                document.getElementById('morbakimStatus').innerText = "Draw game!";
-                morbGameOver = true;
-                renderMorbakim();
+            if (morbCells.every(c => c !== "")) {
+                morbFinished = true;
+                document.getElementById("morbStatus").innerText = "DRAW MATCH!";
+                renderMorbBoard();
                 return;
             }
 
-            morbTurn = "O";
-            document.getElementById('morbakimStatus').innerText = "AI is thinking...";
-            renderMorbakim();
+            // AI Turn
+            const diff = document.getElementById("morbDifficulty").value;
+            const open = morbCells.map((v, i) => (v === "" ? i : null)).filter(v => v !== null);
+            let choice = open[Math.floor(Math.random() * open.length)];
 
-            setTimeout(() => {
-                aiMorbMove();
-            }, 600);
-        }
-
-        function aiMorbMove() {
-            if(morbGameOver) return;
-            const diff = document.getElementById('aiDifficulty').value;
-            let emptyIdxs = morbBoard.map((v, i) => v === "" ? i : null).filter(v => v !== null);
-            if(emptyIdxs.length === 0) return;
-
-            let moveIdx = emptyIdxs[Math.floor(Math.random() * emptyIdxs.length)];
-            if(diff === 'hard') {
-                // Simple smart check for winning or blocking
-                for(let idx of emptyIdxs) {
-                    morbBoard[idx] = "O";
-                    if(checkMorbWin("O")) { moveIdx = idx; morbBoard[idx] = ""; break; }
-                    morbBoard[idx] = "";
+            if (diff === "hard") {
+                for (const i of open) {
+                    morbCells[i] = "O";
+                    if (checkMorbWinner("O")) { choice = i; morbCells[i] = ""; break; }
+                    morbCells[i] = "";
+                }
+                if (choice === undefined || morbCells[choice] !== "") {
+                    for (const i of open) {
+                        morbCells[i] = "X";
+                        if (checkMorbWinner("X")) { choice = i; morbCells[i] = ""; break; }
+                        morbCells[i] = "";
+                    }
                 }
             }
 
-            morbBoard[moveIdx] = "O";
-            if(checkMorbWin("O")) {
-                document.getElementById('morbakimStatus').innerText = "AI wins! Try again.";
-                morbGameOver = true;
-            } else if(morbBoard.every(c => c !== "")) {
-                document.getElementById('morbakimStatus').innerText = "Draw game!";
-                morbGameOver = true;
+            morbCells[choice] = "O";
+            if (checkMorbWinner("O")) {
+                morbFinished = true;
+                document.getElementById("morbStatus").innerText = "AI VICTORY! Reset to play again.";
+            } else if (morbCells.every(c => c !== "")) {
+                morbFinished = true;
+                document.getElementById("morbStatus").innerText = "DRAW MATCH!";
             } else {
-                morbTurn = "X";
-                document.getElementById('morbakimStatus').innerText = "Your turn (X)";
+                document.getElementById("morbStatus").innerText = "Your Turn (X)";
             }
-            renderMorbakim();
+            renderMorbBoard();
         }
 
-        function checkMorbWin(player) {
-            const wins = [
-                [0,1,2],[3,4,5],[6,7,8],
-                [0,3,6],[1,4,7],[2,5,8],
-                [0,4,8],[2,4,6]
-            ];
-            return wins.some(comb => comb.every(i => morbBoard[i] === player));
+        function checkMorbWinner(p) {
+            const lines = [[0,1,2],[3,4,5],[6,7,8],[0,3,6],[1,4,7],[2,5,8],[0,4,8],[2,4,6]];
+            return lines.some(line => line.every(i => morbCells[i] === p));
         }
 
-        function resetMorbakim() {
-            initMorbakim();
-            document.getElementById('morbakimStatus').innerText = "Your turn (X)";
-        }
+        // --- Game 4: Battleship ---
+        let bsTargets = [];
+        let bsRevealed = new Set();
+        let bsAmmo = 14;
+        let bsDone = false;
 
-        // Game 4: Battleship
-        let bsShips = [];
-        let bsHits = 0;
-        let bsTorpedoes = 12;
-        let bsOver = false;
+        window.initBattleship = function () {
+            const set = new Set();
+            while (set.size < 3) {
+                set.add(Math.floor(Math.random() * 36));
+            }
+            bsTargets = Array.from(set);
+            bsRevealed.clear();
+            bsAmmo = 14;
+            bsDone = false;
+            document.getElementById("bsTorpedoes").innerText = bsAmmo;
+            document.getElementById("bsStatus").innerText = "Fire torpedoes into the 6x6 radar grid to sink 3 hidden enemy ships!";
+            renderBsGrid();
+        };
 
-        function initBattleship() {
-            bsShips = [Math.floor(Math.random()*36), Math.floor(Math.random()*36), Math.floor(Math.random()*36)].filter((v, i, a) => a.indexOf(v) === i);
-            if(bsShips.length < 3) bsShips = [5, 18, 31];
-            bsHits = 0;
-            bsTorpedoes = 12;
-            bsOver = false;
-            renderBattleship();
-        }
-
-        function renderBattleship() {
-            document.getElementById('torpedoesCount').innerText = bsTorpedoes;
-            const grid = document.getElementById('battleshipGrid');
+        function renderBsGrid() {
+            const grid = document.getElementById("bsGrid");
             grid.innerHTML = "";
-            for(let i=0; i<36; i++) {
-                const cell = document.createElement('button');
-                cell.className = `rounded bg-tb-obsidian border border-tb-gold/40 font-display text-xs font-black flex items-center justify-center h-10 hover:border-tb-goldlight transition`;
-                cell.dataset.index = i;
-                cell.innerText = cell.dataset.revealed ? (bsShips.includes(i) ? '💥' : '❌') : '';
-                cell.onclick = () => fireTorpedo(i, cell);
+            for (let i = 0; i < 36; i++) {
+                const hit = bsRevealed.has(i) && bsTargets.includes(i);
+                const miss = bsRevealed.has(i) && !bsTargets.includes(i);
+                const cell = document.createElement("button");
+                cell.className = `rounded border font-display text-sm font-black flex items-center justify-center transition ${
+                    hit ? "bg-tb-crimson border-tb-gold text-tb-goldlight" :
+                    miss ? "bg-tb-obsidian border-tb-gold/20 text-tb-champagne" :
+                    "bg-tb-charcoal border-tb-gold/45 hover:border-tb-goldlight cursor-pointer"
+                }`;
+                cell.innerText = hit ? "💥" : miss ? "•" : "";
+                cell.disabled = bsDone || bsRevealed.has(i);
+                cell.onclick = () => fireBsTorpedo(i);
                 grid.appendChild(cell);
             }
         }
 
-        function fireTorpedo(idx, cellEl) {
-            if(bsOver || cellEl.dataset.revealed) return;
-            cellEl.dataset.revealed = "true";
-            bsTorpedoes--;
+        function fireBsTorpedo(idx) {
+            if (bsDone || bsRevealed.has(idx)) return;
+            bsRevealed.add(idx);
+            bsAmmo--;
+            document.getElementById("bsTorpedoes").innerText = bsAmmo;
 
-            if(bsShips.includes(idx)) {
-                cellEl.className = "rounded bg-tb-crimson border border-tb-gold font-display text-sm font-black flex items-center justify-center h-10 text-tb-goldlight";
-                cellEl.innerText = "💥";
-                bsHits++;
-                if(bsHits >= bsShips.length) {
-                    document.getElementById('battleshipStatus').innerText = "All enemy fleets destroyed! +300 TB-Coins!";
-                    appState.coins += 300;
-                    updateUI();
-                    saveState();
-                    addLiveFeedEntry(`${appState.username} won Battleship Radar (+300 TB).`);
-                    bsOver = true;
-                } else {
-                    document.getElementById('battleshipStatus').innerText = "Direct Hit! Keep firing!";
-                }
+            const hitsCount = bsTargets.filter(t => bsRevealed.has(t)).length;
+            if (hitsCount === bsTargets.length) {
+                bsDone = true;
+                document.getElementById("bsStatus").innerText = "FLEET DESTROYED! +300 TB-Coins awarded!";
+                userState.coins += 300;
+                saveUserProgress();
+                addLiveFeed(`${userState.username} sank the Battleship fleet for +300 TB-Coins!`);
+            } else if (bsAmmo <= 0) {
+                bsDone = true;
+                document.getElementById("bsStatus").innerText = "OUT OF TORPEDOES! Scan again to retry.";
+            } else if (bsTargets.includes(idx)) {
+                document.getElementById("bsStatus").innerText = `DIRECT HIT! (${hitsCount}/3 ships sunk)`;
             } else {
-                cellEl.className = "rounded bg-tb-charcoal border border-tb-gold/20 font-display text-sm font-black flex items-center justify-center h-10 text-tb-champagne";
-                cellEl.innerText = "💧";
-                if(bsTorpedoes <= 0) {
-                    document.getElementById('battleshipStatus').innerText = "Out of torpedoes! Mission failed.";
-                    bsOver = true;
+                document.getElementById("bsStatus").innerText = `Splash! Sector clear. (${hitsCount}/3 ships sunk)`;
+            }
+            renderBsGrid();
+        }
+
+        // === 15. TRAVELPAYOUTS PARTNER SEARCH ===
+        window.setTravelMode = function (mode) {
+            currentTravelMode = mode;
+            const originGroup = document.getElementById("originFieldGroup");
+            const fBtn = document.getElementById("travelMode-flights");
+            const hBtn = document.getElementById("travelMode-hotels");
+
+            if (mode === "flights") {
+                originGroup.classList.remove("hidden");
+                fBtn.className = "btn-gold px-4 py-1.5 rounded-lg font-display text-xs font-black uppercase tracking-wider cursor-pointer";
+                hBtn.className = "btn-crimson px-4 py-1.5 rounded-lg font-display text-xs font-black uppercase tracking-wider cursor-pointer";
+            } else {
+                originGroup.classList.add("hidden");
+                hBtn.className = "btn-gold px-4 py-1.5 rounded-lg font-display text-xs font-black uppercase tracking-wider cursor-pointer";
+                fBtn.className = "btn-crimson px-4 py-1.5 rounded-lg font-display text-xs font-black uppercase tracking-wider cursor-pointer";
+            }
+        };
+
+        window.launchTravelSearch = function (e) {
+            e.preventDefault();
+            const origin = encodeURIComponent(document.getElementById("tpOrigin").value.trim() || "ALG");
+            const dest = encodeURIComponent(document.getElementById("tpDest").value.trim() || "DXB");
+            const date = encodeURIComponent(document.getElementById("tpDepartDate").value || "");
+            const adults = encodeURIComponent(document.getElementById("tpTravelers").value || "2");
+
+            let targetUrl = "";
+            if (currentTravelMode === "flights") {
+                targetUrl = `https://www.aviasales.com/search/${origin}${dest}1?adults=${adults}&marker=tbshow`;
+            } else {
+                targetUrl = `https://search.hotellook.com/hotels?destination=${dest}&checkIn=${date}&adults=${adults}&marker=tbshow`;
+            }
+            window.open(targetUrl, "_blank", "noopener,noreferrer");
+        };
+
+        // === 16. LEADERBOARD & RAID ARMORY ===
+        function renderLeaderboard() {
+            const tbody = document.getElementById("leaderboardBody");
+            if (!tbody) return;
+
+            let combined = [...liveLeaderboardData];
+            if (combined.length === 0) {
+                combined = [
+                    { username: "AuraQueen", coins: 8450, relicCount: 11 },
+                    { username: "KrimsonKing", coins: 7120, relicCount: 10 },
+                    { username: "VortexVanguard", coins: 4300, relicCount: 7 },
+                    { username: "SolarKnight", coins: 2890, relicCount: 5 }
+                ];
+            }
+
+            // Ensure active user appears on board if playing
+            if (userState.authType !== "NONE") {
+                const userRelics = Object.keys(userState.collection || {}).filter(k => userState.collection[k] > 0).length;
+                const existingIdx = combined.findIndex(u => u.username === userState.username);
+                if (existingIdx >= 0) {
+                    combined[existingIdx] = { username: userState.username, coins: userState.coins, relicCount: userRelics, isSelf: true };
                 } else {
-                    document.getElementById('battleshipStatus').innerText = "Miss! Sector clear.";
+                    combined.push({ username: userState.username, coins: userState.coins, relicCount: userRelics, isSelf: true });
                 }
             }
-            document.getElementById('torpedoesCount').innerText = bsTorpedoes;
-        }
 
-        function resetBattleship() {
-            initBattleship();
-            document.getElementById('battleshipStatus').innerText = "Click on radar coordinates to hunt hidden enemy fleets!";
-        }
-
-        /* --- LIVE FEED & LEADERBOARD UTILS --- */
-        function addLiveFeedEntry(text) {
-            const now = new Date();
-            const timeStr = `${String(now.getHours()).padStart(2,'0')}:${String(now.getMinutes()).padStart(2,'0')}`;
-            appState.liveFeed.unshift({ time: timeStr, text: text });
-            if(appState.liveFeed.length > 20) appState.liveFeed.pop();
-            renderLiveFeed();
-            saveState();
-        }
-
-        function renderLiveFeed() {
-            const list = document.getElementById('liveFeedList');
-            list.innerHTML = "";
-            appState.liveFeed.forEach(item => {
-                const row = document.createElement('div');
-                row.className = "flex items-start gap-3 p-2.5 rounded-xl bg-tb-obsidian/70 border border-tb-gold/20 font-sans text-xs";
-                row.innerHTML = `
-                    <span class="font-display text-tb-gold shrink-0">${item.time}</span>
-                    <span class="text-tb-ivory leading-snug">${item.text}</span>
-                `;
-                list.appendChild(row);
-            });
-        }
-
-        function updateLeaderboardUser() {
-            const userEntry = appState.leaderboard.find(e => e.name.includes("(You)"));
-            if(userEntry) {
-                userEntry.name = `${appState.username} (You)`;
-                userEntry.coins = appState.coins;
-                userEntry.relics = appState.relics.filter(r => r.unlocked).length;
-                renderLeaderboard();
-                saveState();
-            }
-        }
-
-        function renderLeaderboard() {
-            // Sort leaderboard by coins desc
-            appState.leaderboard.sort((a, b) => b.coins - a.coins);
-            appState.leaderboard.forEach((e, idx) => e.rank = idx + 1);
-
-            const tbody = document.getElementById('leaderboardBody');
+            combined.sort((a, b) => b.coins - a.coins);
             tbody.innerHTML = "";
-            appState.leaderboard.forEach(e => {
-                const isUser = e.name.includes("(You)");
-                const tr = document.createElement('tr');
-                tr.className = `border-b border-tb-gold/15 transition ${isUser ? 'bg-tb-deepred/50 font-bold' : 'hover:bg-tb-deepred/20'}`;
+
+            combined.slice(0, 10).forEach((entry, idx) => {
+                const tr = document.createElement("tr");
+                tr.className = `transition ${entry.isSelf ? "bg-tb-deepred/65 font-bold" : "hover:bg-tb-deepred/25"}`;
                 tr.innerHTML = `
-                    <td class="p-4 sm:p-5 font-display text-tb-gold font-black">#${e.rank}</td>
-                    <td class="p-4 sm:p-5 font-display text-tb-ivory">${e.name}</td>
-                    <td class="p-4 sm:p-5 font-display text-tb-goldlight font-black">${e.coins.toLocaleString()} TB</td>
-                    <td class="p-4 sm:p-5 font-display text-tb-ivory">${e.relics} / 12</td>
-                    <td class="p-4 sm:p-5 font-display text-xs"><span class="px-2.5 py-1 rounded ${e.status === 'ONLINE' ? 'bg-emerald-900/50 text-emerald-400 border border-emerald-700/50' : e.status === 'LOCAL' ? 'bg-tb-gold/20 text-tb-goldlight border border-tb-gold/50' : 'bg-tb-obsidian text-tb-champagne border border-tb-gold/20'}">${e.status}</span></td>
+                    <td class="p-4 font-display text-base font-black text-tb-gold">#${idx + 1}</td>
+                    <td class="p-4 font-display text-base font-bold text-tb-ivory">
+                        ${entry.username} ${entry.isSelf ? '<span class="ml-1.5 text-[10px] px-1.5 py-0.5 rounded bg-tb-gold text-tb-obsidian font-black">YOU</span>' : ""}
+                    </td>
+                    <td class="p-4 font-display text-sm font-bold text-tb-champagne">${entry.relicCount} / 12</td>
+                    <td class="p-4 font-display text-base font-black text-tb-goldlight">⚡ ${entry.coins.toLocaleString()}</td>
                 `;
                 tbody.appendChild(tr);
             });
         }
 
-        /* --- MODAL DIALOGS --- */
-        function showSpinModal(title, desc, icon) {
-            document.getElementById('spinModalTitle').innerText = title;
-            document.getElementById('spinModalDesc').innerText = desc;
-            document.getElementById('spinModalIcon').innerText = icon;
-            document.getElementById('spinModal').classList.remove('hidden');
+        function renderRaidWeapons() {
+            const container = document.getElementById("raidWeaponsList");
+            if (!container) return;
+            container.innerHTML = "";
+
+            RAID_WEAPONS.forEach(w => {
+                const owned = (userState.ownedWeapons || []).includes(w.id);
+                const equipped = userState.equippedWeapon === w.id;
+
+                const card = document.createElement("div");
+                card.className = `p-4 rounded-xl bg-tb-obsidian/85 border ${equipped ? "border-tb-gold" : "border-tb-gold/30"} flex items-center justify-between gap-3`;
+                card.innerHTML = `
+                    <div>
+                        <div class="flex items-center gap-2">
+                            <h4 class="font-display text-lg font-black uppercase gold-text-gradient">${w.name}</h4>
+                            <span class="px-2 py-0.5 rounded bg-tb-crimson/35 text-tb-goldlight border border-tb-gold/40 font-display text-[11px] font-black">${w.bonus}</span>
+                        </div>
+                        <p class="font-sans text-xs text-tb-champagne mt-1">${w.desc}</p>
+                    </div>
+                    <button onclick="handleRaidWeaponAction('${w.id}')"
+                        class="${equipped ? "btn-gold" : "btn-crimson"} px-3.5 py-2 rounded-xl font-display text-xs font-black uppercase tracking-wider shrink-0 cursor-pointer">
+                        ${equipped ? "EQUIPPED" : owned ? "EQUIP" : `${w.cost.toLocaleString()} TB`}
+                    </button>
+                `;
+                container.appendChild(card);
+            });
         }
 
-        function closeSpinModal() {
-            document.getElementById('spinModal').classList.add('hidden');
-            updateLeaderboardUser();
+        window.handleRaidWeaponAction = function (weaponId) {
+            const w = RAID_WEAPONS.find(item => item.id === weaponId);
+            if (!w) return;
+            userState.ownedWeapons = userState.ownedWeapons || ["steel_blaster"];
+
+            if (userState.ownedWeapons.includes(w.id)) {
+                userState.equippedWeapon = w.id;
+                saveUserProgress();
+                return;
+            }
+
+            if (userState.coins < w.cost) {
+                showRewardModal("INSUFFICIENT TB-COINS", `You need ${w.cost.toLocaleString()} TB-Coins to unlock ${w.name}.`, "⚠️");
+                return;
+            }
+
+            userState.coins -= w.cost;
+            userState.ownedWeapons.push(w.id);
+            userState.equippedWeapon = w.id;
+            saveUserProgress();
+            addLiveFeed(`${userState.username} unlocked & equipped ${w.name} (${w.bonus})!`);
+            showRewardModal("WEAPON UNLOCKED!", `${w.name} (${w.bonus}) is now equipped for Stream Boss Raids!`, "⚔️");
+        };
+
+        // === 17. REWARD MODAL HELPERS ===
+        function showRewardModal(title, desc, icon) {
+            document.getElementById("rewardModalTitle").innerText = title;
+            document.getElementById("rewardModalDesc").innerText = desc;
+            document.getElementById("rewardModalIcon").innerText = icon;
+            document.getElementById("rewardModal").classList.remove("hidden");
         }
+
+        window.closeRewardModal = function () {
+            document.getElementById("rewardModal").classList.add("hidden");
+        };
+
+        // === 18. BOOTSTRAP ON DOM READY (RESTORE SESSION & HANDLE KICK CALLBACK) ===
+        window.addEventListener("DOMContentLoaded", async () => {
+            drawWheel(0);
+            renderLiveFeed();
+
+            // Set default tomorrow date on Travelpayouts search
+            const tomorrow = new Date(Date.now() + 86400000).toISOString().split("T")[0];
+            const dateInput = document.getElementById("tpDepartDate");
+            if (dateInput) dateInput.value = tomorrow;
+
+            // Restore cached user state
+            const savedRaw = localStorage.getItem("tb_hub_user_v5");
+            if (savedRaw) {
+                try {
+                    userState = { ...userState, ...JSON.parse(savedRaw) };
+                } catch (e) {
+                    console.warn("Cache parse fallback:", e);
+                }
+            }
+            refreshAllUI();
+
+            // Handle Kick OAuth 2.1 PKCE Callback
+            const urlParams = new URLSearchParams(window.location.search);
+            const authCode = urlParams.get("code");
+            const returnedState = urlParams.get("state");
+            const savedState = localStorage.getItem("kick_oauth_state");
+            const codeVerifier = localStorage.getItem("kick_code_verifier");
+
+            if (authCode && codeVerifier) {
+                if (returnedState && savedState && returnedState !== savedState) {
+                    showRewardModal("SECURITY CHECK FAILED", "OAuth state mismatch. Please try signing in with Kick again.", "⚠️");
+                    return;
+                }
+
+                window.history.replaceState({}, document.title, REDIRECT_URI);
+
+                try {
+                    const response = await fetch(WORKER_URL, {
+                        method: "POST",
+                        headers: { "Content-Type": "application/json" },
+                        body: JSON.stringify({
+                            code: authCode,
+                            code_verifier: codeVerifier,
+                            redirect_uri: REDIRECT_URI
+                        })
+                    });
+                    const rawData = await response.json();
+
+                    if (rawData && rawData.username) {
+                        const userId = String(rawData.id);
+                        const username = rawData.username;
+                        const profilePic = rawData.profile_pic || "";
+
+                        const userRef = ref(db, "tbshow/users/" + userId);
+                        const snapshot = await get(userRef);
+
+                        let coins = 500;
+                        let collection = {};
+                        let totalSpins = 0;
+
+                        if (!snapshot.exists()) {
+                            await set(userRef, {
+                                username,
+                                profile_pic: profilePic,
+                                coins: 500,
+                                total_spins: 0,
+                                collection: {},
+                                last_seen: Date.now()
+                            });
+                        } else {
+                            const val = snapshot.val();
+                            coins = val.coins ?? 500;
+                            collection = val.collection ?? {};
+                            totalSpins = val.total_spins ?? 0;
+                            await update(userRef, {
+                                username,
+                                profile_pic: profilePic,
+                                last_seen: Date.now()
+                            });
+                        }
+
+                        userState = {
+                            ...userState,
+                            id: userId,
+                            username,
+                            profile_pic: profilePic,
+                            authType: "KICK",
+                            coins,
+                            total_spins: totalSpins,
+                            collection
+                        };
+
+                        localStorage.removeItem("kick_code_verifier");
+                        localStorage.removeItem("kick_oauth_state");
+                        saveUserProgress();
+                        addLiveFeed(`${username} signed in via Kick and synced their vault!`);
+                        showRewardModal("KICK ACCOUNT CONNECTED!", `Welcome back, ${username}! Your TB-Coins and Relic Collection are synced live with Firebase.`, "⚡");
+                    }
+                } catch (err) {
+                    console.error("Kick OAuth error:", err);
+                    showRewardModal("KICK AUTHENTICATION ERROR", "Could not complete Kick token exchange. You can still play immediately with Guest Play!", "⚠️");
+                }
+            } else if (userState.authType === "KICK" && userState.id) {
+                // Refresh latest cloud state for returning Kick user
+                try {
+                    const userRef = ref(db, "tbshow/users/" + userState.id);
+                    const snapshot = await get(userRef);
+                    if (snapshot.exists()) {
+                        const val = snapshot.val();
+                        userState.coins = val.coins ?? userState.coins;
+                        userState.profile_pic = val.profile_pic ?? userState.profile_pic;
+                        userState.collection = val.collection ?? userState.collection;
+                        userState.total_spins = val.total_spins ?? userState.total_spins;
+                        saveUserProgress();
+                    }
+                } catch (e) {
+                    console.warn("Background cloud refresh skipped:", e);
+                }
+            }
+        });
     </script>
 </body>
 </html>
