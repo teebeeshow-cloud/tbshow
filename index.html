@@ -1863,38 +1863,62 @@
 
         // === 18. BOOTSTRAP ON DOM READY ===
         window.addEventListener('DOMContentLoaded', async () => {
-    const usersRef = ref(db, 'tbshow/users');
-    onValue(usersRef, (snapshot) => {
-        const data = snapshot.val();
-        const tbody = document.getElementById('leaderboard-body');
-        if (!data) {
-            tbody.innerHTML = "<tr><td colspan='4' style='text-align: center; color: #64748b;'>No members found yet.</td></tr>";
-            return;
-        }
+    // 1. SÉCURITÉ ANTI-BLOCAGE : Si au bout de 1.5 seconde le profil n'est pas affiché, on force le déblocage via le localStorage
+    const safetyTimeout = setTimeout(() => {
+        const savedUser = localStorage.getItem('tb_current_user');
+        const authContainer = document.getElementById('auth-container');
+        const userProfile = document.getElementById('user-profile');
         
-        const userList = Object.values(data).sort((a, b) => (b.coins || 0) - (a.coins || 0)).slice(0, 10);
-        tbody.innerHTML = "";
-        userList.forEach((u, index) => {
-            const artCount = u.collection ? Object.keys(u.collection).length : 0;
-            tbody.innerHTML += `
-                <tr>
-                    <td>#${index + 1}</td>
-                    <td><strong>${u.username}</strong></td>
-                    <td style="color: var(--steel);">${artCount} / ${ARTIFACTS_CATALOG.length}</td>
-                    <td style="color: var(--gold-bright); font-weight: bold;">⚡ ${u.coins || 500}</td>
-                </tr>
-            `;
-        });
-    });
+        if (savedUser && authContainer && userProfile && authContainer.style.display !== 'none' && userProfile.style.display === 'none') {
+            console.warn("Firebase response delayed. Forcing local profile render.");
+            renderUserProfile(JSON.parse(savedUser));
+        } else if (!savedUser && authContainer) {
+            authContainer.style.display = 'block';
+        }
+    }, 1500);
 
+    // 2. Chargement immédiat du cache local pour zéro attente visuelle
+    const savedUser = localStorage.getItem('tb_current_user');
+    if (savedUser) {
+        renderUserProfile(JSON.parse(savedUser));
+    }
+
+    // 3. Écouteur Leaderboard (en arrière-plan, non bloquant)
+    try {
+        const usersRef = ref(db, 'tbshow/users');
+        onValue(usersRef, (snapshot) => {
+            const data = snapshot.val();
+            const tbody = document.getElementById('leaderboard-body');
+            if (!data || !tbody) return;
+            
+            const userList = Object.values(data).sort((a, b) => (b.coins || 0) - (a.coins || 0)).slice(0, 10);
+            tbody.innerHTML = "";
+            userList.forEach((u, index) => {
+                const artCount = u.collection ? Object.keys(u.collection).length : 0;
+                tbody.innerHTML += `
+                    <tr>
+                        <td>#${index + 1}</td>
+                        <td><strong>${u.username}</strong></td>
+                        <td style="color: var(--steel);">${artCount} / ${ARTIFACTS_CATALOG.length}</td>
+                        <td style="color: var(--gold-bright); font-weight: bold;">⚡ ${u.coins || 500}</td>
+                    </tr>
+                `;
+            });
+        });
+    } catch (e) {
+        console.warn("Leaderboard sync error:", e);
+    }
+
+    // 4. Gestion du retour OAuth Kick
     const urlParams = new URLSearchParams(window.location.search);
     const authCode = urlParams.get('code');
     const returnedState = urlParams.get('state');
     const savedState = localStorage.getItem('kick_oauth_state');
     const codeVerifier = localStorage.getItem('kick_code_verifier');
 
-    try {
-        if (authCode && codeVerifier) {
+    if (authCode && codeVerifier) {
+        clearTimeout(safetyTimeout); // On annule le timeout de secours car on gère l'auth
+        try {
             if (returnedState && savedState && returnedState !== savedState) {
                 console.error("OAuth security error: state mismatch.");
                 document.getElementById('auth-container').innerHTML = "<p style='color: #e0828a; font-weight: 600;'>Security verification failed. Please try again.</p><button class='btn-kick' onclick='loginWithKick()'>Retry Sign In</button>";
@@ -1960,37 +1984,31 @@
                 localStorage.removeItem('kick_code_verifier');
                 localStorage.removeItem('kick_oauth_state');
                 renderUserProfile(userObj);
-            } else {
-                throw new Error("Invalid user payload from Kick");
             }
-        } else {
-            // Mode normal au rechargement : affichage immédiat depuis le cache local (zéro blocage)
-            const savedUser = localStorage.getItem('tb_current_user');
-            if (savedUser) {
-                const u = JSON.parse(savedUser);
-                renderUserProfile(u); // Affiche instantanément le profil
-
-                // Synchronisation silencieuse en arrière-plan avec Firebase
-                try {
-                    const userRef = ref(db, 'tbshow/users/' + u.id);
-                    get(userRef).then(snapshot => {
-                        if (snapshot.exists()) {
-                            const val = snapshot.val();
-                            u.coins = val.coins ?? u.coins;
-                            u.profile_pic = val.profile_pic ?? u.profile_pic;
-                            u.collection = val.collection ?? {};
-                            u.total_spins = val.total_spins ?? 0;
-                            localStorage.setItem('tb_current_user', JSON.stringify(u));
-                            renderUserProfile(u);
-                        }
-                    });
-                } catch (bgErr) {
-                    console.warn("Background sync skipped:", bgErr);
-                }
-            }
+        } catch (err) {
+            console.error("Auth error:", err);
+            document.getElementById('auth-container').style.display = 'block';
         }
-    } catch (err) {
-        console.error("Initialization error:", err);
+    } else if (savedUser) {
+        // Synchro silencieuse Firebase en arrière-plan
+        try {
+            const u = JSON.parse(savedUser);
+            const userRef = ref(db, 'tbshow/users/' + u.id);
+            get(userRef).then(snapshot => {
+                if (snapshot.exists()) {
+                    const val = snapshot.val();
+                    u.coins = val.coins ?? u.coins;
+                    u.profile_pic = val.profile_pic ?? u.profile_pic;
+                    u.collection = val.collection ?? {};
+                    u.total_spins = val.total_spins ?? 0;
+                    localStorage.setItem('tb_current_user', JSON.stringify(u));
+                    renderUserProfile(u);
+                }
+            });
+        } catch (e) {
+            console.warn("Background fetch skipped.");
+        }
+    } else {
         document.getElementById('auth-container').style.display = 'block';
     }
 });
