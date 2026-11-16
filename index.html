@@ -193,7 +193,37 @@
 <body class="font-sans antialiased selection:bg-tb-crimson selection:text-tb-goldlight">
 
     <!-- =================================================================== -->
-    <!-- TOP HEADER: BRAND, LIVE DATABASE STATUS & KICK / GUEST PROFILE      -->
+    <!-- DEDICATED CLEAN LOGIN SCREEN OVERLAY (VISIBLE UNTIL SIGNED IN)       -->
+    <!-- =================================================================== -->
+    <div id="authLoginOverlay" class="fixed inset-0 z-50 bg-tb-obsidian/95 backdrop-blur-md flex items-center justify-center p-4 hidden">
+        <div class="tb-glass rounded-2xl max-w-md w-full p-8 border-2 border-tb-gold shadow-2xl text-center space-y-6 relative overflow-hidden">
+            <div class="absolute -top-12 -right-12 w-36 h-36 bg-tb-crimson/25 rounded-full blur-2xl pointer-events-none"></div>
+            <div class="w-16 h-16 mx-auto rounded-2xl bg-gradient-to-br from-tb-crimson to-tb-deepred border-2 border-tb-gold flex items-center justify-center shadow-xl">
+                <svg class="w-9 h-9 text-tb-goldlight" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+                    <polygon points="12 2 19 6.5 19 17.5 12 22 5 17.5 5 6.5 12 2"/>
+                    <circle cx="12" cy="12" r="3.5" fill="#D4AF37" stroke="none"/>
+                </svg>
+            </div>
+            <div>
+                <h2 class="font-display text-3xl font-black uppercase gold-text-gradient tracking-wide">THE BEYOND SHOW</h2>
+                <p class="font-sans text-xs text-tb-champagne uppercase tracking-widest mt-1">OFFICIAL COMMUNITY HUB & DIMENSIONAL VAULT</p>
+            </div>
+            <p class="font-sans text-sm text-tb-ivory leading-relaxed">
+                Connect your official Kick account to sync your TB-Coins, hunt spins, and relic collection across devices, or enter instantly in Guest mode.
+            </p>
+            <div class="space-y-3 pt-2">
+                <button onclick="loginWithKick()" class="btn-kick w-full py-3.5 rounded-xl font-display text-base font-black uppercase tracking-wider cursor-pointer shadow-lg flex items-center justify-center gap-2">
+                    <span>CONNECT WITH KICK ACCOUNT</span>
+                </button>
+                <button onclick="activateGuestMode()" class="btn-crimson w-full py-3 rounded-xl font-display text-sm font-black uppercase tracking-wider cursor-pointer shadow-lg">
+                    CONTINUE AS GUEST
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- =================================================================== -->
+    <!-- TOP HEADER: BRAND, LIVE DATABASE STATUS & PROFILE BAR               -->
     <!-- =================================================================== -->
     <header class="sticky top-0 z-40 tb-glass border-b border-tb-gold/40">
         <div class="max-w-7xl mx-auto px-4 py-3 flex flex-wrap items-center justify-between gap-4">
@@ -210,11 +240,11 @@
                         <h1 class="font-display text-2xl sm:text-3xl font-black tracking-wider uppercase gold-text-gradient leading-none">
                             THE BEYOND SHOW
                         </h1>
-                        <!-- Non-Intrusive Real-Time Firebase Connection Status Badge -->
+                        <!-- Automatic Background Firebase Connection Status Badge -->
                         <div id="dbStatusBadge"
                             class="px-2.5 py-1 text-xs font-display font-black tracking-widest uppercase rounded bg-tb-charcoal text-amber-300 border border-tb-gold/50 flex items-center gap-1.5 select-none">
                             <span id="dbStatusDot" class="w-2 h-2 rounded-full bg-amber-400 animate-pulse"></span>
-                            <span id="dbStatusText">CONNECTING DB...</span>
+                            <span id="dbStatusText">CONNECTING...</span>
                         </div>
                     </div>
                     <p class="font-sans text-xs sm:text-sm font-semibold text-tb-champagne tracking-widest uppercase mt-0.5">
@@ -223,7 +253,7 @@
                 </div>
             </div>
 
-            <!-- Live Player Profile Bar & Kick OAuth / Guest Controls -->
+            <!-- Live Player Profile Bar & Kick / Guest Controls -->
             <div class="flex flex-wrap items-center gap-2 sm:gap-2.5">
                 <!-- TB-Coins Balance Counter -->
                 <div class="flex items-center gap-2 bg-gradient-to-r from-tb-deepred to-tb-bordeaux border border-tb-gold/60 rounded-xl px-3.5 py-1.5 shadow-inner">
@@ -252,21 +282,8 @@
                     SUPPLY +500
                 </button>
 
-                <!-- Guest / Unauthenticated Auth Prompt Controls -->
-                <div id="headerGuestControls" class="flex items-center gap-2">
-                    <button onclick="loginWithKick()"
-                        class="btn-kick px-3.5 py-2 rounded-xl font-display text-xs sm:text-sm font-black uppercase tracking-wider cursor-pointer flex items-center gap-1.5">
-                        <span>SIGN IN WITH KICK</span>
-                    </button>
-                    <button onclick="activateGuestMode()" id="quickPlayBtn"
-                        class="btn-crimson px-3 py-2 rounded-xl font-display text-xs sm:text-sm font-black uppercase tracking-wider cursor-pointer"
-                        title="Play instantly in Guest Mode">
-                        GUEST PLAY
-                    </button>
-                </div>
-
                 <!-- Authenticated Kick / Active Hunter Badge -->
-                <div id="headerUserControls" class="hidden flex items-center gap-2 bg-tb-obsidian/95 border border-tb-gold/50 rounded-xl px-3 py-1">
+                <div id="headerUserControls" class="flex items-center gap-2 bg-tb-obsidian/95 border border-tb-gold/50 rounded-xl px-3 py-1">
                     <img id="headerAvatar" src="" alt="Hunter Avatar" class="w-7 h-7 rounded-full border border-tb-gold object-cover hidden">
                     <div class="leading-tight">
                         <div class="flex items-center gap-1.5">
@@ -327,11 +344,11 @@
         <!-- TAB 1: THE HUNT WHEEL & RELICS                                  -->
         <!-- =============================================================== -->
         <section id="content-hunt" class="space-y-8">
-            <!-- Hero Banner & Kick OAuth Sign-In Prompt Card (Visible when not logged via Kick) -->
-            <div id="kickWelcomeBanner" class="tb-glass rounded-2xl p-6 md:p-8 relative overflow-hidden border border-tb-gold/50 shadow-2xl">
+            <!-- Hero Banner -->
+            <div class="tb-glass rounded-2xl p-6 md:p-8 relative overflow-hidden border border-tb-gold/50 shadow-2xl">
                 <div class="absolute -right-16 -bottom-16 w-64 h-64 bg-tb-crimson/20 rounded-full blur-3xl pointer-events-none"></div>
                 <div class="relative z-10 flex flex-col lg:flex-row lg:items-center justify-between gap-6">
-                    <div class="max-w-2xl">
+                    <div class="max-w-3xl">
                         <span class="inline-block px-3 py-1 rounded bg-tb-crimson text-tb-goldlight font-display text-xs font-black tracking-widest uppercase mb-3 border border-tb-gold/40">
                             LIVE STREAM INTERACTIVE VAULT
                         </span>
@@ -341,22 +358,6 @@
                         <p class="font-sans text-tb-champagne text-sm sm:text-base mt-2 leading-relaxed">
                             Spin the Wheel of Beyond for 100 TB-Coins per turn. Discover rare dimensional relics across 4 tiers, accumulate TB-Coins, and sync your vault directly with your Kick account.
                         </p>
-                    </div>
-                    <div id="bannerAuthBox" class="bg-tb-obsidian/90 border border-tb-gold/45 rounded-xl p-5 max-w-sm w-full shrink-0 space-y-3">
-                        <div class="font-display text-sm font-black uppercase tracking-wider text-tb-goldlight">
-                            SYNC YOUR COMMUNITY PROGRESS
-                        </div>
-                        <p class="font-sans text-xs text-tb-champagne leading-relaxed">
-                            Sign in with your official Kick account to save relics & leaderboard ranks to the cloud, or jump straight in with Quick Guest Play.
-                        </p>
-                        <div class="flex flex-col sm:flex-row gap-2 pt-1">
-                            <button onclick="loginWithKick()" class="btn-kick flex-1 py-2.5 px-4 rounded-xl font-display text-sm font-black uppercase tracking-wider cursor-pointer">
-                                SIGN IN WITH KICK
-                            </button>
-                            <button onclick="activateGuestMode()" class="btn-crimson py-2.5 px-4 rounded-xl font-display text-sm font-black uppercase tracking-wider cursor-pointer">
-                                GUEST PLAY
-                            </button>
-                        </div>
                     </div>
                 </div>
             </div>
@@ -446,7 +447,7 @@
                             Every artifact discovered on the Hunt Wheel is permanently archived in your Dimensional Vault. (<span id="armoryCountText">0</span> / 12 Discovered)
                         </p>
                     </div>
-                    <!-- Rarity Filter Pills (Strictly Bronze, Silver, Gold, Crimson Mythic — Zero Purple) -->
+                    <!-- Rarity Filter Pills -->
                     <div class="flex flex-wrap gap-2">
                         <button onclick="filterArmory('ALL')" id="filter-ALL" class="filter-pill active px-3.5 py-1.5 rounded-lg font-display text-xs font-black uppercase tracking-wider cursor-pointer">ALL</button>
                         <button onclick="filterArmory('BRONZE')" id="filter-BRONZE" class="filter-pill px-3.5 py-1.5 rounded-lg font-display text-xs font-black uppercase tracking-wider cursor-pointer text-amber-500">BRONZE</button>
@@ -467,7 +468,7 @@
         <!-- TAB 2: MINI-GAMES ARENA (ALL 4 GAMES UNIFIED)                   -->
         <!-- =============================================================== -->
         <section id="content-minigames" class="space-y-8 hidden">
-            <!-- Arena Banner -->
+            <!-- Arena Banner with Fixed GitHub Pages Module Link -->
             <div class="tb-glass rounded-2xl p-6 md:p-8 relative overflow-hidden border border-tb-gold/50 shadow-2xl">
                 <div class="absolute -right-16 -bottom-16 w-64 h-64 bg-tb-crimson/20 rounded-full blur-3xl pointer-events-none"></div>
                 <div class="relative z-10 flex flex-wrap items-center justify-between gap-6">
@@ -482,9 +483,9 @@
                             All four official TB Show mini-games unified in one arena. Play instantly right inside the Hub to win TB-Coins, or launch the dedicated standalone modules on GitHub Pages.
                         </p>
                     </div>
-                    <a href="https://teebeeshow-cloud.github.io/" target="_blank" rel="noopener noreferrer"
+                    <a href="https://teebeeshow-cloud.github.io/tbshow/" target="_blank" rel="noopener noreferrer"
                         class="btn-crimson px-5 py-3 rounded-xl font-display text-sm font-black uppercase tracking-wider flex items-center gap-2 shadow-xl">
-                        <span>ALL STANDALONE MODULES</span>
+                        <span>GITHUB PAGES MODULE</span>
                         <svg class="w-4 h-4 text-tb-goldlight" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
                             <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/>
                         </svg>
@@ -510,9 +511,9 @@
                         <button onclick="openGameModal('poker')" class="btn-gold w-full py-2.5 rounded-xl font-display text-sm font-black uppercase tracking-wider cursor-pointer">
                             PLAY IN HUB
                         </button>
-                        <a href="https://teebeeshow-cloud.github.io/" target="_blank" rel="noopener noreferrer"
+                        <a href="https://teebeeshow-cloud.github.io/tbshow/" target="_blank" rel="noopener noreferrer"
                             class="btn-crimson w-full py-2 rounded-xl font-display text-xs font-black uppercase tracking-wider flex items-center justify-center gap-1.5">
-                            <span>LAUNCH MODULE</span>
+                            <span>GITHUB MODULE</span>
                             <span>↗</span>
                         </a>
                     </div>
@@ -534,9 +535,9 @@
                         <button onclick="openGameModal('hangstein')" class="btn-gold w-full py-2.5 rounded-xl font-display text-sm font-black uppercase tracking-wider cursor-pointer">
                             PLAY IN HUB
                         </button>
-                        <a href="https://teebeeshow-cloud.github.io/" target="_blank" rel="noopener noreferrer"
+                        <a href="https://teebeeshow-cloud.github.io/tbshow/" target="_blank" rel="noopener noreferrer"
                             class="btn-crimson w-full py-2 rounded-xl font-display text-xs font-black uppercase tracking-wider flex items-center justify-center gap-1.5">
-                            <span>LAUNCH MODULE</span>
+                            <span>GITHUB MODULE</span>
                             <span>↗</span>
                         </a>
                     </div>
@@ -558,9 +559,9 @@
                         <button onclick="openGameModal('morbakim')" class="btn-gold w-full py-2.5 rounded-xl font-display text-sm font-black uppercase tracking-wider cursor-pointer">
                             PLAY IN HUB
                         </button>
-                        <a href="https://teebeeshow-cloud.github.io/" target="_blank" rel="noopener noreferrer"
+                        <a href="https://teebeeshow-cloud.github.io/tbshow/" target="_blank" rel="noopener noreferrer"
                             class="btn-crimson w-full py-2 rounded-xl font-display text-xs font-black uppercase tracking-wider flex items-center justify-center gap-1.5">
-                            <span>LAUNCH MODULE</span>
+                            <span>GITHUB MODULE</span>
                             <span>↗</span>
                         </a>
                     </div>
@@ -582,9 +583,9 @@
                         <button onclick="openGameModal('battleship')" class="btn-gold w-full py-2.5 rounded-xl font-display text-sm font-black uppercase tracking-wider cursor-pointer">
                             PLAY IN HUB
                         </button>
-                        <a href="https://teebeeshow-cloud.github.io/" target="_blank" rel="noopener noreferrer"
+                        <a href="https://teebeeshow-cloud.github.io/tbshow/" target="_blank" rel="noopener noreferrer"
                             class="btn-crimson w-full py-2 rounded-xl font-display text-xs font-black uppercase tracking-wider flex items-center justify-center gap-1.5">
-                            <span>LAUNCH MODULE</span>
+                            <span>GITHUB MODULE</span>
                             <span>↗</span>
                         </a>
                     </div>
@@ -976,7 +977,7 @@
         const REDIRECT_URI = "https://teebeeshow-cloud.github.io/tbshow/";
         const WORKER_URL = "https://nameless-base-1ca1.teebeeshow.workers.dev";
 
-        // === 3. DIMENSIONAL RELICS CATALOG (12 RELICS — STRICTLY GOLD/CRIMSON/SILVER/BRONZE) ===
+        // === 3. DIMENSIONAL RELICS CATALOG (12 RELICS) ===
         const RELICS_CATALOG = [
             { id: "obsidian_core", code: "#001", name: "Obsidian Core", rarity: "GOLD", icon: "💎", desc: "Volcanic matrix pulsing with ancient thermal energy." },
             { id: "crimson_spark", code: "#002", name: "Crimson Spark", rarity: "BRONZE", icon: "🔥", desc: "Fiery shard captured from the first Beyond stream." },
@@ -1041,7 +1042,7 @@
                 isDbOnline = false;
                 badge.className = "px-2.5 py-1 text-xs font-display font-black tracking-widest uppercase rounded bg-tb-deepred text-tb-goldlight border border-tb-crimson flex items-center gap-1.5 select-none";
                 dot.className = "w-2 h-2 rounded-full bg-tb-mythic";
-                text.innerText = "OFFLINE / LOCAL VAULT";
+                text.innerText = "LOCAL VAULT";
                 document.getElementById("leaderboardSyncLabel").innerText = "● LOCAL CACHE";
                 document.getElementById("leaderboardSyncLabel").className = "font-display text-xs font-bold uppercase text-tb-champagne";
             }
@@ -1091,24 +1092,26 @@
             const eqWeapon = RAID_WEAPONS.find(w => w.id === userState.equippedWeapon) || RAID_WEAPONS[0];
             document.getElementById("statRaidBonus").innerText = eqWeapon.bonus;
 
-            // Header Auth State UI
-            const guestControls = document.getElementById("headerGuestControls");
-            const userControls = document.getElementById("headerUserControls");
-            const bannerAuthBox = document.getElementById("bannerAuthBox");
+            // Handle Login Overlay
+            const loginOverlay = document.getElementById("authLoginOverlay");
+            if (userState.authType === "NONE") {
+                loginOverlay.classList.remove("hidden");
+            } else {
+                loginOverlay.classList.add("hidden");
+            }
 
-            if (userState.authType === "KICK" || userState.authType === "GUEST") {
-                guestControls.classList.add("hidden");
+            // Header Auth State UI
+            const userControls = document.getElementById("headerUserControls");
+            if (userState.authType !== "NONE") {
                 userControls.classList.remove("hidden");
                 document.getElementById("headerUsername").innerText = userState.username;
                 const tagEl = document.getElementById("headerAuthTag");
                 if (userState.authType === "KICK") {
                     tagEl.innerText = "KICK VERIFIED";
                     tagEl.className = "text-[10px] font-display font-black px-1.5 py-0.2 rounded bg-tb-kick text-tb-obsidian";
-                    bannerAuthBox.classList.add("hidden");
                 } else {
                     tagEl.innerText = "GUEST VAULT";
                     tagEl.className = "text-[10px] font-display font-bold px-1.5 py-0.2 rounded bg-tb-deepred text-tb-goldlight border border-tb-gold/40";
-                    bannerAuthBox.classList.remove("hidden");
                 }
 
                 const avatarImg = document.getElementById("headerAvatar");
@@ -1119,9 +1122,7 @@
                     avatarImg.classList.add("hidden");
                 }
             } else {
-                guestControls.classList.remove("hidden");
                 userControls.classList.add("hidden");
-                bannerAuthBox.classList.remove("hidden");
             }
 
             renderArmory(currentFilter);
@@ -1130,6 +1131,10 @@
         }
 
         // === 8. KICK OAUTH 2.1 PKCE FLOW & GUEST PLAY ===
+        const CLIENT_ID = "01M775NPQP93VF5PGP6DJR4BQF";
+        const REDIRECT_URI = "https://teebeeshow-cloud.github.io/tbshow/";
+        const WORKER_URL = "https://nameless-base-1ca1.teebeeshow.workers.dev";
+
         function generateRandomString(length = 32) {
             const array = new Uint8Array(length);
             window.crypto.getRandomValues(array);
@@ -1165,13 +1170,11 @@
         };
 
         window.activateGuestMode = function () {
-            if (userState.authType === "NONE") {
-                userState.authType = "GUEST";
-                userState.username = "BeyondHunter_" + Math.floor(100 + Math.random() * 899);
-                saveUserProgress();
-                addLiveFeed(`${userState.username} entered the Hub in Guest Vault mode.`);
-                showRewardModal("GUEST VAULT ACTIVE", `Welcome ${userState.username}! You have 500 TB-Coins ready to spin the wheel or play mini-games.`, "⚡");
-            }
+            userState.authType = "GUEST";
+            userState.username = "BeyondHunter_" + Math.floor(100 + Math.random() * 899);
+            saveUserProgress();
+            addLiveFeed(`${userState.username} entered the Hub in Guest Vault mode.`);
+            showRewardModal("GUEST VAULT ACTIVE", `Welcome ${userState.username}! You have 500 TB-Coins ready to spin the wheel or play mini-games.`, "⚡");
         };
 
         window.logoutUser = function () {
@@ -1206,8 +1209,8 @@
         // === 10. DAILY SUPPLY ===
         window.claimDailySupply = function () {
             if (userState.authType === "NONE") {
-                userState.authType = "GUEST";
-                userState.username = "BeyondHunter_" + Math.floor(100 + Math.random() * 899);
+                activateGuestMode();
+                return;
             }
             const now = Date.now();
             if (now - (userState.lastDailyClaim || 0) < 86400000) {
@@ -1291,8 +1294,8 @@
             if (isWheelSpinning) return;
 
             if (userState.authType === "NONE") {
-                userState.authType = "GUEST";
-                userState.username = "BeyondHunter_" + Math.floor(100 + Math.random() * 899);
+                activateGuestMode();
+                return;
             }
 
             if (userState.coins < 100) {
@@ -1376,9 +1379,7 @@
 
             ["ALL", "BRONZE", "SILVER", "GOLD", "MYTHIC"].forEach(f => {
                 const btn = document.getElementById(`filter-${f}`);
-                if (btn) {
-                    btn.classList.toggle("active", f === filter);
-                }
+                if (btn) btn.classList.toggle("active", f === filter);
             });
 
             const list = RELICS_CATALOG.filter(r => filter === "ALL" || r.rarity === filter);
@@ -1444,9 +1445,7 @@
         // === 14. IN-HUB PLAYABLE MINI-GAMES MODAL ===
         window.openGameModal = function (gameKey) {
             if (userState.authType === "NONE") {
-                userState.authType = "GUEST";
-                userState.username = "BeyondHunter_" + Math.floor(100 + Math.random() * 899);
-                saveUserProgress();
+                activateGuestMode();
             }
 
             const titles = {
@@ -1621,7 +1620,6 @@
                 return;
             }
 
-            // AI Turn
             const diff = document.getElementById("morbDifficulty").value;
             const open = morbCells.map((v, i) => (v === "" ? i : null)).filter(v => v !== null);
             let choice = open[Math.floor(Math.random() * open.length)];
@@ -1771,7 +1769,6 @@
                 ];
             }
 
-            // Ensure active user appears on board if playing
             if (userState.authType !== "NONE") {
                 const userRelics = Object.keys(userState.collection || {}).filter(k => userState.collection[k] > 0).length;
                 const existingIdx = combined.findIndex(u => u.username === userState.username);
@@ -1864,17 +1861,15 @@
             document.getElementById("rewardModal").classList.add("hidden");
         };
 
-        // === 18. BOOTSTRAP ON DOM READY (RESTORE SESSION & HANDLE KICK CALLBACK) ===
+        // === 18. BOOTSTRAP ON DOM READY ===
         window.addEventListener("DOMContentLoaded", async () => {
             drawWheel(0);
             renderLiveFeed();
 
-            // Set default tomorrow date on Travelpayouts search
             const tomorrow = new Date(Date.now() + 86400000).toISOString().split("T")[0];
             const dateInput = document.getElementById("tpDepartDate");
             if (dateInput) dateInput.value = tomorrow;
 
-            // Restore cached user state
             const savedRaw = localStorage.getItem("tb_hub_user_v5");
             if (savedRaw) {
                 try {
@@ -1885,7 +1880,6 @@
             }
             refreshAllUI();
 
-            // Handle Kick OAuth 2.1 PKCE Callback
             const urlParams = new URLSearchParams(window.location.search);
             const authCode = urlParams.get("code");
             const returnedState = urlParams.get("state");
@@ -1967,7 +1961,6 @@
                     showRewardModal("KICK AUTHENTICATION ERROR", "Could not complete Kick token exchange. You can still play immediately with Guest Play!", "⚠️");
                 }
             } else if (userState.authType === "KICK" && userState.id) {
-                // Refresh latest cloud state for returning Kick user
                 try {
                     const userRef = ref(db, "tbshow/users/" + userState.id);
                     const snapshot = await get(userRef);
