@@ -1131,9 +1131,7 @@
         }
 
         // === 8. KICK OAUTH 2.1 PKCE FLOW & GUEST PLAY ===
-        const CLIENT_ID = "01M775NPQP93VF5PGP6DJR4BQF";
-        const REDIRECT_URI = "https://teebeeshow-cloud.github.io/tbshow/";
-        const WORKER_URL = "https://nameless-base-1ca1.teebeeshow.workers.dev";
+        // (CLIENT_ID, REDIRECT_URI et WORKER_URL sont déclarés une seule fois, en section 2)
 
         function generateRandomString(length = 32) {
             const array = new Uint8Array(length);
@@ -1625,18 +1623,18 @@
             let choice = open[Math.floor(Math.random() * open.length)];
 
             if (diff === "hard") {
-                for (const i of open) {
-                    morbCells[i] = "O";
-                    if (checkMorbWinner("O")) { choice = i; morbCells[i] = ""; break; }
+                // 1) gagner si possible, 2) sinon bloquer le joueur, 3) sinon prendre le centre
+                const findMove = (p) => open.find(i => {
+                    morbCells[i] = p;
+                    const wins = checkMorbWinner(p);
                     morbCells[i] = "";
-                }
-                if (choice === undefined || morbCells[choice] !== "") {
-                    for (const i of open) {
-                        morbCells[i] = "X";
-                        if (checkMorbWinner("X")) { choice = i; morbCells[i] = ""; break; }
-                        morbCells[i] = "";
-                    }
-                }
+                    return wins;
+                });
+                const winMove = findMove("O");
+                const blockMove = findMove("X");
+                if (winMove !== undefined) choice = winMove;
+                else if (blockMove !== undefined) choice = blockMove;
+                else if (morbCells[4] === "") choice = 4;
             }
 
             morbCells[choice] = "O";
@@ -1861,104 +1859,102 @@
             document.getElementById("rewardModal").classList.add("hidden");
         };
 
-        // === 18. BOOTSTRAP ON DOM READY ===
-        window.addEventListener('DOMContentLoaded', () => {
-    // 1. AFFICHAGE INSTANTANÉ (Zéro attente, zéro blocage)
-    const authContainer = document.getElementById('auth-container');
-    const userProfile = document.getElementById('user-profile');
-    const savedUser = localStorage.getItem('tb_current_user');
+        // === 18. BOOTSTRAP (DÉMARRAGE DU HUB) ===
+        // Le script est de type "module" : il s'exécute une fois la page chargée,
+        // on peut donc initialiser l'interface directement.
 
-    if (savedUser) {
+        // 18a. Restaure la progression sauvegardée (invité ou Kick)
         try {
-            const u = JSON.parse(savedUser);
-            renderUserProfile(u);
+            const saved = localStorage.getItem("tb_hub_user_v5");
+            if (saved) userState = { ...userState, ...JSON.parse(saved) };
         } catch (e) {
-            console.error("Parse error:", e);
-            if (authContainer) authContainer.style.display = 'block';
+            console.warn("Sauvegarde locale illisible, réinitialisation:", e);
         }
-    } else {
-        if (authContainer) authContainer.style.display = 'block';
-    }
 
-    // 2. Gestion de l'authentification Kick (si retour d'URL avec ?code=)
-    const urlParams = new URLSearchParams(window.location.search);
-    const authCode = urlParams.get('code');
-    const codeVerifier = localStorage.getItem('kick_code_verifier');
+        // 18b. Premier affichage : roue, fil d'activité, compteurs, collection
+        drawWheel(wheelAngle);
+        renderLiveFeed();
+        refreshAllUI();
+        // Redessine la roue une fois la police chargée (sinon le texte s'affiche avec la police de secours)
+        if (document.fonts && document.fonts.ready) {
+            document.fonts.ready.then(() => { if (!isWheelSpinning) drawWheel(wheelAngle); });
+        }
 
-    if (authCode && codeVerifier) {
-        if (authContainer) authContainer.innerHTML = "<p style='color: var(--gold-bright); font-weight: 600;'>Authenticating with Kick...</p>";
-        window.history.replaceState({}, document.title, REDIRECT_URI);
+        // 18c. Retour de Kick après connexion (URL contenant ?code=...)
+        async function handleKickRedirect() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const authCode = urlParams.get("code");
+            if (!authCode) return;
 
-        fetch(WORKER_URL, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-                code: authCode,
-                code_verifier: codeVerifier,
-                redirect_uri: REDIRECT_URI
-            })
-        })
-        .then(res => res.json())
-        .then(rawData => {
-            if (rawData && rawData.username) {
-                const userObj = {
-                    id: rawData.id,
+            const returnedState = urlParams.get("state");
+            const expectedState = localStorage.getItem("kick_oauth_state");
+            const codeVerifier = localStorage.getItem("kick_code_verifier");
+            window.history.replaceState({}, document.title, window.location.pathname);
+
+            if (!codeVerifier || !expectedState || returnedState !== expectedState) {
+                showRewardModal("KICK LOGIN FAILED", "The login session expired or is invalid. Please try connecting again.", "⚠️");
+                return;
+            }
+
+            document.getElementById("authLoginOverlay").classList.add("hidden");
+            showRewardModal("CONNECTING TO KICK...", "Verifying your Kick account, please wait.", "⏳");
+
+            try {
+                const res = await fetch(WORKER_URL, {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ code: authCode, code_verifier: codeVerifier, redirect_uri: REDIRECT_URI })
+                });
+                const rawData = await res.json();
+                if (!rawData || !rawData.username || !rawData.id) throw new Error("Invalid Kick response");
+
+                localStorage.removeItem("kick_code_verifier");
+                localStorage.removeItem("kick_oauth_state");
+
+                // Profil Kick de base
+                userState = {
+                    ...userState,
+                    id: String(rawData.id),
                     username: rawData.username,
                     profile_pic: rawData.profile_pic || "",
+                    authType: "KICK",
                     coins: 500,
                     total_spins: 0,
                     collection: {}
                 };
-                localStorage.setItem('tb_current_user', JSON.stringify(userObj));
-                localStorage.removeItem('kick_code_verifier');
-                localStorage.removeItem('kick_oauth_state');
-                renderUserProfile(userObj);
 
-                // Sauvegarde non bloquante dans Firebase
-                const userRef = ref(db, 'tbshow/users/' + rawData.id);
-                get(userRef).then(snapshot => {
-                    if (!snapshot.exists()) {
-                        set(userRef, userObj);
-                    } else {
+                // Récupère la progression existante dans Firebase (si le joueur est déjà venu)
+                try {
+                    const snapshot = await get(ref(db, "tbshow/users/" + userState.id));
+                    if (snapshot.exists()) {
                         const val = snapshot.val();
-                        userObj.coins = val.coins ?? 500;
-                        userObj.collection = val.collection ?? {};
-                        userObj.total_spins = val.total_spins ?? 0;
-                        localStorage.setItem('tb_current_user', JSON.stringify(userObj));
-                        renderUserProfile(userObj);
+                        userState.coins = val.coins ?? 500;
+                        userState.collection = val.collection ?? {};
+                        userState.total_spins = val.total_spins ?? 0;
+                    } else {
+                        await set(ref(db, "tbshow/users/" + userState.id), {
+                            username: userState.username,
+                            profile_pic: userState.profile_pic,
+                            coins: userState.coins,
+                            total_spins: userState.total_spins,
+                            collection: {},
+                            last_seen: Date.now()
+                        });
                     }
-                }).catch(err => console.warn("Firebase sync deferred:", err));
-            }
-        })
-        .catch(err => {
-            console.error("Auth error:", err);
-            if (authContainer) authContainer.style.display = 'block';
-        });
-    }
+                } catch (err) {
+                    console.warn("Firebase sync deferred:", err);
+                }
 
-    // 3. Leaderboard en arrière-plan (non bloquant)
-    try {
-        const usersRef = ref(db, 'tbshow/users');
-        onValue(usersRef, (snapshot) => {
-            const data = snapshot.val();
-            const tbody = document.getElementById('leaderboard-body');
-            if (!data || !tbody) return;
-            
-            const userList = Object.values(data).sort((a, b) => (b.coins || 0) - (a.coins || 0)).slice(0, 10);
-            tbody.innerHTML = "";
-            userList.forEach((u, index) => {
-                const artCount = u.collection ? Object.keys(u.collection).length : 0;
-                tbody.innerHTML += `
-                    <tr>
-                        <td>#${index + 1}</td>
-                        <td><strong>${u.username}</strong></td>
-                        <td style="color: var(--steel);">${artCount} / ${ARTIFACTS_CATALOG.length}</td>
-                        <td style="color: var(--gold-bright); font-weight: bold;">⚡ ${u.coins || 500}</td>
-                    </tr>
-                `;
-            });
-        });
-    } catch (e) {
-        console.warn("Leaderboard listener skipped:", e);
-    }
-});
+                saveUserProgress();
+                addLiveFeed(`${userState.username} connected with Kick.`);
+                showRewardModal("KICK ACCOUNT CONNECTED", `Welcome ${userState.username}! Your vault is now synced with your Kick account.`, "✅");
+            } catch (err) {
+                console.error("Auth error:", err);
+                refreshAllUI();
+                showRewardModal("KICK LOGIN FAILED", "Could not verify your Kick account. Please try again or continue as Guest.", "⚠️");
+            }
+        }
+        handleKickRedirect();
+    </script>
+</body>
+</html>
