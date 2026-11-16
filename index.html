@@ -1862,121 +1862,135 @@
         };
 
         // === 18. BOOTSTRAP ON DOM READY ===
-        window.addEventListener("DOMContentLoaded", async () => {
-            drawWheel(0);
-            renderLiveFeed();
-
-            const tomorrow = new Date(Date.now() + 86400000).toISOString().split("T")[0];
-            const dateInput = document.getElementById("tpDepartDate");
-            if (dateInput) dateInput.value = tomorrow;
-
-            const savedRaw = localStorage.getItem("tb_hub_user_v5");
-            if (savedRaw) {
-                try {
-                    userState = { ...userState, ...JSON.parse(savedRaw) };
-                } catch (e) {
-                    console.warn("Cache parse fallback:", e);
-                }
-            }
-            refreshAllUI();
-
-            const urlParams = new URLSearchParams(window.location.search);
-            const authCode = urlParams.get("code");
-            const returnedState = urlParams.get("state");
-            const savedState = localStorage.getItem("kick_oauth_state");
-            const codeVerifier = localStorage.getItem("kick_code_verifier");
-
-            if (authCode && codeVerifier) {
-                if (returnedState && savedState && returnedState !== savedState) {
-                    showRewardModal("SECURITY CHECK FAILED", "OAuth state mismatch. Please try signing in with Kick again.", "⚠️");
-                    return;
-                }
-
-                window.history.replaceState({}, document.title, REDIRECT_URI);
-
-                try {
-                    const response = await fetch(WORKER_URL, {
-                        method: "POST",
-                        headers: { "Content-Type": "application/json" },
-                        body: JSON.stringify({
-                            code: authCode,
-                            code_verifier: codeVerifier,
-                            redirect_uri: REDIRECT_URI
-                        })
-                    });
-                    const rawData = await response.json();
-
-                    if (rawData && rawData.username) {
-                        const userId = String(rawData.id);
-                        const username = rawData.username;
-                        const profilePic = rawData.profile_pic || "";
-
-                        const userRef = ref(db, "tbshow/users/" + userId);
-                        const snapshot = await get(userRef);
-
-                        let coins = 500;
-                        let collection = {};
-                        let totalSpins = 0;
-
-                        if (!snapshot.exists()) {
-                            await set(userRef, {
-                                username,
-                                profile_pic: profilePic,
-                                coins: 500,
-                                total_spins: 0,
-                                collection: {},
-                                last_seen: Date.now()
-                            });
-                        } else {
-                            const val = snapshot.val();
-                            coins = val.coins ?? 500;
-                            collection = val.collection ?? {};
-                            totalSpins = val.total_spins ?? 0;
-                            await update(userRef, {
-                                username,
-                                profile_pic: profilePic,
-                                last_seen: Date.now()
-                            });
-                        }
-
-                        userState = {
-                            ...userState,
-                            id: userId,
-                            username,
-                            profile_pic: profilePic,
-                            authType: "KICK",
-                            coins,
-                            total_spins: totalSpins,
-                            collection
-                        };
-
-                        localStorage.removeItem("kick_code_verifier");
-                        localStorage.removeItem("kick_oauth_state");
-                        saveUserProgress();
-                        addLiveFeed(`${username} signed in via Kick and synced their vault!`);
-                        showRewardModal("KICK ACCOUNT CONNECTED!", `Welcome back, ${username}! Your TB-Coins and Relic Collection are synced live with Firebase.`, "⚡");
-                    }
-                } catch (err) {
-                    console.error("Kick OAuth error:", err);
-                    showRewardModal("KICK AUTHENTICATION ERROR", "Could not complete Kick token exchange. You can still play immediately with Guest Play!", "⚠️");
-                }
-            } else if (userState.authType === "KICK" && userState.id) {
-                try {
-                    const userRef = ref(db, "tbshow/users/" + userState.id);
-                    const snapshot = await get(userRef);
-                    if (snapshot.exists()) {
-                        const val = snapshot.val();
-                        userState.coins = val.coins ?? userState.coins;
-                        userState.profile_pic = val.profile_pic ?? userState.profile_pic;
-                        userState.collection = val.collection ?? userState.collection;
-                        userState.total_spins = val.total_spins ?? userState.total_spins;
-                        saveUserProgress();
-                    }
-                } catch (e) {
-                    console.warn("Background cloud refresh skipped:", e);
-                }
-            }
+        window.addEventListener('DOMContentLoaded', async () => {
+    const usersRef = ref(db, 'tbshow/users');
+    onValue(usersRef, (snapshot) => {
+        const data = snapshot.val();
+        const tbody = document.getElementById('leaderboard-body');
+        if (!data) {
+            tbody.innerHTML = "<tr><td colspan='4' style='text-align: center; color: #64748b;'>No members found yet.</td></tr>";
+            return;
+        }
+        
+        const userList = Object.values(data).sort((a, b) => (b.coins || 0) - (a.coins || 0)).slice(0, 10);
+        tbody.innerHTML = "";
+        userList.forEach((u, index) => {
+            const artCount = u.collection ? Object.keys(u.collection).length : 0;
+            tbody.innerHTML += `
+                <tr>
+                    <td>#${index + 1}</td>
+                    <td><strong>${u.username}</strong></td>
+                    <td style="color: var(--steel);">${artCount} / ${ARTIFACTS_CATALOG.length}</td>
+                    <td style="color: var(--gold-bright); font-weight: bold;">⚡ ${u.coins || 500}</td>
+                </tr>
+            `;
         });
-    </script>
-</body>
-</html>
+    });
+
+    const urlParams = new URLSearchParams(window.location.search);
+    const authCode = urlParams.get('code');
+    const returnedState = urlParams.get('state');
+    const savedState = localStorage.getItem('kick_oauth_state');
+    const codeVerifier = localStorage.getItem('kick_code_verifier');
+
+    try {
+        if (authCode && codeVerifier) {
+            if (returnedState && savedState && returnedState !== savedState) {
+                console.error("OAuth security error: state mismatch.");
+                document.getElementById('auth-container').innerHTML = "<p style='color: #e0828a; font-weight: 600;'>Security verification failed. Please try again.</p><button class='btn-kick' onclick='loginWithKick()'>Retry Sign In</button>";
+                return;
+            }
+
+            document.getElementById('auth-container').innerHTML = "<p style='color: var(--gold-bright); font-weight: 600;'>Authenticating with Kick...</p>";
+            window.history.replaceState({}, document.title, REDIRECT_URI);
+
+            const response = await fetch(WORKER_URL, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    code: authCode,
+                    code_verifier: codeVerifier,
+                    redirect_uri: REDIRECT_URI
+                })
+            });
+            const rawData = await response.json();
+
+            if (rawData && rawData.username) {
+                const userId = rawData.id;
+                const username = rawData.username;
+                const profilePic = rawData.profile_pic || "";
+
+                const userRef = ref(db, 'tbshow/users/' + userId);
+                const snapshot = await get(userRef);
+
+                let currentCoins = 500;
+                let currentCollection = {};
+                let currentSpins = 0;
+
+                if (!snapshot.exists()) {
+                    await set(userRef, {
+                        username: username,
+                        profile_pic: profilePic,
+                        coins: 500,
+                        total_spins: 0,
+                        collection: {},
+                        last_seen: Date.now()
+                    });
+                } else {
+                    const val = snapshot.val();
+                    currentCoins = val.coins ?? 500;
+                    currentCollection = val.collection ?? {};
+                    currentSpins = val.total_spins ?? 0;
+                    await update(userRef, {
+                        username: username,
+                        profile_pic: profilePic,
+                        last_seen: Date.now()
+                    });
+                }
+
+                const userObj = {
+                    id: userId,
+                    username: username,
+                    profile_pic: profilePic,
+                    coins: currentCoins,
+                    total_spins: currentSpins,
+                    collection: currentCollection
+                };
+                localStorage.setItem('tb_current_user', JSON.stringify(userObj));
+                localStorage.removeItem('kick_code_verifier');
+                localStorage.removeItem('kick_oauth_state');
+                renderUserProfile(userObj);
+            } else {
+                throw new Error("Invalid user payload from Kick");
+            }
+        } else {
+            // Mode normal au rechargement : affichage immédiat depuis le cache local (zéro blocage)
+            const savedUser = localStorage.getItem('tb_current_user');
+            if (savedUser) {
+                const u = JSON.parse(savedUser);
+                renderUserProfile(u); // Affiche instantanément le profil
+
+                // Synchronisation silencieuse en arrière-plan avec Firebase
+                try {
+                    const userRef = ref(db, 'tbshow/users/' + u.id);
+                    get(userRef).then(snapshot => {
+                        if (snapshot.exists()) {
+                            const val = snapshot.val();
+                            u.coins = val.coins ?? u.coins;
+                            u.profile_pic = val.profile_pic ?? u.profile_pic;
+                            u.collection = val.collection ?? {};
+                            u.total_spins = val.total_spins ?? 0;
+                            localStorage.setItem('tb_current_user', JSON.stringify(u));
+                            renderUserProfile(u);
+                        }
+                    });
+                } catch (bgErr) {
+                    console.warn("Background sync skipped:", bgErr);
+                }
+            }
+        }
+    } catch (err) {
+        console.error("Initialization error:", err);
+        document.getElementById('auth-container').style.display = 'block';
+    }
+});
