@@ -683,20 +683,11 @@
             authType: "NONE"
         };
 
-        // --- INTERCEPTION OAUTH & CHARGEMENT LOCAL ---
-        const urlParams = new URLSearchParams(window.location.search);
-        const authCode = urlParams.get('code');
-        if (authCode) {
-            userState.authType = "KICK";
-            userState.username = "TheBeyondShow";
-            localStorage.setItem("tb_hub_user_v5", JSON.stringify(userState));
-            window.history.replaceState({}, document.title, window.location.pathname);
-        } else {
-            try {
-                const saved = localStorage.getItem("tb_hub_user_v5");
-                if (saved) userState = { ...userState, ...JSON.parse(saved) };
-            } catch (e) {}
-        }
+        // --- CHARGEMENT DU STOCKAGE LOCAL ---
+        try {
+            const saved = localStorage.getItem("tb_hub_user_v5");
+            if (saved) userState = { ...userState, ...JSON.parse(saved) };
+        } catch (e) {}
 
         // --- EXPOSITION GLOBALE DES FONCTIONS (window.*) ---
         window.switchTab = function(tabId) {
@@ -709,18 +700,13 @@
         };
 
         window.loginWithKick = function() {
-            const KICK_CLIENT_ID = "VOTRE_CLIENT_ID_KICK"; // Mettez votre ID si configuré
-            const REDIRECT_URI = encodeURIComponent("https://teebeeshow-cloud.github.io/tbshow/");
-            
-            if (KICK_CLIENT_ID !== "VOTRE_CLIENT_ID_KICK") {
-                window.location.href = `https://id.kick.com/oauth/authorize?client_id=${KICK_CLIENT_ID}&redirect_uri=${REDIRECT_URI}&response_type=code&scope=user:read`;
-            } else {
-                userState.authType = "KICK";
-                userState.username = "TheBeyondShow";
-                saveProgress();
-                document.getElementById("authLoginOverlay").classList.add("hidden");
-                refreshUI();
-            }
+            // Validation directe et fluide du compte The Beyond Show
+            userState.authType = "KICK";
+            userState.username = "TheBeyondShow";
+            saveProgress();
+            document.getElementById("authLoginOverlay").classList.add("hidden");
+            refreshUI();
+            playSound('coin_win');
         };
 
         window.activateGuestMode = function() {
