@@ -172,7 +172,7 @@
 </head>
 <body class="font-sans antialiased selection:bg-tb-crimson selection:text-tb-goldlight">
 
-    <!-- LOGIN MODAL -->
+    <!-- LOGIN / AUTH MODAL -->
     <div id="authLoginOverlay" class="fixed inset-0 z-50 bg-tb-obsidian/95 backdrop-blur-md flex items-center justify-center p-4 hidden">
         <div class="tb-glass rounded-2xl max-w-md w-full p-8 border-2 border-tb-gold shadow-2xl text-center space-y-6 relative">
             <button onclick="closeAuthModal()" class="absolute top-4 right-4 text-tb-champagne hover:text-tb-mythic font-bold text-lg cursor-pointer" title="Fermer">✕</button>
@@ -187,7 +187,7 @@
                 <p class="font-sans text-xs text-tb-champagne uppercase tracking-widest mt-1">OFFICIAL COMMUNITY HUB & COFFRE DIMENSIONNEL</p>
             </div>
             <p class="font-sans text-sm text-tb-ivory leading-relaxed">
-                Connectez votre compte diffuseur pour synchroniser vos TB-Coins et reliques en direct.
+                Connectez votre compte Kick officiel pour synchroniser vos reliques et TB-Coins en direct.
             </p>
             <div class="space-y-3 pt-2">
                 <button onclick="loginWithKick()" class="btn-kick w-full py-3.5 rounded-xl font-display text-base font-black uppercase tracking-wider cursor-pointer shadow-lg flex items-center justify-center gap-2">
@@ -215,9 +215,15 @@
                         <h1 class="font-display text-2xl sm:text-3xl font-black tracking-wider uppercase gold-text-gradient leading-none">
                             THE BEYOND SHOW
                         </h1>
+                        <!-- FIREBASE DB STATUS -->
                         <div id="dbStatusBadge" class="px-2.5 py-1 text-xs font-display font-black tracking-widest uppercase rounded bg-tb-charcoal text-amber-300 border border-tb-gold/50 flex items-center gap-1.5 select-none">
                             <span id="dbStatusDot" class="w-2 h-2 rounded-full bg-amber-400 animate-pulse"></span>
                             <span id="dbStatusText">CONNECTING...</span>
+                        </div>
+                        <!-- KICK STREAM STATUS BADGE (ONLINE / OFFLINE) -->
+                        <div id="streamStatusBadge" class="px-2.5 py-1 text-xs font-display font-black tracking-widest uppercase rounded bg-tb-charcoal text-tb-champagne border border-tb-gold/30 flex items-center gap-1.5 select-none">
+                            <span id="streamStatusDot" class="w-2 h-2 rounded-full bg-stone-500"></span>
+                            <span id="streamStatusText">STREAM OFFLINE</span>
                         </div>
                     </div>
                     <p class="font-sans text-xs sm:text-sm font-semibold text-tb-champagne tracking-widest uppercase mt-0.5" data-i18n="subtitle">
@@ -227,27 +233,32 @@
             </div>
 
             <div class="flex flex-wrap items-center gap-2 sm:gap-2.5">
+                <!-- AUDIO SFX TOGGLE -->
                 <button onclick="toggleAudioMute()" id="audioToggleBtn" class="audio-btn">
                     <span id="audioIcon">🔊</span> <span id="audioLabel">SFX ACTIF</span>
                 </button>
 
+                <!-- LANGUAGE SWITCHER -->
                 <div class="flex bg-tb-obsidian p-0.5 rounded-lg border border-tb-gold/30">
                     <button onclick="setLanguage('fr')" id="langBtn-fr" class="lang-btn active">FR</button>
                     <button onclick="setLanguage('en')" id="langBtn-en" class="lang-btn">EN</button>
                 </div>
 
+                <!-- COINS -->
                 <div class="flex items-center gap-2 bg-gradient-to-r from-tb-deepred to-tb-bordeaux border border-tb-gold/60 rounded-xl px-3.5 py-1.5">
                     <span class="font-display text-xl font-black text-tb-goldlight" id="headerCoins">500</span>
                     <span class="font-display text-xs font-bold uppercase text-tb-gold">TB-COINS</span>
                 </div>
 
+                <!-- SUPPLY -->
                 <button onclick="claimDailySupply()" class="btn-gold px-3 py-2 rounded-xl font-display text-xs sm:text-sm font-black uppercase tracking-wider cursor-pointer">
                     +500 SUPPLY
                 </button>
 
+                <!-- USER & LOGOUT -->
                 <div id="headerUserControls" class="flex items-center gap-2 bg-tb-obsidian/95 border border-tb-gold/50 rounded-xl px-3 py-1">
-                    <span id="headerUsername" class="font-display text-sm font-black text-tb-goldlight">Ahmed Hakim Djendi</span>
-                    <button onclick="logoutUser()" class="ml-1 text-xs font-display font-bold text-tb-champagne hover:text-tb-mythic cursor-pointer" title="Déconnexion">✕</button>
+                    <span id="headerUsername" class="font-display text-sm font-black text-tb-goldlight">Invité</span>
+                    <button onclick="logoutUser()" class="ml-1 text-xs font-display font-bold text-tb-champagne hover:text-tb-mythic cursor-pointer" title="Changer de compte">✕</button>
                 </div>
             </div>
         </div>
@@ -306,7 +317,7 @@
                             </div>
                             <div class="bg-tb-obsidian/80 border border-tb-gold/30 rounded-xl p-3">
                                 <div class="font-display text-xs uppercase text-tb-champagne">RELIQUES</div>
-                                <div id="statRelicRatio" class="font-display text-2xl font-black text-tb-ivory">0 / 12</div>
+                                <div id="statRelicRatio" class="font-display text-2xl font-black text-tb-ivory">0 / 8</div>
                             </div>
                         </div>
                     </div>
@@ -318,7 +329,7 @@
                 <div class="flex flex-wrap items-center justify-between gap-4 mb-6">
                     <div>
                         <h3 class="font-display text-2xl sm:text-3xl font-black uppercase gold-text-gradient tracking-wide">COLLECTION DES RELIQUES</h3>
-                        <p class="font-sans text-sm text-tb-champagne mt-1">Artefacts archivés dans votre coffre (<span id="armoryCountText">0</span> / 12)</p>
+                        <p class="font-sans text-sm text-tb-champagne mt-1">Artefacts archivés dans votre coffre (<span id="armoryCountText">0</span> / 8)</p>
                     </div>
                     <div class="flex flex-wrap gap-2">
                         <button onclick="filterArmory('ALL')" id="filter-ALL" class="filter-pill active px-3.5 py-1.5 rounded-lg font-display text-xs font-black uppercase">TOUT</button>
@@ -444,7 +455,7 @@
                 hunt_desc: "Faites tourner la roue pour 100 TB-Coins, découvrez des reliques rares sur 4 niveaux et synchronisez votre coffre en direct."
             },
             en: {
-                subtitle: "OFFICIAL COMMUNITY HUB // DIMENSIONAL VAULT",
+                subtitle: "OFFICIAL COMMUNITY HUB // COFFRE DIMENSIONNEL",
                 tab_hunt: "THE HUNT WHEEL & RELICS",
                 tab_games: "MINI-GAMES ARENA",
                 tab_travel: "TRAVEL DEALS",
@@ -532,6 +543,25 @@
             }
         });
 
+        // Simulation ou vérification du statut Live Stream Kick
+        function checkStreamStatus() {
+            // Vous pourrez lier ici une requête vers votre Worker pour vérifier si le live Kick est en cours
+            const isLive = false; // Par défaut offline, bascule en ligne si détecté
+            const badge = document.getElementById("streamStatusBadge");
+            const dot = document.getElementById("streamStatusDot");
+            const text = document.getElementById("streamStatusText");
+
+            if (isLive) {
+                badge.className = "px-2.5 py-1 text-xs font-display font-black tracking-widest uppercase rounded bg-tb-obsidian text-tb-kick border border-tb-kick/60 flex items-center gap-1.5 select-none shadow-[0_0_10px_rgba(83,252,24,0.3)]";
+                dot.className = "w-2 h-2 rounded-full bg-tb-kick animate-ping";
+                text.innerText = "STREAM ONLINE";
+            } else {
+                badge.className = "px-2.5 py-1 text-xs font-display font-black tracking-widest uppercase rounded bg-tb-charcoal text-tb-champagne border border-tb-gold/30 flex items-center gap-1.5 select-none";
+                dot.className = "w-2 h-2 rounded-full bg-stone-500";
+                text.innerText = "STREAM OFFLINE";
+            }
+        }
+
         const RELICS_CATALOG = [
             { id: "obsidian_core", code: "#001", name: "Obsidian Core", rarity: "GOLD", icon: "💎", desc: "Matrice volcanique." },
             { id: "crimson_spark", code: "#002", name: "Crimson Spark", rarity: "BRONZE", icon: "🔥", desc: "Éclat ardent." },
@@ -545,18 +575,17 @@
 
         let currentFilter = "ALL";
         
-        // Initialisation directe sur votre compte diffuseur (Ahmed Hakim Djendi) sans bloquer sur un invité factice
         let userState = {
-            id: "ahmed_hakim",
-            username: "Ahmed Hakim Djendi",
+            id: null,
+            username: "",
             coins: 500,
             total_spins: 0,
             collection: {},
-            authType: "STREAMER"
+            authType: "NONE"
         };
 
         try {
-            const saved = localStorage.getItem("tb_hub_user_v8");
+            const saved = localStorage.getItem("tb_hub_user_v9");
             if (saved) userState = { ...userState, ...JSON.parse(saved) };
         } catch(e) {}
 
@@ -569,7 +598,7 @@
             document.getElementById(`tabBtn-${tabId}`).classList.add("active");
         };
 
-        // Kick PKCE OAuth Flow déclenché uniquement si l'on clique sur le bouton de connexion
+        // Kick PKCE OAuth Flow
         function generateRandomString(length = 32) {
             const array = new Uint8Array(length);
             window.crypto.getRandomValues(array);
@@ -604,18 +633,25 @@
 
         window.activateGuestMode = function() {
             userState.authType = "GUEST";
-            userState.username = "Ahmed Hakim Djendi";
+            userState.username = "Invité_Vault";
             saveProgress();
             document.getElementById("authLoginOverlay").classList.add("hidden");
             refreshUI();
         };
 
         window.closeAuthModal = function() {
-            document.getElementById("authLoginOverlay").classList.add("hidden");
+            if (userState.authType === "NONE") {
+                activateGuestMode();
+            } else {
+                document.getElementById("authLoginOverlay").classList.add("hidden");
+            }
         };
 
         window.logoutUser = function() {
+            localStorage.removeItem("tb_hub_user_v9");
+            userState = { id: null, username: "", coins: 500, total_spins: 0, collection: {}, authType: "NONE" };
             document.getElementById("authLoginOverlay").classList.remove("hidden");
+            refreshUI();
         };
 
         window.claimDailySupply = function() {
@@ -626,7 +662,7 @@
         };
 
         function saveProgress() {
-            localStorage.setItem("tb_hub_user_v8", JSON.stringify(userState));
+            localStorage.setItem("tb_hub_user_v9", JSON.stringify(userState));
             if (userState.id) {
                 update(ref(db, "tbshow/users/" + userState.id), {
                     username: userState.username,
@@ -640,14 +676,19 @@
 
         function refreshUI() {
             document.getElementById("headerCoins").innerText = userState.coins.toLocaleString();
-            document.getElementById("headerUsername").innerText = userState.username || "Ahmed Hakim Djendi";
+            document.getElementById("headerUsername").innerText = userState.username || "Non connecté";
             document.getElementById("statTotalSpins").innerText = userState.total_spins || 0;
             
             const unlockedCount = Object.keys(userState.collection || {}).filter(k => userState.collection[k] > 0).length;
             document.getElementById("statRelicRatio").innerText = `${unlockedCount} / ${RELICS_CATALOG.length}`;
             document.getElementById("armoryCountText").innerText = unlockedCount;
 
-            document.getElementById("authLoginOverlay").classList.add("hidden");
+            const overlay = document.getElementById("authLoginOverlay");
+            if (userState.authType === "NONE" || !userState.username) {
+                overlay.classList.remove("hidden");
+            } else {
+                overlay.classList.add("hidden");
+            }
             renderArmory(currentFilter);
         }
 
@@ -760,9 +801,38 @@
 
         updateAudioButtonUI();
         setLanguage(currentLang);
+        checkStreamStatus();
 
         window.addEventListener("DOMContentLoaded", async () => {
             drawWheel(wheelAngle);
+
+            // Handle OAuth Return from Kick Worker
+            const urlParams = new URLSearchParams(window.location.search);
+            const authCode = urlParams.get("code");
+            const codeVerifier = localStorage.getItem("kick_code_verifier");
+
+            if (authCode && codeVerifier) {
+                window.history.replaceState({}, document.title, REDIRECT_URI);
+                try {
+                    const response = await fetch(WORKER_URL, {
+                        method: "POST",
+                        headers: { "Content-Type": "application/json" },
+                        body: JSON.stringify({ code: authCode, code_verifier: codeVerifier, redirect_uri: REDIRECT_URI })
+                    });
+                    const rawData = await response.json();
+                    if (rawData && rawData.username) {
+                        userState.id = rawData.id;
+                        userState.username = rawData.username;
+                        userState.authType = "KICK";
+                        saveProgress();
+                    }
+                } catch (err) {
+                    console.warn("OAuth worker error, fallback guest");
+                    activateGuestMode();
+                }
+                localStorage.removeItem("kick_code_verifier");
+                localStorage.removeItem("kick_oauth_state");
+            }
             refreshUI();
         });
     </script>
