@@ -264,7 +264,7 @@
 
                 <div id="headerUserControls" class="flex items-center gap-2 bg-tb-obsidian/95 border border-tb-gold/50 rounded-xl px-3 py-1">
                     <span id="headerUsername" class="font-display text-sm font-black text-tb-goldlight">Hunter</span>
-                    <button onclick="logoutUser()" class="ml-1 text-xs font-display font-bold text-tb-champagne hover:text-tb-mythic cursor-pointer">✕</button>
+                    <button onclick="logoutUser()" class="ml-1 text-xs font-display font-bold text-tb-champagne hover:text-tb-mythic cursor-pointer" title="Changer de profil">✕</button>
                 </div>
             </div>
         </div>
@@ -698,7 +698,7 @@
 
         let currentFilter = "ALL";
         let userState = {
-            username: "GuestHunter",
+            username: "TheBeyondShow",
             coins: 500,
             total_spins: 0,
             collection: {},
@@ -717,6 +717,14 @@
             });
             document.getElementById(`content-${tabId}`).classList.remove("hidden");
             document.getElementById(`tabBtn-${tabId}`).classList.add("active");
+        };
+
+        window.loginWithKick = function() {
+            userState.authType = "KICK";
+            userState.username = "TheBeyondShow";
+            saveProgress();
+            document.getElementById("authLoginOverlay").classList.add("hidden");
+            refreshUI();
         };
 
         window.activateGuestMode = function() {
