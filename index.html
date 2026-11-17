@@ -278,133 +278,33 @@
     </nav>
 
     <!-- MAIN CONTENT -->
-    <main class="max-w-7xl mx-auto px-4 py-6">
+   <!-- HTML DU CONTENEUR DE LA ROUE -->
+<div class="lg:col-span-7 tb-glass rounded-2xl p-6 sm:p-8 flex flex-col items-center border border-tb-gold/45 relative shadow-xl">
+    <div class="w-full flex items-center justify-between mb-2">
+        <div class="flex items-center gap-2">
+            <span class="w-2.5 h-2.5 rounded-full bg-tb-crimson animate-pulse"></span>
+            <span class="font-display text-xs font-black tracking-widest text-tb-gold uppercase">ROUE DE L'AU-DELÀ</span>
+        </div>
+        <div class="font-display text-xs font-bold text-tb-champagne uppercase tracking-wider">
+            COÛT : <span class="text-tb-goldlight font-black">100 TB-COINS</span>
+        </div>
+    </div>
 
-        <!-- TAB 1: HUNT WHEEL -->
-        <section id="content-hunt" class="space-y-8">
-            <div class="tb-glass rounded-2xl p-6 md:p-8 relative overflow-hidden border border-tb-gold/50 shadow-2xl">
-                <h2 class="font-display text-3xl sm:text-4xl font-black uppercase gold-text-gradient tracking-wide" data-i18n="huntTitle">ROUE DE L'AU-DELÀ & RELIQUES DIMENSIONNELLES</h2>
-                <p class="font-sans text-tb-champagne text-sm sm:text-base mt-2" data-i18n="huntDesc">
-                    Faites tourner la roue pour 100 TB-Coins, découvrez des reliques rares sur 4 niveaux et synchronisez votre coffre en direct.
-                </p>
-            </div>
+    <!-- Canvas de la Roue -->
+    <div class="relative my-5 flex items-center justify-center">
+        <div class="absolute -top-3.5 z-20">
+            <div class="w-0 h-0 border-l-[15px] border-l-transparent border-r-[15px] border-r-transparent border-t-[28px] border-t-tb-goldlight filter drop-shadow-[0_4px_8px_rgba(184,29,44,0.85)]"></div>
+        </div>
+        <canvas id="wheelCanvas" width="340" height="340" class="max-w-full h-auto rounded-full shadow-[0_0_38px_rgba(184,29,44,0.4)] border-4 border-tb-gold bg-tb-obsidian"></canvas>
+    </div>
 
-            <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
-                <div class="lg:col-span-7 tb-glass rounded-2xl p-6 flex flex-col items-center border border-tb-gold/45 shadow-xl">
-                    <div class="relative my-4 flex items-center justify-center">
-                        <div class="absolute -top-3.5 z-20">
-                            <div class="w-0 h-0 border-l-[15px] border-l-transparent border-r-[15px] border-r-transparent border-t-[28px] border-t-tb-goldlight"></div>
-                        </div>
-                        <canvas id="wheelCanvas" width="340" height="340" class="rounded-full border-4 border-tb-gold bg-tb-obsidian"></canvas>
-                    </div>
-                    <button id="spinBtn" onclick="spinWheel()" class="btn-gold w-full max-w-sm py-4 rounded-xl font-display text-xl font-black uppercase tracking-widest cursor-pointer shadow-xl" data-i18n="spinBtn">
-                        TOURNER LA ROUE (100 TB)
-                    </button>
-                    <p id="spinMessage" class="font-display text-base font-bold text-tb-goldlight mt-3 text-center" data-i18n="spinMsgReady">Prêt à tenter votre chance ?</p>
-                </div>
-
-                <div class="lg:col-span-5 space-y-6">
-                    <div class="tb-glass rounded-2xl p-6 border border-tb-gold/40 shadow-xl">
-                        <h3 class="font-display text-lg font-black uppercase gold-text-gradient mb-4" data-i18n="statsTitle">STATISTIQUES DU CHASSEUR</h3>
-                        <div class="grid grid-cols-2 gap-3 text-center">
-                            <div class="bg-tb-obsidian/80 border border-tb-gold/30 rounded-xl p-3">
-                                <div class="font-display text-xs uppercase text-tb-champagne" data-i18n="statSpins">TOTAL SPINS</div>
-                                <div id="statTotalSpins" class="font-display text-2xl font-black text-tb-goldlight">0</div>
-                            </div>
-                            <div class="bg-tb-obsidian/80 border border-tb-gold/30 rounded-xl p-3">
-                                <div class="font-display text-xs uppercase text-tb-champagne" data-i18n="statRelics">RELIQUES</div>
-                                <div id="statRelicRatio" class="font-display text-2xl font-black text-tb-ivory">0 / 12</div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- TAB 2: MINI-GAMES ARENA (DIRECT REPOS & DATABASES) -->
-        <section id="content-minigames" class="space-y-8 hidden">
-            <div class="tb-glass rounded-2xl p-6 md:p-8 border border-tb-gold/50 shadow-2xl">
-                <span class="inline-block px-3 py-1 rounded bg-tb-crimson text-tb-goldlight font-display text-xs font-black uppercase mb-3 border border-tb-gold/40" data-i18n="arcadeBadge">
-                    THE BEYOND ARCADE // MODULES INDÉPENDANTS
-                </span>
-                <h2 class="font-display text-3xl sm:text-4xl font-black uppercase gold-text-gradient tracking-wide" data-i18n="arcadeTitle">
-                    CENTRE DES MINI-GEUX DÉDIÉS
-                </h2>
-                <p class="font-sans text-tb-champagne text-sm sm:text-base mt-2 max-w-2xl" data-i18n="arcadeDesc">
-                    Accédez directement à chaque mini-jeu hébergé sur son propre dépôt GitHub avec sa base de données dédiée en temps réel.
-                </p>
-            </div>
-
-            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
-                <!-- 1. TB Hold'em Poker -->
-                <div class="tb-glass rounded-2xl p-5 border border-tb-gold/45 tb-card-lift flex flex-col justify-between space-y-4">
-                    <div>
-                        <div class="flex items-center justify-between mb-3">
-                            <span class="w-11 h-11 rounded-xl bg-tb-deepred border border-tb-gold/60 flex items-center justify-center text-2xl">♠️</span>
-                            <span class="px-2.5 py-0.5 rounded bg-tb-gold/20 text-tb-goldlight border border-tb-gold/40 font-display text-xs font-black uppercase">+250 TB</span>
-                        </div>
-                        <h3 class="font-display text-2xl font-black uppercase gold-text-gradient">TB HOLD'EM POKER</h3>
-                        <p class="font-sans text-xs text-tb-champagne mt-1.5 leading-relaxed" data-i18n="descPoker">
-                            Duel Texas Hold'em avec table et base de données Firebase dédiée.
-                        </p>
-                    </div>
-                    <a href="https://teebeeshow-cloud.github.io/tbhold-em/" target="_blank" rel="noopener noreferrer" class="btn-gold w-full py-2.5 rounded-xl font-display text-sm font-black uppercase tracking-wider block text-center shadow-lg">
-                        LANCER LE JEU ↗
-                    </a>
-                </div>
-
-                <!-- 2. Hangstein / Pendu -->
-                <div class="tb-glass rounded-2xl p-5 border border-tb-gold/45 tb-card-lift flex flex-col justify-between space-y-4">
-                    <div>
-                        <div class="flex items-center justify-between mb-3">
-                            <span class="w-11 h-11 rounded-xl bg-tb-deepred border border-tb-gold/60 flex items-center justify-center text-2xl">🪢</span>
-                            <span class="px-2.5 py-0.5 rounded bg-tb-gold/20 text-tb-goldlight border border-tb-gold/40 font-display text-xs font-black uppercase">+150 TB</span>
-                        </div>
-                        <h3 class="font-display text-2xl font-black uppercase gold-text-gradient">HANGSTEIN // PENDU</h3>
-                        <p class="font-sans text-xs text-tb-champagne mt-1.5 leading-relaxed" data-i18n="descHang">
-                            Décryptage de mots-clés secrets synchronisé avec le chat du stream.
-                        </p>
-                    </div>
-                    <a href="https://teebeeshow-cloud.github.io/tbshow-hangman/" target="_blank" rel="noopener noreferrer" class="btn-gold w-full py-2.5 rounded-xl font-display text-sm font-black uppercase tracking-wider block text-center shadow-lg">
-                        LANCER LE JEU ↗
-                    </a>
-                </div>
-
-                <!-- 3. Morbakim -->
-                <div class="tb-glass rounded-2xl p-5 border border-tb-gold/45 tb-card-lift flex flex-col justify-between space-y-4">
-                    <div>
-                        <div class="flex items-center justify-between mb-3">
-                            <span class="w-11 h-11 rounded-xl bg-tb-deepred border border-tb-gold/60 flex items-center justify-center text-2xl">❌</span>
-                            <span class="px-2.5 py-0.5 rounded bg-tb-gold/20 text-tb-goldlight border border-tb-gold/40 font-display text-xs font-black uppercase">+200 TB</span>
-                        </div>
-                        <h3 class="font-display text-2xl font-black uppercase gold-text-gradient">MORBAKIM</h3>
-                        <p class="font-sans text-xs text-tb-champagne mt-1.5 leading-relaxed" data-i18n="descMorb">
-                            Affrontement tactique sur grille 3x3 en temps réel.
-                        </p>
-                    </div>
-                    <a href="https://teebeeshow-cloud.github.io/tbshow-tictactoe/" target="_blank" rel="noopener noreferrer" class="btn-gold w-full py-2.5 rounded-xl font-display text-sm font-black uppercase tracking-wider block text-center shadow-lg">
-                        LANCER LE JEU ↗
-                    </a>
-                </div>
-
-                <!-- 4. Battleship -->
-                <div class="tb-glass rounded-2xl p-5 border border-tb-gold/45 tb-card-lift flex flex-col justify-between space-y-4">
-                    <div>
-                        <div class="flex items-center justify-between mb-3">
-                            <span class="w-11 h-11 rounded-xl bg-tb-deepred border border-tb-gold/60 flex items-center justify-center text-2xl">🚢</span>
-                            <span class="px-2.5 py-0.5 rounded bg-tb-gold/20 text-tb-goldlight border border-tb-gold/40 font-display text-xs font-black uppercase">+300 TB</span>
-                        </div>
-                        <h3 class="font-display text-2xl font-black uppercase gold-text-gradient">BATAILLE NAVALE</h3>
-                        <p class="font-sans text-xs text-tb-champagne mt-1.5 leading-relaxed" data-i18n="descBattle">
-                            Guerre radar 6x6 pour torpiller les navires ennemis.
-                        </p>
-                    </div>
-                    <a href="https://teebeeshow-cloud.github.io/tbshow-battleship/" target="_blank" rel="noopener noreferrer" class="btn-gold w-full py-2.5 rounded-xl font-display text-sm font-black uppercase tracking-wider block text-center shadow-lg">
-                        LANCER LE JEU ↗
-                    </a>
-                </div>
-            </div>
-        </section>
+    <button id="spinBtn" onclick="spinWheel()" class="btn-gold w-full max-w-sm py-4 rounded-xl font-display text-xl font-black uppercase tracking-widest shadow-2xl cursor-pointer" data-i18n="spinBtn">
+        TOURNER LA ROUE (100 TB)
+    </button>
+    <p id="spinMessage" class="font-display text-base font-bold tracking-wider text-tb-goldlight mt-3 min-h-[1.5rem] text-center" data-i18n="spinMsgReady">
+        Prêt à tenter votre chance ?
+    </p>
+</div>
 
         <!-- TAB 3: TRAVEL DEALS -->
         <section id="content-travel" class="space-y-8 hidden">
