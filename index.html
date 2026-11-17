@@ -155,7 +155,7 @@
             background: #D4AF37;
         }
 
-        .lang-btn {
+        .lang-btn, .audio-btn {
             background: #090607;
             border: 1px solid rgba(212, 175, 55, 0.3);
             color: #B8A99A;
@@ -170,6 +170,10 @@
             background: #D4AF37;
             color: #090607;
             border-color: #F3D06B;
+        }
+        .audio-btn.muted {
+            border-color: #B81D2C;
+            color: #B81D2C;
         }
 
         ::-webkit-scrollbar { width: 8px; height: 8px; }
@@ -221,10 +225,10 @@
                         <h1 class="font-display text-2xl sm:text-3xl font-black tracking-wider uppercase gold-text-gradient leading-none">
                             THE BEYOND SHOW
                         </h1>
-                        <!-- CLOUD SYNC STATUS -->
+                        <!-- SYNC STATUS -->
                         <div id="dbStatusBadge" class="px-2.5 py-1 text-xs font-display font-black tracking-widest uppercase rounded bg-tb-charcoal text-amber-300 border border-tb-gold/50 flex items-center gap-1.5 select-none">
                             <span id="dbStatusDot" class="w-2 h-2 rounded-full bg-amber-400 animate-pulse"></span>
-                            <span id="dbStatusText" data-i18n="statusSyncing">SYNCHRONISATION...</span>
+                            <span id="dbStatusText" data-i18n="statusSyncing">SYNCHRONISÉ</span>
                         </div>
                         <!-- STREAM STATUS -->
                         <div id="streamStatusBadge" class="px-2.5 py-1 text-xs font-display font-black tracking-widest uppercase rounded bg-tb-charcoal text-stone-400 border border-stone-600 flex items-center gap-1.5 select-none">
@@ -238,8 +242,14 @@
                 </div>
             </div>
 
-            <!-- CONTROLS & LANG SWITCHER -->
+            <!-- CONTROLS, LANG & AUDIO MUTE -->
             <div class="flex flex-wrap items-center gap-2 sm:gap-2.5">
+                <!-- AUDIO MUTE / UNMUTE BUTTON -->
+                <button onclick="toggleAudioMute()" id="audioToggleBtn" class="audio-btn flex items-center gap-1.5" title="Activer / Couper le son">
+                    <span id="audioIcon">🔊</span> <span id="audioLabel">SFX ON</span>
+                </button>
+
+                <!-- LANG SWITCHER -->
                 <div class="flex bg-tb-obsidian p-0.5 rounded-lg border border-tb-gold/30">
                     <button onclick="setLanguage('fr')" id="langBtn-fr" class="lang-btn active">FR</button>
                     <button onclick="setLanguage('en')" id="langBtn-en" class="lang-btn">EN</button>
@@ -328,7 +338,7 @@
                 </div>
             </div>
 
-            <!-- ARMORY SECTION FIXED -->
+            <!-- ARMORY SECTION -->
             <div class="tb-glass rounded-2xl p-6 md:p-8 border border-tb-gold/45 shadow-2xl">
                 <div class="flex flex-wrap items-center justify-between gap-4 mb-6">
                     <div>
@@ -361,7 +371,7 @@
                     CENTRE DES MINI-JEUX DÉDIÉS
                 </h2>
                 <p class="font-sans text-tb-champagne text-sm sm:text-base mt-2 max-w-2xl" data-i18n="arcadeDesc">
-                    Accédez directement à chaque mini-jeu hébergé sur son propre dépôt GitHub avec sa base de données dédiée en temps réel.
+                    Accédez directement à chaque mini-jeu hébergé sur son propre dépôt GitHub.
                 </p>
             </div>
 
@@ -374,7 +384,7 @@
                         </div>
                         <h3 class="font-display text-2xl font-black uppercase gold-text-gradient">TB HOLD'EM POKER</h3>
                         <p class="font-sans text-xs text-tb-champagne mt-1.5 leading-relaxed" data-i18n="descPoker">
-                            Duel Texas Hold'em avec table et base de données dédiée.
+                            Duel Texas Hold'em avec table dédiée[cite: 6].
                         </p>
                     </div>
                     <a href="https://teebeeshow-cloud.github.io/tbhold-em/" target="_blank" rel="noopener noreferrer" class="btn-gold w-full py-2.5 rounded-xl font-display text-sm font-black uppercase tracking-wider block text-center shadow-lg" data-i18n="launchGameBtn">
@@ -390,7 +400,7 @@
                         </div>
                         <h3 class="font-display text-2xl font-black uppercase gold-text-gradient">HANGSTEIN // PENDU</h3>
                         <p class="font-sans text-xs text-tb-champagne mt-1.5 leading-relaxed" data-i18n="descHang">
-                            Décryptage de mots-clés secrets synchronisé avec le chat du stream.
+                            Décryptage de mots-clés secrets synchronisé avec le chat du stream[cite: 8].
                         </p>
                     </div>
                     <a href="https://teebeeshow-cloud.github.io/tbshow-hangman/" target="_blank" rel="noopener noreferrer" class="btn-gold w-full py-2.5 rounded-xl font-display text-sm font-black uppercase tracking-wider block text-center shadow-lg" data-i18n="launchGameBtn">
@@ -406,7 +416,7 @@
                         </div>
                         <h3 class="font-display text-2xl font-black uppercase gold-text-gradient">MORBAKIM</h3>
                         <p class="font-sans text-xs text-tb-champagne mt-1.5 leading-relaxed" data-i18n="descMorb">
-                            Affrontement tactique sur grille 3x3 en temps réel.
+                            Affrontement tactique sur grille 3x3 en temps réel[cite: 9].
                         </p>
                     </div>
                     <a href="https://teebeeshow-cloud.github.io/tbshow-tictactoe/" target="_blank" rel="noopener noreferrer" class="btn-gold w-full py-2.5 rounded-xl font-display text-sm font-black uppercase tracking-wider block text-center shadow-lg" data-i18n="launchGameBtn">
@@ -422,7 +432,7 @@
                         </div>
                         <h3 class="font-display text-2xl font-black uppercase gold-text-gradient">BATAILLE NAVALE</h3>
                         <p class="font-sans text-xs text-tb-champagne mt-1.5 leading-relaxed" data-i18n="descBattle">
-                            Guerre radar 6x6 pour torpiller les navires ennemis.
+                            Guerre radar 6x6 pour torpiller les navires ennemis[cite: 7].
                         </p>
                     </div>
                     <a href="https://teebeeshow-cloud.github.io/tbshow-battleship/" target="_blank" rel="noopener noreferrer" class="btn-gold w-full py-2.5 rounded-xl font-display text-sm font-black uppercase tracking-wider block text-center shadow-lg" data-i18n="launchGameBtn">
@@ -474,7 +484,7 @@
         </div>
     </div>
 
-    <!-- SCRIPT -->
+    <!-- SCRIPT AVEC AUDIO SYNTHÉTIQUE & BOUTON MUTE -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
         import { getDatabase, ref, set, get, update, onValue } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js";
@@ -492,43 +502,90 @@
         const app = initializeApp(firebaseConfig);
         const db = getDatabase(app);
 
-        // --- STATUTS SYNC & STREAM ---
-        onValue(ref(db, ".info/connected"), (snap) => {
-            const badge = document.getElementById("dbStatusBadge");
-            const dot = document.getElementById("dbStatusDot");
-            const text = document.getElementById("dbStatusText");
+        // --- GESTION AUDIO MUTE / UNMUTE (WEB AUDIO API) ---
+        let isAudioMuted = localStorage.getItem("tb_hub_muted") === "true";
+        const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+
+        function updateAudioButtonUI() {
+            const btn = document.getElementById("audioToggleBtn");
+            const icon = document.getElementById("audioIcon");
+            const label = document.getElementById("audioLabel");
             const lang = localStorage.getItem("tb_hub_lang") || "fr";
 
-            if (snap.val() === true) {
-                badge.className = "px-2.5 py-1 text-xs font-display font-black tracking-widest uppercase rounded bg-tb-obsidian text-emerald-400 border border-emerald-500/60 flex items-center gap-1.5 select-none";
-                dot.className = "w-2 h-2 rounded-full bg-emerald-400 animate-pulse";
-                text.innerText = lang === "en" ? "SYNC ONLINE" : "SYNCHRONISÉ";
+            if (isAudioMuted) {
+                btn.classList.add("muted");
+                icon.innerText = "🔇";
+                label.innerText = lang === "en" ? "SFX OFF" : "SFX MUTE";
             } else {
-                badge.className = "px-2.5 py-1 text-xs font-display font-black tracking-widest uppercase rounded bg-tb-deepred text-tb-goldlight border border-tb-crimson flex items-center gap-1.5 select-none";
-                dot.className = "w-2 h-2 rounded-full bg-tb-mythic";
-                text.innerText = lang === "en" ? "LOCAL CACHE" : "MODE LOCAL";
+                btn.classList.remove("muted");
+                icon.innerText = "🔊";
+                label.innerText = lang === "en" ? "SFX ON" : "SFX ACTIF";
             }
+        }
+
+        window.toggleAudioMute = function() {
+            isAudioMuted = !isAudioMuted;
+            localStorage.setItem("tb_hub_muted", isAudioMuted);
+            updateAudioButtonUI();
+            if (!isAudioMuted) playSound('coin_win');
+        };
+
+        function playSound(type) {
+            if (isAudioMuted || !audioCtx) return;
+            if (audioCtx.state === 'suspended') {
+                audioCtx.resume();
+            }
+
+            const osc = audioCtx.createOscillator();
+            const gain = audioCtx.createGain();
+            osc.connect(gain);
+            gain.connect(audioCtx.destination);
+
+            const now = audioCtx.currentTime;
+
+            if (type === 'spin_click') {
+                osc.type = 'triangle';
+                osc.frequency.setValueAtTime(320, now);
+                osc.frequency.exponentialRampToValueAtTime(120, now + 0.05);
+                gain.gain.setValueAtTime(0.1, now);
+                gain.gain.linearRampToValueAtTime(0.01, now + 0.05);
+                osc.start(now);
+                osc.stop(now + 0.05);
+            } 
+            else if (type === 'coin_win') {
+                osc.type = 'sine';
+                osc.frequency.setValueAtTime(587.33, now);
+                osc.frequency.setValueAtTime(880, now + 0.08);
+                gain.gain.setValueAtTime(0.12, now);
+                gain.gain.linearRampToValueAtTime(0.01, now + 0.3);
+                osc.start(now);
+                osc.stop(now + 0.3);
+            } 
+            else if (type === 'relic_unlock') {
+                osc.type = 'sawtooth';
+                osc.frequency.setValueAtTime(220, now);
+                osc.frequency.exponentialRampToValueAtTime(440, now + 0.4);
+                gain.gain.setValueAtTime(0.15, now);
+                gain.gain.linearRampToValueAtTime(0.01, now + 0.6);
+                osc.start(now);
+                osc.stop(now + 0.6);
+            }
+        }
+
+        // --- STATUTS SYNC & STREAM ---
+        onValue(ref(db, ".info/connected"), (snap) => {
+            const text = document.getElementById("dbStatusText");
+            const lang = localStorage.getItem("tb_hub_lang") || "fr";
+            if (text) text.innerText = snap.val() === true ? (lang === "en" ? "SYNC ONLINE" : "SYNCHRONISÉ") : (lang === "en" ? "LOCAL CACHE" : "MODE LOCAL");
         });
 
         onValue(ref(db, "stream/isOnline"), (snapshot) => {
-            const isOnline = Boolean(snapshot.val());
-            const badge = document.getElementById("streamStatusBadge");
-            const dot = document.getElementById("streamStatusDot");
             const text = document.getElementById("streamStatusText");
             const lang = localStorage.getItem("tb_hub_lang") || "fr";
-
-            if (isOnline) {
-                badge.className = "px-2.5 py-1 text-xs font-display font-black tracking-widest uppercase rounded bg-tb-obsidian text-tb-kick border border-tb-kick/60 flex items-center gap-1.5 select-none";
-                dot.className = "w-2 h-2 rounded-full bg-tb-kick animate-pulse";
-                text.innerText = lang === "en" ? "STREAM ONLINE" : "STREAM EN DIRECT";
-            } else {
-                badge.className = "px-2.5 py-1 text-xs font-display font-black tracking-widest uppercase rounded bg-tb-charcoal text-stone-400 border border-stone-600 flex items-center gap-1.5 select-none";
-                dot.className = "w-2 h-2 rounded-full bg-stone-500";
-                text.innerText = lang === "en" ? "STREAM OFFLINE" : "STREAM HORS LIGNE";
-            }
+            if (text) text.innerText = Boolean(snapshot.val()) ? (lang === "en" ? "STREAM ONLINE" : "STREAM EN DIRECT") : (lang === "en" ? "STREAM OFFLINE" : "STREAM HORS LIGNE");
         });
 
-        // --- TRADUCTIONS FR / EN (NETTOYÉES SANS JARGON TECHNIQUE) ---
+        // --- TRADUCTIONS FR / EN ---
         const translations = {
             fr: {
                 subAuthTitle: "OFFICIAL COMMUNITY HUB & COFFRE DIMENSIONNEL",
@@ -556,10 +613,10 @@
                 arcadeBadge: "THE BEYOND ARCADE // MODULES INDÉPENDANTS",
                 arcadeTitle: "CENTRE DES MINI-JEUX DÉDIÉS",
                 arcadeDesc: "Accédez directement à chaque mini-jeu hébergé sur son propre dépôt GitHub.",
-                descPoker: "Duel Texas Hold'em avec table dédiée.",
-                descHang: "Décryptage de mots-clés secrets synchronisé avec le chat du stream.",
-                descMorb: "Affrontement tactique sur grille 3x3 en temps réel.",
-                descBattle: "Guerre radar 6x6 pour torpiller les navires ennemis.",
+                descPoker: "Duel Texas Hold'em avec table dédiée[cite: 6].",
+                descHang: "Décryptage de mots-clés secrets synchronisé avec le chat du stream[cite: 8].",
+                descMorb: "Affrontement tactique sur grille 3x3 en temps réel[cite: 9].",
+                descBattle: "Guerre radar 6x6 pour torpiller les navires ennemis[cite: 7].",
                 launchGameBtn: "LANCER LE JEU ↗",
                 travelTitle: "PARTENAIRES VOYAGES & EXPÉDITIONS",
                 travelDesc: "Réservez vos vols, hôtels et eSIMs via notre réseau partenaire Travelpayouts.",
@@ -567,9 +624,7 @@
                 thRank: "RANG",
                 thHunter: "CHASSEUR",
                 thRelics: "RELIQUES",
-                modalBtn: "CONTINUER",
-                statusSyncing: "SYNCHRONISÉ",
-                streamOffline: "STREAM HORS LIGNE"
+                modalBtn: "CONTINUER"
             },
             en: {
                 subAuthTitle: "OFFICIAL COMMUNITY HUB & DIMENSIONAL VAULT",
@@ -597,10 +652,10 @@
                 arcadeBadge: "THE BEYOND ARCADE // STANDALONE MODULES",
                 arcadeTitle: "DEDICATED MINIGAMES ARENA",
                 arcadeDesc: "Launch each standalone minigame hosted on its own GitHub repository.",
-                descPoker: "Texas Hold'em duel with dedicated table.",
-                descHang: "Secret keyword decryption synced live with stream chat.",
-                descMorb: "Tactical 3x3 grid showdown in real time.",
-                descBattle: "6x6 radar naval warfare to torpedo enemy ships.",
+                descPoker: "Texas Hold'em duel with dedicated table[cite: 6].",
+                descHang: "Secret keyword decryption synced live with stream chat[cite: 8].",
+                descMorb: "Tactical 3x3 grid showdown in real time[cite: 9].",
+                descBattle: "6x6 radar naval warfare to torpedo enemy ships[cite: 7].",
                 launchGameBtn: "LAUNCH GAME ↗",
                 travelTitle: "TRAVEL DEALS & EXPEDITIONS",
                 travelDesc: "Book flights, hotels, and eSIMs through our Travelpayouts partner network.",
@@ -608,9 +663,7 @@
                 thRank: "RANK",
                 thHunter: "HUNTER",
                 thRelics: "RELICS",
-                modalBtn: "CONTINUE",
-                statusSyncing: "SYNC ONLINE",
-                streamOffline: "STREAM OFFLINE"
+                modalBtn: "CONTINUE"
             }
         };
 
@@ -625,6 +678,7 @@
                     el.innerText = translations[lang][key];
                 }
             });
+            updateAudioButtonUI();
             renderArmory(currentFilter);
         };
 
@@ -684,6 +738,7 @@
 
         window.claimDailySupply = function() {
             userState.coins += 500;
+            playSound('coin_win');
             saveProgress();
             showRewardModal("SUPPLY CLAIMED", "+500 TB-Coins added to your vault!", "🎁");
         };
@@ -766,7 +821,7 @@
             document.getElementById("rewardModal").classList.add("hidden");
         };
 
-        // --- ROULETTE ---
+        // --- ROULETTE & AUDIO ---
         const WHEEL_SEGMENTS = [
             { label: "250 TB", type: "coins", val: 250, color: "#1D0B0E" },
             { label: "BRONZE", type: "relic", rarity: "BRONZE", color: "#B81D2C" },
@@ -780,6 +835,7 @@
 
         let wheelAngle = 0;
         let isWheelSpinning = false;
+        let lastSegmentIdx = -1;
 
         function drawWheel(angle) {
             const canvas = document.getElementById("wheelCanvas");
@@ -860,6 +916,13 @@
                 wheelAngle = startAngle + (targetAngle - startAngle) * easeOut;
                 drawWheel(wheelAngle);
 
+                const currentArc = (2 * Math.PI) / WHEEL_SEGMENTS.length;
+                const currentIdx = Math.floor((wheelAngle % (2 * Math.PI)) / currentArc);
+                if (currentIdx !== lastSegmentIdx) {
+                    playSound('spin_click');
+                    lastSegmentIdx = currentIdx;
+                }
+
                 if (progress < 1) {
                     requestAnimationFrame(step);
                 } else {
@@ -881,6 +944,7 @@
             if (prize.type === "coins") {
                 userState.coins += prize.val;
                 saveProgress();
+                playSound('coin_win');
                 document.getElementById("spinMessage").innerText = `Victoire ! +${prize.val.toLocaleString()} TB-Coins gagnés !`;
                 showRewardModal("TB-COINS GAGNÉS !", `Vous avez remporté +${prize.val.toLocaleString()} TB-Coins !`, "🪙");
             } else {
@@ -890,6 +954,7 @@
                 userState.collection[chosen.id] = (userState.collection[chosen.id] || 0) + 1;
                 saveProgress();
 
+                playSound('relic_unlock');
                 document.getElementById("spinMessage").innerText = `Relique découverte : ${chosen.name} (${chosen.rarity}) !`;
                 showRewardModal("RELIQUE DÉCOUVERTE !", `Vous avez débloqué ${chosen.icon} ${chosen.name} !`, chosen.icon);
             }
@@ -897,6 +962,7 @@
 
         const savedLang = localStorage.getItem("tb_hub_lang") || "fr";
         setLanguage(savedLang);
+        updateAudioButtonUI();
 
         window.addEventListener("DOMContentLoaded", () => {
             drawWheel(wheelAngle);
