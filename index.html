@@ -244,12 +244,10 @@
 
             <!-- CONTROLS, LANG & AUDIO MUTE -->
             <div class="flex flex-wrap items-center gap-2 sm:gap-2.5">
-                <!-- AUDIO MUTE / UNMUTE BUTTON -->
                 <button onclick="toggleAudioMute()" id="audioToggleBtn" class="audio-btn flex items-center gap-1.5" title="Activer / Couper le son">
-                    <span id="audioIcon">🔊</span> <span id="audioLabel">SFX ON</span>
+                    <span id="audioIcon">🔊</span> <span id="audioLabel">SFX ACTIF</span>
                 </button>
 
-                <!-- LANG SWITCHER -->
                 <div class="flex bg-tb-obsidian p-0.5 rounded-lg border border-tb-gold/30">
                     <button onclick="setLanguage('fr')" id="langBtn-fr" class="lang-btn active">FR</button>
                     <button onclick="setLanguage('en')" id="langBtn-en" class="lang-btn">EN</button>
@@ -371,7 +369,7 @@
                     CENTRE DES MINI-JEUX DÉDIÉS
                 </h2>
                 <p class="font-sans text-tb-champagne text-sm sm:text-base mt-2 max-w-2xl" data-i18n="arcadeDesc">
-                    Accédez directement à chaque mini-jeu hébergé sur son propre dépôt GitHub.
+                    Accédez directement à chaque mini-jeu hébergé sur son propre dépôt GitHub[cite: 5].
                 </p>
             </div>
 
@@ -484,7 +482,7 @@
         </div>
     </div>
 
-    <!-- SCRIPT AVEC AUDIO SYNTHÉTIQUE & BOUTON MUTE -->
+    <!-- SCRIPT -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
         import { getDatabase, ref, set, get, update, onValue } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js";
@@ -502,7 +500,7 @@
         const app = initializeApp(firebaseConfig);
         const db = getDatabase(app);
 
-        // --- GESTION AUDIO MUTE / UNMUTE (WEB AUDIO API) ---
+        // --- AUDIO MUTE / UNMUTE (WEB AUDIO API) ---
         let isAudioMuted = localStorage.getItem("tb_hub_muted") === "true";
         const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
 
@@ -612,7 +610,7 @@
                 filterAll: "TOUT",
                 arcadeBadge: "THE BEYOND ARCADE // MODULES INDÉPENDANTS",
                 arcadeTitle: "CENTRE DES MINI-JEUX DÉDIÉS",
-                arcadeDesc: "Accédez directement à chaque mini-jeu hébergé sur son propre dépôt GitHub.",
+                arcadeDesc: "Accédez directement à chaque mini-jeu hébergé sur son propre dépôt GitHub[cite: 5].",
                 descPoker: "Duel Texas Hold'em avec table dédiée[cite: 6].",
                 descHang: "Décryptage de mots-clés secrets synchronisé avec le chat du stream[cite: 8].",
                 descMorb: "Affrontement tactique sur grille 3x3 en temps réel[cite: 9].",
@@ -651,7 +649,7 @@
                 filterAll: "ALL",
                 arcadeBadge: "THE BEYOND ARCADE // STANDALONE MODULES",
                 arcadeTitle: "DEDICATED MINIGAMES ARENA",
-                arcadeDesc: "Launch each standalone minigame hosted on its own GitHub repository.",
+                arcadeDesc: "Launch each standalone minigame hosted on its own GitHub repository[cite: 5].",
                 descPoker: "Texas Hold'em duel with dedicated table[cite: 6].",
                 descHang: "Secret keyword decryption synced live with stream chat[cite: 8].",
                 descMorb: "Tactical 3x3 grid showdown in real time[cite: 9].",
