@@ -172,7 +172,7 @@
 </head>
 <body class="font-sans antialiased selection:bg-tb-crimson selection:text-tb-goldlight">
 
-    <!-- LOGIN / AUTH MODAL -->
+    <!-- LOGIN MODAL -->
     <div id="authLoginOverlay" class="fixed inset-0 z-50 bg-tb-obsidian/95 backdrop-blur-md flex items-center justify-center p-4 hidden">
         <div class="tb-glass rounded-2xl max-w-md w-full p-8 border-2 border-tb-gold shadow-2xl text-center space-y-6 relative">
             <button onclick="closeAuthModal()" class="absolute top-4 right-4 text-tb-champagne hover:text-tb-mythic font-bold text-lg cursor-pointer" title="Fermer">✕</button>
@@ -187,7 +187,7 @@
                 <p class="font-sans text-xs text-tb-champagne uppercase tracking-widest mt-1">OFFICIAL COMMUNITY HUB & COFFRE DIMENSIONNEL</p>
             </div>
             <p class="font-sans text-sm text-tb-ivory leading-relaxed">
-                Connectez votre compte Kick officiel pour synchroniser vos reliques et TB-Coins en direct.
+                Connectez votre compte Kick officiel pour synchroniser vos reliques, votre avatar et vos TB-Coins en direct.
             </p>
             <div class="space-y-3 pt-2">
                 <button onclick="loginWithKick()" class="btn-kick w-full py-3.5 rounded-xl font-display text-base font-black uppercase tracking-wider cursor-pointer shadow-lg flex items-center justify-center gap-2">
@@ -220,7 +220,7 @@
                             <span id="dbStatusDot" class="w-2 h-2 rounded-full bg-amber-400 animate-pulse"></span>
                             <span id="dbStatusText">CONNECTING...</span>
                         </div>
-                        <!-- KICK STREAM STATUS BADGE (ONLINE / OFFLINE) -->
+                        <!-- KICK STREAM STATUS -->
                         <div id="streamStatusBadge" class="px-2.5 py-1 text-xs font-display font-black tracking-widest uppercase rounded bg-tb-charcoal text-tb-champagne border border-tb-gold/30 flex items-center gap-1.5 select-none">
                             <span id="streamStatusDot" class="w-2 h-2 rounded-full bg-stone-500"></span>
                             <span id="streamStatusText">STREAM OFFLINE</span>
@@ -233,31 +233,28 @@
             </div>
 
             <div class="flex flex-wrap items-center gap-2 sm:gap-2.5">
-                <!-- AUDIO SFX TOGGLE -->
                 <button onclick="toggleAudioMute()" id="audioToggleBtn" class="audio-btn">
                     <span id="audioIcon">🔊</span> <span id="audioLabel">SFX ACTIF</span>
                 </button>
 
-                <!-- LANGUAGE SWITCHER -->
                 <div class="flex bg-tb-obsidian p-0.5 rounded-lg border border-tb-gold/30">
                     <button onclick="setLanguage('fr')" id="langBtn-fr" class="lang-btn active">FR</button>
                     <button onclick="setLanguage('en')" id="langBtn-en" class="lang-btn">EN</button>
                 </div>
 
-                <!-- COINS -->
                 <div class="flex items-center gap-2 bg-gradient-to-r from-tb-deepred to-tb-bordeaux border border-tb-gold/60 rounded-xl px-3.5 py-1.5">
                     <span class="font-display text-xl font-black text-tb-goldlight" id="headerCoins">500</span>
                     <span class="font-display text-xs font-bold uppercase text-tb-gold">TB-COINS</span>
                 </div>
 
-                <!-- SUPPLY -->
                 <button onclick="claimDailySupply()" class="btn-gold px-3 py-2 rounded-xl font-display text-xs sm:text-sm font-black uppercase tracking-wider cursor-pointer">
                     +500 SUPPLY
                 </button>
 
-                <!-- USER & LOGOUT -->
-                <div id="headerUserControls" class="flex items-center gap-2 bg-tb-obsidian/95 border border-tb-gold/50 rounded-xl px-3 py-1">
-                    <span id="headerUsername" class="font-display text-sm font-black text-tb-goldlight">Invité</span>
+                <!-- USER PROFILE BADGE WITH KICK AVATAR -->
+                <div id="headerUserControls" class="flex items-center gap-2.5 bg-tb-obsidian/95 border border-tb-gold/50 rounded-xl px-3 py-1">
+                    <img id="headerUserAvatar" src="https://assets.kick.com/images/user/default-profile.png" alt="Avatar" class="w-7 h-7 rounded-full border border-tb-gold object-cover">
+                    <span id="headerUsername" class="font-display text-sm font-black text-tb-goldlight">Ahmed Hakim Djendi</span>
                     <button onclick="logoutUser()" class="ml-1 text-xs font-display font-bold text-tb-champagne hover:text-tb-mythic cursor-pointer" title="Changer de compte">✕</button>
                 </div>
             </div>
@@ -353,7 +350,7 @@
                     <div>
                         <div class="text-2xl mb-2">♠️</div>
                         <h3 class="font-display text-2xl font-black uppercase gold-text-gradient">TB HOLD'EM POKER</h3>
-                        <p class="font-sans text-xs text-tb-champagne mt-1.5">Duel Texas Hold'em[cite: 6].</p>
+                        <p class="font-sans text-xs text-tb-champagne mt-1.5">Duel Texas Hold'em.</p>
                     </div>
                     <a href="https://teebeeshow-cloud.github.io/tbhold-em/" target="_blank" rel="noopener noreferrer" class="btn-gold w-full py-2.5 rounded-xl font-display text-sm font-black uppercase block text-center">LANCER ↗</a>
                 </div>
@@ -406,7 +403,9 @@
                             <th class="p-4">TB-COINS</th>
                         </tr>
                     </thead>
-                    <tbody id="leaderboardBody" class="divide-y divide-tb-gold/15 font-sans text-sm"></tbody>
+                    <tbody id="leaderboardBody" class="divide-y divide-tb-gold/15 font-sans text-sm">
+                        <!-- Remplissage dynamique géré par JS -->
+                    </tbody>
                 </table>
             </div>
         </section>
@@ -455,7 +454,7 @@
                 hunt_desc: "Faites tourner la roue pour 100 TB-Coins, découvrez des reliques rares sur 4 niveaux et synchronisez votre coffre en direct."
             },
             en: {
-                subtitle: "OFFICIAL COMMUNITY HUB // COFFRE DIMENSIONNEL",
+                subtitle: "OFFICIAL COMMUNITY HUB // DIMENSIONAL VAULT",
                 tab_hunt: "THE HUNT WHEEL & RELICS",
                 tab_games: "MINI-GAMES ARENA",
                 tab_travel: "TRAVEL DEALS",
@@ -543,10 +542,9 @@
             }
         });
 
-        // Simulation ou vérification du statut Live Stream Kick
+        // Live Stream Status Check
         function checkStreamStatus() {
-            // Vous pourrez lier ici une requête vers votre Worker pour vérifier si le live Kick est en cours
-            const isLive = false; // Par défaut offline, bascule en ligne si détecté
+            const isLive = false; 
             const badge = document.getElementById("streamStatusBadge");
             const dot = document.getElementById("streamStatusDot");
             const text = document.getElementById("streamStatusText");
@@ -575,19 +573,40 @@
 
         let currentFilter = "ALL";
         
+        // Système de Migration et Récupération Automatique de l'historique passé
         let userState = {
             id: null,
             username: "",
+            avatar: "https://assets.kick.com/images/user/default-profile.png",
             coins: 500,
             total_spins: 0,
             collection: {},
             authType: "NONE"
         };
 
-        try {
-            const saved = localStorage.getItem("tb_hub_user_v9");
-            if (saved) userState = { ...userState, ...JSON.parse(saved) };
-        } catch(e) {}
+        function migrateOldStorage() {
+            // Recherche dans les anciennes clés pour ne rien perdre
+            for (let i = 5; i <= 9; i++) {
+                try {
+                    const oldData = localStorage.getItem(`tb_hub_user_v${i}`);
+                    if (oldData) {
+                        const parsed = JSON.parse(oldData);
+                        if (parsed && parsed.coins && parsed.coins > userState.coins) {
+                            userState = { ...userState, ...parsed };
+                        }
+                    }
+                } catch(e) {}
+            }
+            // Vérification clé courante v10
+            try {
+                const current = localStorage.getItem("tb_hub_user_v10");
+                if (current) {
+                    userState = { ...userState, ...JSON.parse(current) };
+                }
+            } catch(e) {}
+        }
+
+        migrateOldStorage();
 
         window.switchTab = function(tabId) {
             ["hunt", "minigames", "travel", "leaderboard"].forEach(id => {
@@ -596,6 +615,7 @@
             });
             document.getElementById(`content-${tabId}`).classList.remove("hidden");
             document.getElementById(`tabBtn-${tabId}`).classList.add("active");
+            if (tabId === 'leaderboard') renderLeaderboard();
         };
 
         // Kick PKCE OAuth Flow
@@ -633,7 +653,7 @@
 
         window.activateGuestMode = function() {
             userState.authType = "GUEST";
-            userState.username = "Invité_Vault";
+            if (!userState.username) userState.username = "Ahmed Hakim Djendi";
             saveProgress();
             document.getElementById("authLoginOverlay").classList.add("hidden");
             refreshUI();
@@ -648,8 +668,8 @@
         };
 
         window.logoutUser = function() {
-            localStorage.removeItem("tb_hub_user_v9");
-            userState = { id: null, username: "", coins: 500, total_spins: 0, collection: {}, authType: "NONE" };
+            localStorage.removeItem("tb_hub_user_v10");
+            userState = { id: null, username: "", avatar: "https://assets.kick.com/images/user/default-profile.png", coins: 500, total_spins: 0, collection: {}, authType: "NONE" };
             document.getElementById("authLoginOverlay").classList.remove("hidden");
             refreshUI();
         };
@@ -662,10 +682,11 @@
         };
 
         function saveProgress() {
-            localStorage.setItem("tb_hub_user_v9", JSON.stringify(userState));
+            localStorage.setItem("tb_hub_user_v10", JSON.stringify(userState));
             if (userState.id) {
                 update(ref(db, "tbshow/users/" + userState.id), {
                     username: userState.username,
+                    avatar: userState.avatar,
                     coins: userState.coins,
                     total_spins: userState.total_spins,
                     collection: userState.collection || {}
@@ -676,7 +697,10 @@
 
         function refreshUI() {
             document.getElementById("headerCoins").innerText = userState.coins.toLocaleString();
-            document.getElementById("headerUsername").innerText = userState.username || "Non connecté";
+            document.getElementById("headerUsername").innerText = userState.username || "Ahmed Hakim Djendi";
+            if (userState.avatar) {
+                document.getElementById("headerUserAvatar").src = userState.avatar;
+            }
             document.getElementById("statTotalSpins").innerText = userState.total_spins || 0;
             
             const unlockedCount = Object.keys(userState.collection || {}).filter(k => userState.collection[k] > 0).length;
@@ -725,6 +749,38 @@
             });
         }
 
+        function renderLeaderboard() {
+            const tbody = document.getElementById("leaderboardBody");
+            if (!tbody) return;
+            tbody.innerHTML = "";
+
+            // Données de base communautaires (Mock enrichi avec l'utilisateur actif)
+            let communityList = [
+                { username: userState.username || "Ahmed Hakim Djendi", coins: userState.coins, relics: Object.keys(userState.collection || {}).length, isYou: true },
+                { username: "Yann Scotty", coins: 2450, relics: 6, isYou: false },
+                { username: "Sound Healer", coins: 1890, relics: 5, isYou: false },
+                { username: "Pyramide", coins: 1420, relics: 4, isYou: false },
+                { username: "Titouille", coins: 950, relics: 3, isYou: false }
+            ];
+
+            communityList.sort((a, b) => b.coins - a.coins);
+
+            communityList.forEach((entry, idx) => {
+                const row = document.createElement("tr");
+                row.className = entry.isYou ? "bg-tb-deepred/40 border-b border-tb-gold/30 font-bold" : "border-b border-tb-gold/15";
+                row.innerHTML = `
+                    <td class="p-4 font-display text-tb-goldlight">#${idx + 1}</td>
+                    <td class="p-4 flex items-center gap-2">
+                        <span>${entry.username}</span>
+                        ${entry.isYou ? '<span class="text-[10px] bg-tb-gold text-tb-obsidian font-black px-1.5 py-0.5 rounded">VOUS</span>' : ''}
+                    </td>
+                    <td class="p-4 text-tb-champagne">${entry.relics} / 8</td>
+                    <td class="p-4 text-tb-goldlight font-display font-black">${entry.coins.toLocaleString()} TB</td>
+                `;
+                tbody.appendChild(row);
+            });
+        }
+
         function showRewardModal(title, desc, icon) {
             document.getElementById("rewardModalTitle").innerText = title;
             document.getElementById("rewardModalDesc").innerText = desc;
@@ -735,15 +791,15 @@
             document.getElementById("rewardModal").classList.add("hidden");
         };
 
-        // ROULETTE (Dimensions corrigées et alignées)
+        // ROULETTE
         const WHEEL_SEGMENTS = [
             { label: "250 TB", type: "coins", val: 250, color: "#1D0B0E" },
-            { label: "BRONZE", type: "relic", rarity: "BRONZE", color: "#B81D2C" },
+            { label: "BRONZE", type: "relic", rarity: "BRONZE", id: "crimson_spark", color: "#B81D2C" },
             { label: "500 TB", type: "coins", val: 500, color: "#4A141D" },
-            { label: "SILVER", type: "relic", rarity: "SILVER", color: "#2C1015" },
+            { label: "SILVER", type: "relic", rarity: "SILVER", id: "silver_astrolabe", color: "#2C1015" },
             { label: "1,000 TB", type: "coins", val: 1000, color: "#D4AF37", darkText: true },
-            { label: "GOLD", type: "relic", rarity: "GOLD", color: "#997A15" },
-            { label: "MYTHIC", type: "relic", rarity: "MYTHIC", color: "#E11D48" },
+            { label: "GOLD", type: "relic", rarity: "GOLD", id: "obsidian_core", color: "#997A15" },
+            { label: "MYTHIC", type: "relic", rarity: "MYTHIC", id: "beyond_trident", color: "#E11D48" },
             { label: "150 TB", type: "coins", val: 150, color: "#0E090A" }
         ];
         let wheelAngle = 0;
@@ -785,6 +841,15 @@
             if (isWheelSpinning || userState.coins < 100) return;
             userState.coins -= 100;
             userState.total_spins = (userState.total_spins || 0) + 1;
+            
+            // Simulation gain aléatoire
+            const wonSeg = WHEEL_SEGMENTS[Math.floor(Math.random() * WHEEL_SEGMENTS.length)];
+            if (wonSeg.type === 'coins') {
+                userState.coins += wonSeg.val;
+            } else if (wonSeg.type === 'relic') {
+                userState.collection[wonSeg.id] = (userState.collection[wonSeg.id] || 0) + 1;
+            }
+
             saveProgress();
             isWheelSpinning = true;
             wheelAngle += Math.PI * 6 + Math.random() * Math.PI;
@@ -792,10 +857,8 @@
             playSound('spin_click');
             setTimeout(() => {
                 isWheelSpinning = false;
-                userState.coins += 250;
-                saveProgress();
                 playSound('coin_win');
-                showRewardModal("VICTOIRE !", "+250 TB-Coins gagnés !", "🪙");
+                showRewardModal("RÉSULTAT DU SPIN", wonSeg.type === 'coins' ? `+${wonSeg.val} TB-Coins !` : `Relique découverte : ${wonSeg.id}`, wonSeg.type === 'coins' ? '🪙' : '💎');
             }, 1000);
         };
 
@@ -823,6 +886,7 @@
                     if (rawData && rawData.username) {
                         userState.id = rawData.id;
                         userState.username = rawData.username;
+                        if (rawData.profile_pic) userState.avatar = rawData.profile_pic;
                         userState.authType = "KICK";
                         saveProgress();
                     }
