@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>THE BEYOND SHOW — Community Hub</title>
-    <!-- Google Fonts: Big Shoulders Display & Big Shoulders Text -->
+    <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@700;900&family=Big+Shoulders+Text:wght@400;600;700&display=swap" rel="stylesheet">
@@ -143,19 +143,6 @@
             background: linear-gradient(180deg, rgba(184, 29, 44, 0.35) 0%, rgba(44, 16, 21, 0.15) 100%);
         }
 
-        .filter-pill {
-            border: 1px solid rgba(212, 175, 55, 0.3);
-            color: #B8A99A;
-            background: rgba(14, 9, 10, 0.85);
-            transition: all 0.18s ease;
-        }
-        .filter-pill:hover, .filter-pill.active {
-            border-color: #F3D06B;
-            color: #090607;
-            background: #D4AF37;
-        }
-
-        /* Lang Switcher Pills */
         .lang-btn {
             background: #090607;
             border: 1px solid rgba(212, 175, 55, 0.3);
@@ -197,9 +184,6 @@
                 Connectez votre compte Kick pour synchroniser vos TB-Coins et reliques, ou entrez en mode Invité.
             </p>
             <div class="space-y-3 pt-2">
-                <button onclick="loginWithKick()" class="btn-kick w-full py-3.5 rounded-xl font-display text-base font-black uppercase tracking-wider cursor-pointer shadow-lg flex items-center justify-center gap-2">
-                    <span data-i18n="btnConnectKick">CONNECTER AVEC KICK</span>
-                </button>
                 <button onclick="activateGuestMode()" class="btn-crimson w-full py-3 rounded-xl font-display text-sm font-black uppercase tracking-wider cursor-pointer shadow-lg" data-i18n="btnGuest">
                     CONTINUER EN INVITÉ
                 </button>
@@ -278,33 +262,147 @@
     </nav>
 
     <!-- MAIN CONTENT -->
-   <!-- HTML DU CONTENEUR DE LA ROUE -->
-<div class="lg:col-span-7 tb-glass rounded-2xl p-6 sm:p-8 flex flex-col items-center border border-tb-gold/45 relative shadow-xl">
-    <div class="w-full flex items-center justify-between mb-2">
-        <div class="flex items-center gap-2">
-            <span class="w-2.5 h-2.5 rounded-full bg-tb-crimson animate-pulse"></span>
-            <span class="font-display text-xs font-black tracking-widest text-tb-gold uppercase">ROUE DE L'AU-DELÀ</span>
-        </div>
-        <div class="font-display text-xs font-bold text-tb-champagne uppercase tracking-wider">
-            COÛT : <span class="text-tb-goldlight font-black">100 TB-COINS</span>
-        </div>
-    </div>
+    <main class="max-w-7xl mx-auto px-4 py-6">
 
-    <!-- Canvas de la Roue -->
-    <div class="relative my-5 flex items-center justify-center">
-        <div class="absolute -top-3.5 z-20">
-            <div class="w-0 h-0 border-l-[15px] border-l-transparent border-r-[15px] border-r-transparent border-t-[28px] border-t-tb-goldlight filter drop-shadow-[0_4px_8px_rgba(184,29,44,0.85)]"></div>
-        </div>
-        <canvas id="wheelCanvas" width="340" height="340" class="max-w-full h-auto rounded-full shadow-[0_0_38px_rgba(184,29,44,0.4)] border-4 border-tb-gold bg-tb-obsidian"></canvas>
-    </div>
+        <!-- TAB 1: HUNT WHEEL -->
+        <section id="content-hunt" class="space-y-8">
+            <div class="tb-glass rounded-2xl p-6 md:p-8 relative overflow-hidden border border-tb-gold/50 shadow-2xl">
+                <h2 class="font-display text-3xl sm:text-4xl font-black uppercase gold-text-gradient tracking-wide" data-i18n="huntTitle">ROUE DE L'AU-DELÀ & RELIQUES DIMENSIONNELLES</h2>
+                <p class="font-sans text-tb-champagne text-sm sm:text-base mt-2" data-i18n="huntDesc">
+                    Faites tourner la roue pour 100 TB-Coins, découvrez des reliques rares sur 4 niveaux et synchronisez votre coffre en direct.
+                </p>
+            </div>
 
-    <button id="spinBtn" onclick="spinWheel()" class="btn-gold w-full max-w-sm py-4 rounded-xl font-display text-xl font-black uppercase tracking-widest shadow-2xl cursor-pointer" data-i18n="spinBtn">
-        TOURNER LA ROUE (100 TB)
-    </button>
-    <p id="spinMessage" class="font-display text-base font-bold tracking-wider text-tb-goldlight mt-3 min-h-[1.5rem] text-center" data-i18n="spinMsgReady">
-        Prêt à tenter votre chance ?
-    </p>
-</div>
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+                <!-- Roue interactive -->
+                <div class="lg:col-span-7 tb-glass rounded-2xl p-6 sm:p-8 flex flex-col items-center border border-tb-gold/45 relative shadow-xl">
+                    <div class="w-full flex items-center justify-between mb-2">
+                        <div class="flex items-center gap-2">
+                            <span class="w-2.5 h-2.5 rounded-full bg-tb-crimson animate-pulse"></span>
+                            <span class="font-display text-xs font-black tracking-widest text-tb-gold uppercase">ROUE DE L'AU-DELÀ</span>
+                        </div>
+                        <div class="font-display text-xs font-bold text-tb-champagne uppercase tracking-wider">
+                            COÛT : <span class="text-tb-goldlight font-black">100 TB-COINS</span>
+                        </div>
+                    </div>
+
+                    <div class="relative my-5 flex items-center justify-center">
+                        <div class="absolute -top-3.5 z-20">
+                            <div class="w-0 h-0 border-l-[15px] border-l-transparent border-r-[15px] border-r-transparent border-t-[28px] border-t-tb-goldlight filter drop-shadow-[0_4px_8px_rgba(184,29,44,0.85)]"></div>
+                        </div>
+                        <canvas id="wheelCanvas" width="340" height="340" class="max-w-full h-auto rounded-full shadow-[0_0_38px_rgba(184,29,44,0.4)] border-4 border-tb-gold bg-tb-obsidian"></canvas>
+                    </div>
+
+                    <button id="spinBtn" onclick="spinWheel()" class="btn-gold w-full max-w-sm py-4 rounded-xl font-display text-xl font-black uppercase tracking-widest shadow-2xl cursor-pointer" data-i18n="spinBtn">
+                        TOURNER LA ROUE (100 TB)
+                    </button>
+                    <p id="spinMessage" class="font-display text-base font-bold tracking-wider text-tb-goldlight mt-3 min-h-[1.5rem] text-center" data-i18n="spinMsgReady">
+                        Prêt à tenter votre chance ?
+                    </p>
+                </div>
+
+                <div class="lg:col-span-5 space-y-6">
+                    <div class="tb-glass rounded-2xl p-6 border border-tb-gold/40 shadow-xl">
+                        <h3 class="font-display text-lg font-black uppercase gold-text-gradient mb-4" data-i18n="statsTitle">STATISTIQUES DU CHASSEUR</h3>
+                        <div class="grid grid-cols-2 gap-3 text-center">
+                            <div class="bg-tb-obsidian/80 border border-tb-gold/30 rounded-xl p-3">
+                                <div class="font-display text-xs uppercase text-tb-champagne" data-i18n="statSpins">TOTAL SPINS</div>
+                                <div id="statTotalSpins" class="font-display text-2xl font-black text-tb-goldlight">0</div>
+                            </div>
+                            <div class="bg-tb-obsidian/80 border border-tb-gold/30 rounded-xl p-3">
+                                <div class="font-display text-xs uppercase text-tb-champagne" data-i18n="statRelics">RELIQUES</div>
+                                <div id="statRelicRatio" class="font-display text-2xl font-black text-tb-ivory">0 / 12</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- TAB 2: MINI-GAMES ARENA -->
+        <section id="content-minigames" class="space-y-8 hidden">
+            <div class="tb-glass rounded-2xl p-6 md:p-8 border border-tb-gold/50 shadow-2xl">
+                <span class="inline-block px-3 py-1 rounded bg-tb-crimson text-tb-goldlight font-display text-xs font-black uppercase mb-3 border border-tb-gold/40" data-i18n="arcadeBadge">
+                    THE BEYOND ARCADE // MODULES INDÉPENDANTS
+                </span>
+                <h2 class="font-display text-3xl sm:text-4xl font-black uppercase gold-text-gradient tracking-wide" data-i18n="arcadeTitle">
+                    CENTRE DES MINI-JEUX DÉDIÉS
+                </h2>
+                <p class="font-sans text-tb-champagne text-sm sm:text-base mt-2 max-w-2xl" data-i18n="arcadeDesc">
+                    Accédez directement à chaque mini-jeu hébergé sur son propre dépôt GitHub avec sa base de données dédiée en temps réel.
+                </p>
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
+                <!-- 1. TB Hold'em Poker -->
+                <div class="tb-glass rounded-2xl p-5 border border-tb-gold/45 tb-card-lift flex flex-col justify-between space-y-4">
+                    <div>
+                        <div class="flex items-center justify-between mb-3">
+                            <span class="w-11 h-11 rounded-xl bg-tb-deepred border border-tb-gold/60 flex items-center justify-center text-2xl">♠️</span>
+                            <span class="px-2.5 py-0.5 rounded bg-tb-gold/20 text-tb-goldlight border border-tb-gold/40 font-display text-xs font-black uppercase">+250 TB</span>
+                        </div>
+                        <h3 class="font-display text-2xl font-black uppercase gold-text-gradient">TB HOLD'EM POKER</h3>
+                        <p class="font-sans text-xs text-tb-champagne mt-1.5 leading-relaxed" data-i18n="descPoker">
+                            Duel Texas Hold'em avec table et base de données Firebase dédiée[cite: 6].
+                        </p>
+                    </div>
+                    <a href="https://teebeeshow-cloud.github.io/tbhold-em/" target="_blank" rel="noopener noreferrer" class="btn-gold w-full py-2.5 rounded-xl font-display text-sm font-black uppercase tracking-wider block text-center shadow-lg">
+                        LANCER LE JEU ↗
+                    </a>
+                </div>
+
+                <!-- 2. Hangstein / Pendu -->
+                <div class="tb-glass rounded-2xl p-5 border border-tb-gold/45 tb-card-lift flex flex-col justify-between space-y-4">
+                    <div>
+                        <div class="flex items-center justify-between mb-3">
+                            <span class="w-11 h-11 rounded-xl bg-tb-deepred border border-tb-gold/60 flex items-center justify-center text-2xl">🪢</span>
+                            <span class="px-2.5 py-0.5 rounded bg-tb-gold/20 text-tb-goldlight border border-tb-gold/40 font-display text-xs font-black uppercase">+150 TB</span>
+                        </div>
+                        <h3 class="font-display text-2xl font-black uppercase gold-text-gradient">HANGSTEIN // PENDU</h3>
+                        <p class="font-sans text-xs text-tb-champagne mt-1.5 leading-relaxed" data-i18n="descHang">
+                            Décryptage de mots-clés secrets synchronisé avec le chat du stream[cite: 8].
+                        </p>
+                    </div>
+                    <a href="https://teebeeshow-cloud.github.io/tbshow-hangman/" target="_blank" rel="noopener noreferrer" class="btn-gold w-full py-2.5 rounded-xl font-display text-sm font-black uppercase tracking-wider block text-center shadow-lg">
+                        LANCER LE JEU ↗
+                    </a>
+                </div>
+
+                <!-- 3. Morbakim -->
+                <div class="tb-glass rounded-2xl p-5 border border-tb-gold/45 tb-card-lift flex flex-col justify-between space-y-4">
+                    <div>
+                        <div class="flex items-center justify-between mb-3">
+                            <span class="w-11 h-11 rounded-xl bg-tb-deepred border border-tb-gold/60 flex items-center justify-center text-2xl">❌</span>
+                            <span class="px-2.5 py-0.5 rounded bg-tb-gold/20 text-tb-goldlight border border-tb-gold/40 font-display text-xs font-black uppercase">+200 TB</span>
+                        </div>
+                        <h3 class="font-display text-2xl font-black uppercase gold-text-gradient">MORBAKIM</h3>
+                        <p class="font-sans text-xs text-tb-champagne mt-1.5 leading-relaxed" data-i18n="descMorb">
+                            Affrontement tactique sur grille 3x3 en temps réel[cite: 9].
+                        </p>
+                    </div>
+                    <a href="https://teebeeshow-cloud.github.io/tbshow-tictactoe/" target="_blank" rel="noopener noreferrer" class="btn-gold w-full py-2.5 rounded-xl font-display text-sm font-black uppercase tracking-wider block text-center shadow-lg">
+                        LANCER LE JEU ↗
+                    </a>
+                </div>
+
+                <!-- 4. Battleship -->
+                <div class="tb-glass rounded-2xl p-5 border border-tb-gold/45 tb-card-lift flex flex-col justify-between space-y-4">
+                    <div>
+                        <div class="flex items-center justify-between mb-3">
+                            <span class="w-11 h-11 rounded-xl bg-tb-deepred border border-tb-gold/60 flex items-center justify-center text-2xl">🚢</span>
+                            <span class="px-2.5 py-0.5 rounded bg-tb-gold/20 text-tb-goldlight border border-tb-gold/40 font-display text-xs font-black uppercase">+300 TB</span>
+                        </div>
+                        <h3 class="font-display text-2xl font-black uppercase gold-text-gradient">BATAILLE NAVALE</h3>
+                        <p class="font-sans text-xs text-tb-champagne mt-1.5 leading-relaxed" data-i18n="descBattle">
+                            Guerre radar 6x6 pour torpiller les navires ennemis[cite: 7].
+                        </p>
+                    </div>
+                    <a href="https://teebeeshow-cloud.github.io/tbshow-battleship/" target="_blank" rel="noopener noreferrer" class="btn-gold w-full py-2.5 rounded-xl font-display text-sm font-black uppercase tracking-wider block text-center shadow-lg">
+                        LANCER LE JEU ↗
+                    </a>
+                </div>
+            </div>
+        </section>
 
         <!-- TAB 3: TRAVEL DEALS -->
         <section id="content-travel" class="space-y-8 hidden">
@@ -348,7 +446,7 @@
         </div>
     </div>
 
-    <!-- SCRIPT FIREBASE, STREAM & LANGUES -->
+    <!-- SCRIPT FIREBASE, STREAM, ROUE & LANGUES -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
         import { getDatabase, ref, set, get, update, onValue } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js";
@@ -383,7 +481,6 @@
             }
         });
 
-        // Écoute de l'état du stream en direct (nœud stream/isOnline dans Firebase)
         const streamRef = ref(db, "stream/isOnline");
         onValue(streamRef, (snapshot) => {
             const isOnline = Boolean(snapshot.val());
@@ -407,7 +504,6 @@
             fr: {
                 subAuthTitle: "OFFICIAL COMMUNITY HUB & DIMENSIONAL VAULT",
                 subAuthDesc: "Connectez votre compte Kick pour synchroniser vos TB-Coins et reliques, ou entrez en mode Invité.",
-                btnConnectKick: "CONNECTER AVEC KICK",
                 btnGuest: "CONTINUER EN INVITÉ",
                 hubSubtitle: "OFFICIAL COMMUNITY HUB // COFFRE DIMENSIONNEL",
                 supplyBtn: "+500 SUPPLY",
@@ -423,12 +519,12 @@
                 statSpins: "TOTAL SPINS",
                 statRelics: "RELIQUES",
                 arcadeBadge: "THE BEYOND ARCADE // MODULES INDÉPENDANTS",
-                arcadeTitle: "CENTRE DES MINI-GEUX DÉDIÉS",
+                arcadeTitle: "CENTRE DES MINI-JEUX DÉDIÉS",
                 arcadeDesc: "Accédez directement à chaque mini-jeu hébergé sur son propre dépôt GitHub avec sa base de données dédiée en temps réel.",
-                descPoker: "Duel Texas Hold'em avec table et base de données Firebase dédiée.",
-                descHang: "Décryptage de mots-clés secrets synchronisé avec le chat du stream.",
-                descMorb: "Affrontement tactique sur grille 3x3 en temps réel.",
-                descBattle: "Guerre radar 6x6 pour torpiller les navires ennemis.",
+                descPoker: "Duel Texas Hold'em avec table et base de données Firebase dédiée[cite: 6].",
+                descHang: "Décryptage de mots-clés secrets synchronisé avec le chat du stream[cite: 8].",
+                descMorb: "Affrontement tactique sur grille 3x3 en temps réel[cite: 9].",
+                descBattle: "Guerre radar 6x6 pour torpiller les navires ennemis[cite: 7].",
                 travelTitle: "PARTENAIRES VOYAGES & EXPÉDITIONS",
                 travelDesc: "Réservez vos vols, hôtels et eSIMs via notre réseau partenaire Travelpayouts.",
                 leaderTitle: "CLASSEMENT COMMUNAUTAIRE"
@@ -436,7 +532,6 @@
             en: {
                 subAuthTitle: "OFFICIAL COMMUNITY HUB & DIMENSIONAL VAULT",
                 subAuthDesc: "Connect your Kick account to sync your TB-Coins and relics, or enter as a Guest.",
-                btnConnectKick: "CONNECT WITH KICK",
                 btnGuest: "CONTINUE AS GUEST",
                 hubSubtitle: "OFFICIAL COMMUNITY HUB // DIMENSIONAL VAULT",
                 supplyBtn: "+500 SUPPLY",
@@ -454,10 +549,10 @@
                 arcadeBadge: "THE BEYOND ARCADE // STANDALONE MODULES",
                 arcadeTitle: "DEDICATED MINIGAMES ARENA",
                 arcadeDesc: "Launch each standalone mini-jeu hosted on its own GitHub repository with a dedicated real-time database.",
-                descPoker: "Texas Hold'em duel with dedicated Firebase table and database.",
-                descHang: "Secret keyword decryption synced live with stream chat.",
-                descMorb: "Tactical 3x3 grid showdown in real time.",
-                descBattle: "6x6 radar naval warfare to torpedo enemy ships.",
+                descPoker: "Texas Hold'em duel with dedicated Firebase table and database[cite: 6].",
+                descHang: "Secret keyword decryption synced live with stream chat[cite: 8].",
+                descMorb: "Tactical 3x3 grid showdown in real time[cite: 9].",
+                descBattle: "6x6 radar naval warfare to torpedo enemy ships[cite: 7].",
                 travelTitle: "TRAVEL DEALS & EXPEDITIONS",
                 travelDesc: "Book flights, hotels, and eSIMs through our Travelpayouts partner network.",
                 leaderTitle: "COMMUNITY LEADERBOARD"
@@ -477,11 +572,10 @@
             });
         };
 
-        // Init language from storage or default to French
         const savedLang = localStorage.getItem("tb_hub_lang") || "fr";
         setLanguage(savedLang);
 
-        // --- 3. GLOBAL APP STATE & TABS ---
+        // --- 3. ÉTAT DE L'APPLICATION & NAVIGATION ---
         let userState = {
             username: "GuestHunter",
             coins: 500,
@@ -533,6 +627,7 @@
         function refreshUI() {
             document.getElementById("headerCoins").innerText = userState.coins.toLocaleString();
             document.getElementById("headerUsername").innerText = userState.username;
+            document.getElementById("statTotalSpins").innerText = userState.total_spins || 0;
             if (userState.authType === "NONE") {
                 document.getElementById("authLoginOverlay").classList.remove("hidden");
             } else {
@@ -550,30 +645,148 @@
             document.getElementById("rewardModal").classList.add("hidden");
         };
 
-        // Wheel Canvas Simple Setup
-        const canvas = document.getElementById("wheelCanvas");
-        const ctx = canvas.getContext("2d");
-        ctx.fillStyle = "#1D0B0E";
-        ctx.fillRect(0, 0, 340, 340);
-        ctx.fillStyle = "#D4AF37";
-        ctx.font = "900 18px 'Big Shoulders Display'";
-        ctx.textAlign = "center";
-        ctx.fillText("WHEEL OF BEYOND", 170, 170);
+        // --- 4. LOGIQUE DE LA ROUE INTERACTIVE ---
+        const RELICS_CATALOG = [
+            { id: "obsidian_core", code: "#001", name: "Obsidian Core", rarity: "GOLD", icon: "💎" },
+            { id: "crimson_spark", code: "#002", name: "Crimson Spark", rarity: "BRONZE", icon: "🔥" },
+            { id: "golden_compass", code: "#003", name: "Golden Compass", rarity: "GOLD", icon: "🧭" },
+            { id: "beyond_trident", code: "#004", name: "The Beyond Trident", rarity: "MYTHIC", icon: "🔱" },
+            { id: "silver_astrolabe", code: "#005", name: "Silver Astrolabe", rarity: "SILVER", icon: "⏳" }
+        ];
+
+        const WHEEL_SEGMENTS = [
+            { label: "250 TB", type: "coins", val: 250, color: "#1D0B0E" },
+            { label: "BRONZE", type: "relic", rarity: "BRONZE", color: "#B81D2C" },
+            { label: "500 TB", type: "coins", val: 500, color: "#4A141D" },
+            { label: "SILVER", type: "relic", rarity: "SILVER", color: "#2C1015" },
+            { label: "1,000 TB", type: "coins", val: 1000, color: "#D4AF37", darkText: true },
+            { label: "GOLD", type: "relic", rarity: "GOLD", color: "#997A15" },
+            { label: "MYTHIC", type: "relic", rarity: "MYTHIC", color: "#E11D48" },
+            { label: "150 TB", type: "coins", val: 150, color: "#0E090A" }
+        ];
+
+        let wheelAngle = 0;
+        let isWheelSpinning = false;
+
+        function drawWheel(angle) {
+            const canvas = document.getElementById("wheelCanvas");
+            if (!canvas) return;
+            const ctx = canvas.getContext("2d");
+            const cx = canvas.width / 2;
+            const cy = canvas.height / 2;
+            const r = canvas.width / 2 - 8;
+            const arc = (2 * Math.PI) / WHEEL_SEGMENTS.length;
+
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            WHEEL_SEGMENTS.forEach((seg, i) => {
+                const startAngle = angle + i * arc;
+                const endAngle = startAngle + arc;
+
+                ctx.beginPath();
+                ctx.moveTo(cx, cy);
+                ctx.arc(cx, cy, r, startAngle, endAngle);
+                ctx.closePath();
+                ctx.fillStyle = seg.color;
+                ctx.fill();
+                ctx.lineWidth = 2;
+                ctx.strokeStyle = "#D4AF37";
+                ctx.stroke();
+
+                ctx.save();
+                ctx.translate(cx, cy);
+                ctx.rotate(startAngle + arc / 2);
+                ctx.textAlign = "right";
+                ctx.fillStyle = seg.darkText ? "#090607" : "#F5EFE6";
+                ctx.font = "900 13px 'Big Shoulders Display', sans-serif";
+                ctx.fillText(seg.label, r - 16, 5);
+                ctx.restore();
+            });
+
+            ctx.beginPath();
+            ctx.arc(cx, cy, 34, 0, 2 * Math.PI);
+            ctx.fillStyle = "#090607";
+            ctx.fill();
+            ctx.lineWidth = 3.5;
+            ctx.strokeStyle = "#F3D06B";
+            ctx.stroke();
+
+            ctx.fillStyle = "#F3D06B";
+            ctx.font = "900 12px 'Big Shoulders Display', sans-serif";
+            ctx.textAlign = "center";
+            ctx.fillText("BEYOND", cx, cy - 2);
+            ctx.fillText("HUNT", cx, cy + 12);
+        }
 
         window.spinWheel = function() {
+            if (isWheelSpinning) return;
+
             if (userState.coins < 100) {
-                showRewardModal("SOLDE INSUFFISANT", "Il vous faut 100 TB-Coins pour tourner la roue !", "⚠️");
+                showRewardModal("SOLDE INSUFFISANT", "Il vous faut au moins 100 TB-Coins pour tourner la roue !", "⚠️");
                 return;
             }
+
             userState.coins -= 100;
-            userState.total_spins++;
-            const winCoins = Math.random() > 0.5 ? 250 : 500;
-            userState.coins += winCoins;
+            userState.total_spins = (userState.total_spins || 0) + 1;
             saveProgress();
-            showRewardModal("VICTORY!", `Vous avez gagné +${winCoins} TB-Coins !`, "🪙");
+
+            isWheelSpinning = true;
+            document.getElementById("spinBtn").disabled = true;
+            document.getElementById("spinMessage").innerText = "Énergie dimensionnelle canalisée...";
+
+            const extraSpins = 6 + Math.random() * 4;
+            const randomOffset = Math.random() * 2 * Math.PI;
+            const startAngle = wheelAngle;
+            const targetAngle = startAngle + extraSpins * 2 * Math.PI + randomOffset;
+            const duration = 3400;
+            const startTime = performance.now();
+
+            function step(now) {
+                const elapsed = now - startTime;
+                const progress = Math.min(elapsed / duration, 1);
+                const easeOut = 1 - Math.pow(1 - progress, 3);
+                wheelAngle = startAngle + (targetAngle - startAngle) * easeOut;
+                drawWheel(wheelAngle);
+
+                if (progress < 1) {
+                    requestAnimationFrame(step);
+                } else {
+                    isWheelSpinning = false;
+                    document.getElementById("spinBtn").disabled = false;
+                    finalizeWheelSpin();
+                }
+            }
+            requestAnimationFrame(step);
         };
 
-        refreshUI();
+        function finalizeWheelSpin() {
+            const arc = (2 * Math.PI) / WHEEL_SEGMENTS.length;
+            const normalized = (2 * Math.PI - (wheelAngle % (2 * Math.PI))) % (2 * Math.PI);
+            const pointerPos = (3 * Math.PI / 2) % (2 * Math.PI);
+            const winIdx = Math.floor(((normalized + pointerPos) % (2 * Math.PI)) / arc) % WHEEL_SEGMENTS.length;
+            const prize = WHEEL_SEGMENTS[winIdx];
+
+            if (prize.type === "coins") {
+                userState.coins += prize.val;
+                saveProgress();
+                document.getElementById("spinMessage").innerText = `Victoire ! +${prize.val.toLocaleString()} TB-Coins gagnés !`;
+                showRewardModal("TB-COINS GAGNÉS !", `Vous avez remporté +${prize.val.toLocaleString()} TB-Coins !`, "🪙");
+            } else {
+                const matching = RELICS_CATALOG.filter(r => r.rarity === prize.rarity);
+                const chosen = matching[Math.floor(Math.random() * matching.length)] || RELICS_CATALOG[0];
+                userState.collection = userState.collection || {};
+                userState.collection[chosen.id] = (userState.collection[chosen.id] || 0) + 1;
+                saveProgress();
+
+                document.getElementById("spinMessage").innerText = `Relique découverte : ${chosen.name} (${chosen.rarity}) !`;
+                showRewardModal("RELIQUE DÉCOUVERTE !", `Vous avez débloqué ${chosen.icon} ${chosen.name} !`, chosen.icon);
+            }
+        }
+
+        window.addEventListener("DOMContentLoaded", () => {
+            drawWheel(wheelAngle);
+            refreshUI();
+        });
     </script>
 </body>
 </html>
