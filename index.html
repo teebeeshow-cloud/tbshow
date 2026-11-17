@@ -172,8 +172,8 @@
 </head>
 <body class="font-sans antialiased selection:bg-tb-crimson selection:text-tb-goldlight">
 
-    <!-- LOGIN OVERLAY : Affiché par défaut si non connecté -->
-    <div id="authLoginOverlay" class="fixed inset-0 z-50 bg-tb-obsidian/95 backdrop-blur-md flex items-center justify-center p-4">
+    <!-- MODAL DE CONNEXION INITIALE -->
+    <div id="authLoginOverlay" class="fixed inset-0 z-50 bg-tb-obsidian/95 backdrop-blur-md flex items-center justify-center p-4 hidden">
         <div class="tb-glass rounded-2xl max-w-md w-full p-8 border-2 border-tb-gold shadow-2xl text-center space-y-6 relative">
             <div class="w-16 h-16 mx-auto rounded-2xl bg-gradient-to-br from-tb-crimson to-tb-deepred border-2 border-tb-gold flex items-center justify-center shadow-xl">
                 <svg class="w-9 h-9 text-tb-goldlight" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
@@ -186,14 +186,11 @@
                 <p class="font-sans text-xs text-tb-champagne uppercase tracking-widest mt-1">OFFICIAL COMMUNITY HUB & COFFRE DIMENSIONNEL</p>
             </div>
             <p class="font-sans text-sm text-tb-ivory leading-relaxed">
-                Cliquez ci-dessous pour initialiser votre session diffuseur et accéder à votre coffre.
+                Connectez votre session pour synchroniser votre coffre de reliques et vos TB-Coins en direct.
             </p>
             <div class="space-y-3 pt-2">
-                <button onclick="loginAsBeyondShow()" class="btn-kick w-full py-3.5 rounded-xl font-display text-base font-black uppercase tracking-wider cursor-pointer shadow-lg flex items-center justify-center gap-2">
-                    <span>SE CONNECTER EN TANT QUE THE BEYOND SHOW</span>
-                </button>
-                <button onclick="activateGuestMode()" class="btn-crimson w-full py-3 rounded-xl font-display text-sm font-black uppercase tracking-wider cursor-pointer shadow-lg">
-                    CONTINUER EN INVITÉ
+                <button onclick="loginAsStreamer()" class="btn-kick w-full py-3.5 rounded-xl font-display text-base font-black uppercase tracking-wider cursor-pointer shadow-lg flex items-center justify-center gap-2">
+                    <span>SYNCHRONISER LA SESSION DIFFUSEUR</span>
                 </button>
             </div>
         </div>
@@ -245,7 +242,7 @@
                 </button>
 
                 <div id="headerUserControls" class="flex items-center gap-2 bg-tb-obsidian/95 border border-tb-gold/50 rounded-xl px-3 py-1">
-                    <span id="headerUsername" class="font-display text-sm font-black text-tb-goldlight">TheBeyondShow</span>
+                    <span id="headerUsername" class="font-display text-sm font-black text-tb-goldlight">Ahmed Hakim Djendi</span>
                     <button onclick="logoutUser()" class="ml-1 text-xs font-display font-bold text-tb-champagne hover:text-tb-mythic cursor-pointer" title="Déconnexion">✕</button>
                 </div>
             </div>
@@ -333,7 +330,7 @@
         <!-- TAB 2: MINI-GAMES -->
         <section id="content-minigames" class="space-y-8 hidden">
             <div class="tb-glass rounded-2xl p-6 md:p-8 border border-tb-gold/50 shadow-2xl">
-                <h2 class="font-display text-3xl font-black uppercase gold-text-gradient tracking-wide">CENTRE DES MINI-JEUX DÉDIÉS</h2>
+                <h2 class="font-display text-3xl sm:text-4xl font-black uppercase gold-text-gradient tracking-wide">CENTRE DES MINI-JEUX DÉDIÉS</h2>
                 <p class="font-sans text-tb-champagne text-sm sm:text-base mt-2">Accédez directement à vos mini-jeux hébergés sur GitHub[cite: 5, 6].</p>
             </div>
             <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
@@ -375,7 +372,7 @@
         <!-- TAB 3: TRAVEL -->
         <section id="content-travel" class="space-y-8 hidden">
             <div class="tb-glass rounded-2xl p-6 md:p-8 border border-tb-gold/50 shadow-2xl">
-                <h2 class="font-display text-3xl font-black uppercase gold-text-gradient tracking-wide">PARTENAIRES VOYAGES</h2>
+                <h2 class="font-display text-3xl sm:text-4xl font-black uppercase gold-text-gradient tracking-wide">PARTENAIRES VOYAGES</h2>
             </div>
         </section>
 
@@ -400,7 +397,7 @@
         </section>
     </main>
 
-    <!-- MODAL -->
+    <!-- MODAL DE SUCCÈS -->
     <div id="rewardModal" class="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm hidden flex items-center justify-center p-4">
         <div class="tb-glass rounded-2xl max-w-sm w-full p-6 text-center border-2 border-tb-gold shadow-2xl space-y-4">
             <div id="rewardModalIcon" class="text-3xl">🏆</div>
@@ -410,7 +407,7 @@
         </div>
     </div>
 
-    <!-- SCRIPT -->
+    <!-- SCRIPT COMPLET -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
         import { getDatabase, ref, onValue } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js";
@@ -489,16 +486,18 @@
         ];
 
         let currentFilter = "ALL";
+        
+        // État utilisateur par défaut fixé à votre vrai nom et connecté directement
         let userState = {
-            username: "",
+            username: "Ahmed Hakim Djendi",
             coins: 500,
             total_spins: 0,
             collection: {},
-            authType: "NONE" // Exige une action de connexion au premier lancement
+            authType: "STREAMER"
         };
 
         try {
-            const saved = localStorage.getItem("tb_hub_user_v5");
+            const saved = localStorage.getItem("tb_hub_user_v6");
             if (saved) {
                 userState = { ...userState, ...JSON.parse(saved) };
             }
@@ -513,29 +512,18 @@
             document.getElementById(`tabBtn-${tabId}`).classList.add("active");
         };
 
-        window.loginAsBeyondShow = function() {
-            userState.authType = "KICK";
-            userState.username = "TheBeyondShow";
+        window.loginAsStreamer = function() {
+            userState.authType = "STREAMER";
+            userState.username = "Ahmed Hakim Djendi";
             saveProgress();
             document.getElementById("authLoginOverlay").classList.add("hidden");
             refreshUI();
             playSound('coin_win');
         };
 
-        window.activateGuestMode = function() {
-            userState.authType = "GUEST";
-            userState.username = "Hunter_" + Math.floor(100 + Math.random() * 899);
-            saveProgress();
-            document.getElementById("authLoginOverlay").classList.add("hidden");
-            refreshUI();
-        };
-
         window.logoutUser = function() {
-            localStorage.removeItem("tb_hub_user_v5");
-            userState.authType = "NONE";
-            userState.username = "";
+            localStorage.removeItem("tb_hub_user_v6");
             document.getElementById("authLoginOverlay").classList.remove("hidden");
-            refreshUI();
         };
 
         window.claimDailySupply = function() {
@@ -546,25 +534,20 @@
         };
 
         function saveProgress() {
-            localStorage.setItem("tb_hub_user_v5", JSON.stringify(userState));
+            localStorage.setItem("tb_hub_user_v6", JSON.stringify(userState));
             refreshUI();
         }
 
         function refreshUI() {
             document.getElementById("headerCoins").innerText = userState.coins.toLocaleString();
-            document.getElementById("headerUsername").innerText = userState.username || "Invité";
+            document.getElementById("headerUsername").innerText = userState.username || "Ahmed Hakim Djendi";
             document.getElementById("statTotalSpins").innerText = userState.total_spins || 0;
             
             const unlockedCount = Object.keys(userState.collection || {}).filter(k => userState.collection[k] > 0).length;
             document.getElementById("statRelicRatio").innerText = `${unlockedCount} / ${RELICS_CATALOG.length}`;
             document.getElementById("armoryCountText").innerText = unlockedCount;
 
-            const overlay = document.getElementById("authLoginOverlay");
-            if (userState.authType === "NONE" || !userState.username) {
-                overlay.classList.remove("hidden");
-            } else {
-                overlay.classList.add("hidden");
-            }
+            document.getElementById("authLoginOverlay").classList.add("hidden");
             renderArmory(currentFilter);
         }
 
