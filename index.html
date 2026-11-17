@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>THE BEYOND SHOW — Community Hub</title>
-    <!-- Google Fonts -->
+    <!-- Google Fonts: Big Shoulders Display & Big Shoulders Text -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@700;900&family=Big+Shoulders+Text:wght@400;600;700&display=swap" rel="stylesheet">
@@ -101,6 +101,11 @@
             transform: translateY(-1px);
             box-shadow: 0 6px 22px rgba(243, 208, 107, 0.5);
         }
+        .btn-gold:disabled {
+            opacity: 0.42;
+            cursor: not-allowed;
+            filter: grayscale(0.4);
+        }
 
         .btn-crimson {
             background: linear-gradient(180deg, #B81D2C 0%, #4A141D 65%, #2C1015 100%);
@@ -113,6 +118,19 @@
             background: linear-gradient(180deg, #E11D48 0%, #B81D2C 60%, #4A141D 100%);
             border-color: #F3D06B;
             box-shadow: 0 6px 20px rgba(225, 29, 72, 0.5);
+        }
+
+        .btn-kick {
+            background: linear-gradient(180deg, #6BFF38 0%, #53FC18 55%, #37B809 100%);
+            color: #090607;
+            border: 1px solid #B6FF9C;
+            box-shadow: 0 4px 16px rgba(83, 252, 24, 0.35);
+            transition: all 0.18s ease;
+        }
+        .btn-kick:hover {
+            filter: brightness(1.06);
+            transform: translateY(-1px);
+            box-shadow: 0 6px 22px rgba(83, 252, 24, 0.52);
         }
 
         .hub-tab {
@@ -128,6 +146,18 @@
             color: #F3D06B;
             border-bottom-color: #F3D06B;
             background: linear-gradient(180deg, rgba(184, 29, 44, 0.35) 0%, rgba(44, 16, 21, 0.15) 100%);
+        }
+
+        .filter-pill {
+            border: 1px solid rgba(212, 175, 55, 0.3);
+            color: #B8A99A;
+            background: rgba(14, 9, 10, 0.85);
+            transition: all 0.18s ease;
+        }
+        .filter-pill:hover, .filter-pill.active {
+            border-color: #F3D06B;
+            color: #090607;
+            background: #D4AF37;
         }
 
         .lang-btn {
@@ -150,11 +180,22 @@
         ::-webkit-scrollbar { width: 8px; height: 8px; }
         ::-webkit-scrollbar-track { background: #090607; }
         ::-webkit-scrollbar-thumb { background: #4A141D; border-radius: 4px; border: 1px solid rgba(212, 175, 55, 0.35); }
+        ::-webkit-scrollbar-thumb:hover { background: #B81D2C; }
+
+        @keyframes pointerPulse {
+            0%, 100% { filter: drop-shadow(0 0 6px rgba(243, 208, 107, 0.55)); }
+            50% { filter: drop-shadow(0 0 15px rgba(243, 208, 107, 0.95)); }
+        }
+        .wheel-pointer {
+            animation: pointerPulse 2.2s infinite ease-in-out;
+        }
     </style>
 </head>
 <body class="font-sans antialiased selection:bg-tb-crimson selection:text-tb-goldlight">
 
-    <!-- LOGIN OVERLAY -->
+    <!-- =================================================================== -->
+    <!-- LOGIN OVERLAY                                                       -->
+    <!-- =================================================================== -->
     <div id="authLoginOverlay" class="fixed inset-0 z-50 bg-tb-obsidian/95 backdrop-blur-md flex items-center justify-center p-4 hidden">
         <div class="tb-glass rounded-2xl max-w-md w-full p-8 border-2 border-tb-gold shadow-2xl text-center space-y-6 relative overflow-hidden">
             <div class="w-16 h-16 mx-auto rounded-2xl bg-gradient-to-br from-tb-crimson to-tb-deepred border-2 border-tb-gold flex items-center justify-center shadow-xl">
@@ -165,12 +206,15 @@
             </div>
             <div>
                 <h2 class="font-display text-3xl font-black uppercase gold-text-gradient tracking-wide">THE BEYOND SHOW</h2>
-                <p class="font-sans text-xs text-tb-champagne uppercase tracking-widest mt-1" data-i18n="subAuthTitle">OFFICIAL COMMUNITY HUB & DIMENSIONAL VAULT</p>
+                <p class="font-sans text-xs text-tb-champagne uppercase tracking-widest mt-1" data-i18n="subAuthTitle">OFFICIAL COMMUNITY HUB & COFFRE DIMENSIONNEL</p>
             </div>
             <p class="font-sans text-sm text-tb-ivory leading-relaxed" data-i18n="subAuthDesc">
-                Connectez votre compte Kick pour synchroniser vos TB-Coins et reliques, ou entrez en mode Invité.
+                Connectez votre compte Kick officiel pour synchroniser vos TB-Coins, tours de roue et reliques, ou entrez instantanément en mode Invité.
             </p>
             <div class="space-y-3 pt-2">
+                <button onclick="loginWithKick()" class="btn-kick w-full py-3.5 rounded-xl font-display text-base font-black uppercase tracking-wider cursor-pointer shadow-lg flex items-center justify-center gap-2">
+                    <span data-i18n="btnConnectKick">SE CONNECTER AVEC KICK</span>
+                </button>
                 <button onclick="activateGuestMode()" class="btn-crimson w-full py-3 rounded-xl font-display text-sm font-black uppercase tracking-wider cursor-pointer shadow-lg" data-i18n="btnGuest">
                     CONTINUER EN INVITÉ
                 </button>
@@ -178,7 +222,9 @@
         </div>
     </div>
 
-    <!-- HEADER -->
+    <!-- =================================================================== -->
+    <!-- TOP HEADER: BRAND, DB STATUS, STREAM STATUS & PROFILE BAR           -->
+    <!-- =================================================================== -->
     <header class="sticky top-0 z-40 tb-glass border-b border-tb-gold/40">
         <div class="max-w-7xl mx-auto px-4 py-3 flex flex-wrap items-center justify-between gap-4">
             <div class="flex items-center gap-3.5">
@@ -193,19 +239,19 @@
                         <h1 class="font-display text-2xl sm:text-3xl font-black tracking-wider uppercase gold-text-gradient leading-none">
                             THE BEYOND SHOW
                         </h1>
-                        <!-- DATABASE STATUS -->
+                        <!-- DB STATUS -->
                         <div id="dbStatusBadge" class="px-2.5 py-1 text-xs font-display font-black tracking-widest uppercase rounded bg-tb-charcoal text-amber-300 border border-tb-gold/50 flex items-center gap-1.5 select-none">
                             <span id="dbStatusDot" class="w-2 h-2 rounded-full bg-amber-400 animate-pulse"></span>
                             <span id="dbStatusText">DB CONNECTING...</span>
                         </div>
-                        <!-- STREAM STATUS -->
+                        <!-- STREAM ONLINE/OFFLINE STATUS -->
                         <div id="streamStatusBadge" class="px-2.5 py-1 text-xs font-display font-black tracking-widest uppercase rounded bg-tb-charcoal text-stone-400 border border-stone-600 flex items-center gap-1.5 select-none">
                             <span id="streamStatusDot" class="w-2 h-2 rounded-full bg-stone-500"></span>
                             <span id="streamStatusText">STREAM OFFLINE</span>
                         </div>
                     </div>
                     <p class="font-sans text-xs sm:text-sm font-semibold text-tb-champagne tracking-widest uppercase mt-0.5" data-i18n="hubSubtitle">
-                        OFFICIAL COMMUNITY HUB // COFFRE DIMENSIONNEL
+                        HUB COMMUNAUTAIRE OFFICIEL // COFFRE DIMENSIONNEL
                     </p>
                 </div>
             </div>
@@ -217,47 +263,93 @@
                     <button onclick="setLanguage('en')" id="langBtn-en" class="lang-btn">EN</button>
                 </div>
 
-                <div class="flex items-center gap-2 bg-gradient-to-r from-tb-deepred to-tb-bordeaux border border-tb-gold/60 rounded-xl px-3.5 py-1.5">
-                    <span class="font-display text-xl font-black text-tb-goldlight" id="headerCoins">500</span>
-                    <span class="font-display text-xs font-bold uppercase text-tb-gold">TB</span>
+                <!-- TB-Coins Counter -->
+                <div class="flex items-center gap-2 bg-gradient-to-r from-tb-deepred to-tb-bordeaux border border-tb-gold/60 rounded-xl px-3.5 py-1.5 shadow-inner">
+                    <svg class="w-5 h-5 text-tb-goldlight shrink-0" viewBox="0 0 24 24">
+                        <circle cx="12" cy="12" r="10" fill="#D4AF37" stroke="#FFF5CC" stroke-width="1.5"/>
+                        <text x="12" y="16" text-anchor="middle" font-size="10" font-weight="900" fill="#090607" font-family="sans-serif">TB</text>
+                    </svg>
+                    <div class="leading-none">
+                        <span id="headerCoins" class="font-display text-xl font-black text-tb-goldlight">500</span>
+                        <span class="font-display text-xs font-bold uppercase tracking-wider text-tb-gold ml-1">TB-COINS</span>
+                    </div>
                 </div>
 
+                <!-- Relic Count Badge -->
+                <div class="flex items-center gap-2 bg-tb-charcoal border border-tb-crimson/80 rounded-xl px-3 py-1.5">
+                    <svg class="w-4 h-4 text-tb-mythic shrink-0" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M12 2L4 7v10l8 5 8-5V7l-8-5zm0 2.5L17.6 8 12 11.5 6.4 8 12 4.5z"/>
+                    </svg>
+                    <span id="headerRelicCount" class="font-display text-lg font-extrabold text-tb-ivory leading-none">0 / 12</span>
+                    <span class="hidden md:inline font-display text-xs font-bold uppercase tracking-wider text-tb-champagne" data-i18n="headerRelicsLabel">RELIQUES</span>
+                </div>
+
+                <!-- Daily Supply Claim Button -->
                 <button onclick="claimDailySupply()" class="btn-gold px-3 py-2 rounded-xl font-display text-xs sm:text-sm font-black uppercase tracking-wider cursor-pointer" data-i18n="supplyBtn">
-                    +500 SUPPLY
+                    SUPPLY +500
                 </button>
 
+                <!-- User Profile Badge -->
                 <div id="headerUserControls" class="flex items-center gap-2 bg-tb-obsidian/95 border border-tb-gold/50 rounded-xl px-3 py-1">
-                    <span id="headerUsername" class="font-display text-sm font-black text-tb-goldlight">Hunter</span>
-                    <button onclick="logoutUser()" class="ml-1 text-xs font-display font-bold text-tb-champagne hover:text-tb-mythic cursor-pointer">✕</button>
+                    <img id="headerAvatar" src="" alt="Avatar" class="w-7 h-7 rounded-full border border-tb-gold object-cover hidden">
+                    <div class="leading-tight">
+                        <div class="flex items-center gap-1.5">
+                            <span id="headerUsername" class="font-display text-sm font-black text-tb-goldlight tracking-wide">Hunter</span>
+                            <span id="headerAuthTag" class="text-[10px] font-display font-bold px-1.5 py-0.2 rounded bg-tb-deepred text-tb-ivory border border-tb-gold/40">GUEST</span>
+                        </div>
+                    </div>
+                    <button onclick="logoutUser()" class="ml-1 text-xs font-display font-bold uppercase text-tb-champagne hover:text-tb-mythic cursor-pointer" title="Sign Out">✕</button>
                 </div>
             </div>
         </div>
     </header>
 
-    <!-- NAVIGATION TABS -->
+    <!-- =================================================================== -->
+    <!-- NAVIGATION TABS BAR                                                 -->
+    <!-- =================================================================== -->
     <nav class="tb-glass border-b border-tb-gold/25 shadow-md">
         <div class="max-w-7xl mx-auto px-4 flex overflow-x-auto">
-            <button onclick="switchTab('hunt')" id="tabBtn-hunt" class="hub-tab active px-5 py-3 font-display text-base font-bold tracking-wider uppercase whitespace-nowrap cursor-pointer" data-i18n="tabHunt">ROUE & RELIQUES</button>
-            <button onclick="switchTab('minigames')" id="tabBtn-minigames" class="hub-tab px-5 py-3 font-display text-base font-bold tracking-wider uppercase whitespace-nowrap cursor-pointer" data-i18n="tabMinigames">MINI-JEUX DÉDIÉS</button>
-            <button onclick="switchTab('travel')" id="tabBtn-travel" class="hub-tab px-5 py-3 font-display text-base font-bold tracking-wider uppercase whitespace-nowrap cursor-pointer" data-i18n="tabTravel">VOYAGES & PARTENAIRES</button>
-            <button onclick="switchTab('leaderboard')" id="tabBtn-leaderboard" class="hub-tab px-5 py-3 font-display text-base font-bold tracking-wider uppercase whitespace-nowrap cursor-pointer" data-i18n="tabLeaderboard">CLASSEMENT</button>
+            <button onclick="switchTab('hunt')" id="tabBtn-hunt" class="hub-tab active px-5 py-3 font-display text-base sm:text-lg font-bold tracking-wider uppercase whitespace-nowrap flex items-center gap-2 cursor-pointer">
+                <span data-i18n="tabHunt">BEYOND WHEEL & RELIQUES</span>
+            </button>
+            <button onclick="switchTab('minigames')" id="tabBtn-minigames" class="hub-tab px-5 py-3 font-display text-base sm:text-lg font-bold tracking-wider uppercase whitespace-nowrap flex items-center gap-2 cursor-pointer">
+                <span data-i18n="tabMinigames">MINI-JEUX DÉDIÉS</span>
+            </button>
+            <button onclick="switchTab('travel')" id="tabBtn-travel" class="hub-tab px-5 py-3 font-display text-base sm:text-lg font-bold tracking-wider uppercase whitespace-nowrap flex items-center gap-2 cursor-pointer">
+                <span data-i18n="tabTravel">VOYAGES & OFFRES</span>
+            </button>
+            <button onclick="switchTab('leaderboard')" id="tabBtn-leaderboard" class="hub-tab px-5 py-3 font-display text-base sm:text-lg font-bold tracking-wider uppercase whitespace-nowrap flex items-center gap-2 cursor-pointer">
+                <span data-i18n="tabLeaderboard">CLASSEMENT & ARMURERIE</span>
+            </button>
         </div>
     </nav>
 
-    <!-- MAIN CONTENT -->
+    <!-- =================================================================== -->
+    <!-- MAIN HUB WORKSPACE                                                  -->
+    <!-- =================================================================== -->
     <main class="max-w-7xl mx-auto px-4 py-6">
 
-        <!-- TAB 1: HUNT WHEEL -->
+        <!-- =============================================================== -->
+        <!-- TAB 1: BEYOND WHEEL & RELICS                                    -->
+        <!-- =============================================================== -->
         <section id="content-hunt" class="space-y-8">
             <div class="tb-glass rounded-2xl p-6 md:p-8 relative overflow-hidden border border-tb-gold/50 shadow-2xl">
-                <h2 class="font-display text-3xl sm:text-4xl font-black uppercase gold-text-gradient tracking-wide" data-i18n="huntTitle">BEYOND WHEEL & RELIQUES DIMENSIONNELLES</h2>
-                <p class="font-sans text-tb-champagne text-sm sm:text-base mt-2" data-i18n="huntDesc">
-                    Faites tourner la roue pour 100 TB-Coins, découvrez des reliques rares sur 4 niveaux et synchronisez votre coffre en direct.
-                </p>
+                <div class="absolute -right-16 -bottom-16 w-64 h-64 bg-tb-crimson/20 rounded-full blur-3xl pointer-events-none"></div>
+                <div class="relative z-10 max-w-3xl">
+                    <span class="inline-block px-3 py-1 rounded bg-tb-crimson text-tb-goldlight font-display text-xs font-black tracking-widest uppercase mb-3 border border-tb-gold/40" data-i18n="huntBadge">
+                        COFFRE INTERACTIF EN DIRECT
+                    </span>
+                    <h2 class="font-display text-3xl sm:text-4xl lg:text-5xl font-black uppercase gold-text-gradient tracking-wide leading-tight" data-i18n="huntTitle">
+                        BEYOND WHEEL & RELIQUES DIMENSIONNELLES
+                    </h2>
+                    <p class="font-sans text-tb-champagne text-sm sm:text-base mt-2 leading-relaxed" data-i18n="huntDesc">
+                        Faites tourner la Beyond Wheel pour 100 TB-Coins par lancer. Découvrez des reliques dimensionnelles rares sur 4 niveaux, cumulez des TB-Coins et synchronisez votre coffre directement avec votre compte Kick.
+                    </p>
+                </div>
             </div>
 
             <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
-                <!-- Roue interactive -->
+                <!-- Interactive HTML5 Canvas Wheel -->
                 <div class="lg:col-span-7 tb-glass rounded-2xl p-6 sm:p-8 flex flex-col items-center border border-tb-gold/45 relative shadow-xl">
                     <div class="w-full flex items-center justify-between mb-2">
                         <div class="flex items-center gap-2">
@@ -265,44 +357,85 @@
                             <span class="font-display text-xs font-black tracking-widest text-tb-gold uppercase" data-i18n="wheelHeaderTitle">BEYOND WHEEL</span>
                         </div>
                         <div class="font-display text-xs font-bold text-tb-champagne uppercase tracking-wider">
-                            <span data-i18n="wheelCostLabel">COÛT</span> : <span class="text-tb-goldlight font-black">100 TB-COINS</span>
+                            <span data-i18n="wheelCostLabel">COÛT DU TOUR</span> : <span class="text-tb-goldlight font-black">100 TB-COINS</span>
                         </div>
                     </div>
 
                     <div class="relative my-5 flex items-center justify-center">
-                        <div class="absolute -top-3.5 z-20">
+                        <div class="absolute -top-3.5 z-20 wheel-pointer">
                             <div class="w-0 h-0 border-l-[15px] border-l-transparent border-r-[15px] border-r-transparent border-t-[28px] border-t-tb-goldlight filter drop-shadow-[0_4px_8px_rgba(184,29,44,0.85)]"></div>
                         </div>
                         <canvas id="wheelCanvas" width="340" height="340" class="max-w-full h-auto rounded-full shadow-[0_0_38px_rgba(184,29,44,0.4)] border-4 border-tb-gold bg-tb-obsidian"></canvas>
                     </div>
 
                     <button id="spinBtn" onclick="spinWheel()" class="btn-gold w-full max-w-sm py-4 rounded-xl font-display text-xl font-black uppercase tracking-widest shadow-2xl cursor-pointer" data-i18n="spinBtn">
-                        TOURNER LA ROUE (100 TB)
+                        LANCER LA BEYOND WHEEL (100 TB)
                     </button>
                     <p id="spinMessage" class="font-display text-base font-bold tracking-wider text-tb-goldlight mt-3 min-h-[1.5rem] text-center" data-i18n="spinMsgReady">
-                        Prêt à tenter votre chance ?
+                        Approchez-vous de la roue et réclamez votre butin dimensionnel !
                     </p>
                 </div>
 
+                <!-- Live Activity & Hunter Stats -->
                 <div class="lg:col-span-5 space-y-6">
                     <div class="tb-glass rounded-2xl p-6 border border-tb-gold/40 shadow-xl">
-                        <h3 class="font-display text-lg font-black uppercase gold-text-gradient mb-4" data-i18n="statsTitle">STATISTIQUES DU CHASSEUR</h3>
-                        <div class="grid grid-cols-2 gap-3 text-center">
+                        <h3 class="font-display text-lg font-black uppercase gold-text-gradient tracking-wider mb-4" data-i18n="statsTitle">
+                            TÉLÉMÉTRIE DU COFFRE CHASSEUR
+                        </h3>
+                        <div class="grid grid-cols-3 gap-3 text-center">
                             <div class="bg-tb-obsidian/80 border border-tb-gold/30 rounded-xl p-3">
-                                <div class="font-display text-xs uppercase text-tb-champagne" data-i18n="statSpins">TOTAL SPINS</div>
-                                <div id="statTotalSpins" class="font-display text-2xl font-black text-tb-goldlight">0</div>
+                                <div class="font-display text-xs font-bold uppercase text-tb-champagne" data-i18n="statSpins">TOURS TOTAUX</div>
+                                <div id="statTotalSpins" class="font-display text-2xl font-black text-tb-goldlight mt-0.5">0</div>
                             </div>
                             <div class="bg-tb-obsidian/80 border border-tb-gold/30 rounded-xl p-3">
-                                <div class="font-display text-xs uppercase text-tb-champagne" data-i18n="statRelics">RELIQUES</div>
-                                <div id="statRelicRatio" class="font-display text-2xl font-black text-tb-ivory">0 / 12</div>
+                                <div class="font-display text-xs font-bold uppercase text-tb-champagne" data-i18n="statRelics">RELIQUES</div>
+                                <div id="statRelicRatio" class="font-display text-2xl font-black text-tb-ivory mt-0.5">0 / 12</div>
+                            </div>
+                            <div class="bg-tb-obsidian/80 border border-tb-gold/30 rounded-xl p-3">
+                                <div class="font-display text-xs font-bold uppercase text-tb-champagne">RAID DMG</div>
+                                <div id="statRaidBonus" class="font-display text-2xl font-black text-tb-crimson mt-0.5">+10%</div>
                             </div>
                         </div>
                     </div>
+
+                    <div class="tb-glass rounded-2xl p-6 border border-tb-gold/40 shadow-xl">
+                        <div class="flex items-center justify-between mb-4">
+                            <h3 class="font-display text-lg font-black uppercase gold-text-gradient tracking-wider" data-i18n="feedTitle">
+                                ACTIVITÉ EN DIRECT
+                            </h3>
+                            <span class="text-[11px] font-display font-bold uppercase tracking-wider text-tb-champagne">REAL-TIME</span>
+                        </div>
+                        <div id="liveFeedList" class="space-y-2.5 max-h-[250px] overflow-y-auto pr-1"></div>
+                    </div>
                 </div>
+            </div>
+
+            <!-- 12 Dimensional Relics Armory Grid -->
+            <div class="tb-glass rounded-2xl p-6 md:p-8 border border-tb-gold/45 shadow-2xl">
+                <div class="flex flex-wrap items-center justify-between gap-4 mb-6">
+                    <div>
+                        <h3 class="font-display text-2xl sm:text-3xl font-black uppercase gold-text-gradient tracking-wide" data-i18n="collectionTitle">
+                            COLLECTION DES RELIQUES DIMENSIONNELLES
+                        </h3>
+                        <p class="font-sans text-sm text-tb-champagne mt-1">
+                            <span data-i18n="collectionDesc">Chaque artefact découvert sur la Beyond Wheel est archivé en permanence dans votre coffre.</span> (<span id="armoryCountText">0</span> / 12)
+                        </p>
+                    </div>
+                    <div class="flex flex-wrap gap-2">
+                        <button onclick="filterArmory('ALL')" id="filter-ALL" class="filter-pill active px-3.5 py-1.5 rounded-lg font-display text-xs font-black uppercase tracking-wider cursor-pointer" data-i18n="filterAll">TOUT</button>
+                        <button onclick="filterArmory('BRONZE')" id="filter-BRONZE" class="filter-pill px-3.5 py-1.5 rounded-lg font-display text-xs font-black uppercase tracking-wider cursor-pointer text-amber-500">BRONZE</button>
+                        <button onclick="filterArmory('SILVER')" id="filter-SILVER" class="filter-pill px-3.5 py-1.5 rounded-lg font-display text-xs font-black uppercase tracking-wider cursor-pointer text-stone-300">SILVER</button>
+                        <button onclick="filterArmory('GOLD')" id="filter-GOLD" class="filter-pill px-3.5 py-1.5 rounded-lg font-display text-xs font-black uppercase tracking-wider cursor-pointer text-tb-goldlight">GOLD</button>
+                        <button onclick="filterArmory('MYTHIC')" id="filter-MYTHIC" class="filter-pill px-3.5 py-1.5 rounded-lg font-display text-xs font-black uppercase tracking-wider cursor-pointer text-tb-mythic">MYTHIC</button>
+                    </div>
+                </div>
+                <div id="relicArmoryGrid" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4"></div>
             </div>
         </section>
 
-        <!-- TAB 2: MINI-GAMES ARENA -->
+        <!-- =============================================================== -->
+        <!-- TAB 2: MINI-GAMES ARENA (DIRECT REPOS & DATABASES)              -->
+        <!-- =============================================================== -->
         <section id="content-minigames" class="space-y-8 hidden">
             <div class="tb-glass rounded-2xl p-6 md:p-8 border border-tb-gold/50 shadow-2xl">
                 <span class="inline-block px-3 py-1 rounded bg-tb-crimson text-tb-goldlight font-display text-xs font-black uppercase mb-3 border border-tb-gold/40" data-i18n="arcadeBadge">
@@ -317,6 +450,7 @@
             </div>
 
             <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
+                <!-- 1. TB Hold'em Poker -->
                 <div class="tb-glass rounded-2xl p-5 border border-tb-gold/45 tb-card-lift flex flex-col justify-between space-y-4">
                     <div>
                         <div class="flex items-center justify-between mb-3">
@@ -325,7 +459,7 @@
                         </div>
                         <h3 class="font-display text-2xl font-black uppercase gold-text-gradient">TB HOLD'EM POKER</h3>
                         <p class="font-sans text-xs text-tb-champagne mt-1.5 leading-relaxed" data-i18n="descPoker">
-                            Duel Texas Hold'em avec table et base de données Firebase dédiée[cite: 6].
+                            Duel Texas Hold'em avec table et base de données Firebase dédiée.
                         </p>
                     </div>
                     <a href="https://teebeeshow-cloud.github.io/tbhold-em/" target="_blank" rel="noopener noreferrer" class="btn-gold w-full py-2.5 rounded-xl font-display text-sm font-black uppercase tracking-wider block text-center shadow-lg" data-i18n="launchGameBtn">
@@ -333,6 +467,7 @@
                     </a>
                 </div>
 
+                <!-- 2. Hangstein / Pendu -->
                 <div class="tb-glass rounded-2xl p-5 border border-tb-gold/45 tb-card-lift flex flex-col justify-between space-y-4">
                     <div>
                         <div class="flex items-center justify-between mb-3">
@@ -341,7 +476,7 @@
                         </div>
                         <h3 class="font-display text-2xl font-black uppercase gold-text-gradient">HANGSTEIN // PENDU</h3>
                         <p class="font-sans text-xs text-tb-champagne mt-1.5 leading-relaxed" data-i18n="descHang">
-                            Décryptage de mots-clés secrets synchronisé avec le chat du stream[cite: 8].
+                            Décryptage de mots-clés secrets synchronisé avec le chat du stream.
                         </p>
                     </div>
                     <a href="https://teebeeshow-cloud.github.io/tbshow-hangman/" target="_blank" rel="noopener noreferrer" class="btn-gold w-full py-2.5 rounded-xl font-display text-sm font-black uppercase tracking-wider block text-center shadow-lg" data-i18n="launchGameBtn">
@@ -349,6 +484,7 @@
                     </a>
                 </div>
 
+                <!-- 3. Morbakim -->
                 <div class="tb-glass rounded-2xl p-5 border border-tb-gold/45 tb-card-lift flex flex-col justify-between space-y-4">
                     <div>
                         <div class="flex items-center justify-between mb-3">
@@ -357,7 +493,7 @@
                         </div>
                         <h3 class="font-display text-2xl font-black uppercase gold-text-gradient">MORBAKIM</h3>
                         <p class="font-sans text-xs text-tb-champagne mt-1.5 leading-relaxed" data-i18n="descMorb">
-                            Affrontement tactique sur grille 3x3 en temps réel[cite: 9].
+                            Affrontement tactique sur grille 3x3 en temps réel.
                         </p>
                     </div>
                     <a href="https://teebeeshow-cloud.github.io/tbshow-tictactoe/" target="_blank" rel="noopener noreferrer" class="btn-gold w-full py-2.5 rounded-xl font-display text-sm font-black uppercase tracking-wider block text-center shadow-lg" data-i18n="launchGameBtn">
@@ -365,6 +501,7 @@
                     </a>
                 </div>
 
+                <!-- 4. Battleship -->
                 <div class="tb-glass rounded-2xl p-5 border border-tb-gold/45 tb-card-lift flex flex-col justify-between space-y-4">
                     <div>
                         <div class="flex items-center justify-between mb-3">
@@ -373,7 +510,7 @@
                         </div>
                         <h3 class="font-display text-2xl font-black uppercase gold-text-gradient">BATAILLE NAVALE</h3>
                         <p class="font-sans text-xs text-tb-champagne mt-1.5 leading-relaxed" data-i18n="descBattle">
-                            Guerre radar 6x6 pour torpiller les navires ennemis[cite: 7].
+                            Guerre radar 6x6 pour torpiller les navires ennemis.
                         </p>
                     </div>
                     <a href="https://teebeeshow-cloud.github.io/tbshow-battleship/" target="_blank" rel="noopener noreferrer" class="btn-gold w-full py-2.5 rounded-xl font-display text-sm font-black uppercase tracking-wider block text-center shadow-lg" data-i18n="launchGameBtn">
@@ -383,34 +520,214 @@
             </div>
         </section>
 
-        <!-- TAB 3: TRAVEL DEALS -->
+        <!-- =============================================================== -->
+        <!-- TAB 3: TRAVEL DEALS (COMPLETE TRAVELPAYOUTS PARTNER PORTAL)     -->
+        <!-- =============================================================== -->
         <section id="content-travel" class="space-y-8 hidden">
+            <div class="tb-glass rounded-2xl p-6 md:p-8 relative overflow-hidden border border-tb-gold/50 shadow-2xl">
+                <div class="absolute -right-16 -bottom-16 w-64 h-64 bg-tb-gold/15 rounded-full blur-3xl pointer-events-none"></div>
+                <div class="relative z-10 max-w-3xl">
+                    <span class="inline-block px-3 py-1 rounded bg-tb-gold text-tb-obsidian font-display text-xs font-black tracking-widest uppercase mb-3 border border-tb-goldlight">
+                        TRAVELPAYOUTS PARTNER PORTAL
+                    </span>
+                    <h2 class="font-display text-3xl sm:text-4xl lg:text-5xl font-black uppercase gold-text-gradient tracking-wide leading-tight" data-i18n="travelTitle">
+                        OFFRES VOYAGES EXCLUSIVES COMMUNAUTÉ
+                    </h2>
+                    <p class="font-sans text-tb-champagne text-sm sm:text-base mt-2 leading-relaxed" data-i18n="travelDesc">
+                        Comparez les tarifs aériens mondiaux, séjours de luxe, locations de voitures et eSIMs instantanées via notre réseau partenaire officiel Travelpayouts. Chaque réservation soutient The Beyond Show !
+                    </p>
+                </div>
+            </div>
+
+            <!-- Interactive Flight & Hotel Search Widget -->
             <div class="tb-glass rounded-2xl p-6 md:p-8 border border-tb-gold/50 shadow-2xl">
-                <h2 class="font-display text-3xl font-black uppercase gold-text-gradient tracking-wide" data-i18n="travelTitle">PARTENAIRES VOYAGES & EXPÉDITIONS</h2>
-                <p class="font-sans text-tb-champagne text-sm sm:text-base mt-2" data-i18n="travelDesc">
-                    Réservez vos vols, hôtels et eSIMs via notre réseau partenaire Travelpayouts.
-                </p>
+                <div class="flex flex-wrap items-center justify-between gap-4 mb-5">
+                    <h3 class="font-display text-2xl font-black uppercase gold-text-gradient tracking-wide" data-i18n="travelFinderTitle">
+                        MOTEUR DE RECHERCHE INSTANTANÉ TRAVELPAYOUTS
+                    </h3>
+                    <div class="flex gap-2">
+                        <button onclick="setTravelMode('flights')" id="travelMode-flights" class="btn-gold px-4 py-1.5 rounded-lg font-display text-xs font-black uppercase tracking-wider cursor-pointer" data-i18n="btnFlightsMode">
+                            VOLS (AVIASALES)
+                        </button>
+                        <button onclick="setTravelMode('hotels')" id="travelMode-hotels" class="btn-crimson px-4 py-1.5 rounded-lg font-display text-xs font-black uppercase tracking-wider cursor-pointer" data-i18n="btnHotelsMode">
+                            HÔTELS (HOTELLOOK)
+                        </button>
+                    </div>
+                </div>
+
+                <form onsubmit="launchTravelSearch(event)" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4 items-end">
+                    <div id="originFieldGroup">
+                        <label class="block font-display text-xs font-bold uppercase tracking-wider text-tb-gold mb-1.5" data-i18n="lblOrigin">VILLE DÉPART / IATA</label>
+                        <input id="tpOrigin" type="text" value="ALG" placeholder="ex: ALG, PAR, LON"
+                            class="w-full bg-tb-obsidian border border-tb-gold/45 rounded-xl px-3.5 py-2.5 font-sans text-sm text-tb-ivory focus:outline-none focus:border-tb-goldlight uppercase">
+                    </div>
+                    <div>
+                        <label class="block font-display text-xs font-bold uppercase tracking-wider text-tb-gold mb-1.5" data-i18n="lblDest">DESTINATION / IATA</label>
+                        <input id="tpDest" type="text" value="DXB" placeholder="ex: DXB, IST, NYC"
+                            class="w-full bg-tb-obsidian border border-tb-gold/45 rounded-xl px-3.5 py-2.5 font-sans text-sm text-tb-ivory focus:outline-none focus:border-tb-goldlight uppercase">
+                    </div>
+                    <div>
+                        <label class="block font-display text-xs font-bold uppercase tracking-wider text-tb-gold mb-1.5" data-i18n="lblDate">DÉPART / ARRIVÉE</label>
+                        <input id="tpDepartDate" type="date"
+                            class="w-full bg-tb-obsidian border border-tb-gold/45 rounded-xl px-3.5 py-2.5 font-sans text-sm text-tb-ivory focus:outline-none focus:border-tb-goldlight">
+                    </div>
+                    <div>
+                        <label class="block font-display text-xs font-bold uppercase tracking-wider text-tb-gold mb-1.5" data-i18n="lblTravelers">VOYAGEURS</label>
+                        <select id="tpTravelers"
+                            class="w-full bg-tb-obsidian border border-tb-gold/45 rounded-xl px-3.5 py-2.5 font-sans text-sm text-tb-ivory focus:outline-none focus:border-tb-goldlight">
+                            <option value="1">1 Adulte / Adult</option>
+                            <option value="2" selected>2 Adultes / Adults</option>
+                            <option value="3">3 Voyageurs / Travelers</option>
+                            <option value="4">4 Voyageurs / Travelers</option>
+                        </select>
+                    </div>
+                    <div>
+                        <button type="submit" class="btn-gold w-full py-2.5 px-4 rounded-xl font-display text-base font-black uppercase tracking-wider cursor-pointer shadow-lg" data-i18n="btnSearchDeals">
+                            RECHERCHER ↗
+                        </button>
+                    </div>
+                </form>
+            </div>
+
+            <!-- 4 Curated Partner Category Cards -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
+                <div class="tb-glass rounded-2xl tb-card-lift overflow-hidden border border-tb-gold/40 flex flex-col justify-between">
+                    <div>
+                        <div class="h-32 bg-gradient-to-br from-tb-crimson via-tb-deepred to-tb-obsidian flex items-center justify-center border-b border-tb-gold/30 relative">
+                            <span class="text-4xl">✈️</span>
+                            <span class="absolute top-3 right-3 px-2 py-0.5 rounded bg-tb-gold text-tb-obsidian font-display text-[11px] font-black uppercase">-40% MAX</span>
+                        </div>
+                        <div class="p-5">
+                            <h4 class="font-display text-xl font-black uppercase gold-text-gradient" data-i18n="catFlightsTitle">TARIFS AÉRIENS MONDIAUX</h4>
+                            <p class="font-sans text-xs text-tb-champagne mt-1.5 leading-relaxed" data-i18n="catFlightsDesc">
+                                Comparez plus de 700 compagnies aériennes et low-cost en temps réel via Aviasales.
+                            </p>
+                        </div>
+                    </div>
+                    <div class="px-5 pb-5">
+                        <a href="https://www.aviasales.com/?marker=tbshow" target="_blank" rel="noopener noreferrer" class="btn-gold w-full py-2.5 rounded-xl font-display text-xs font-black uppercase tracking-wider block text-center" data-i18n="catFlightsBtn">
+                            COMPARER LES VOLS ↗
+                        </a>
+                    </div>
+                </div>
+
+                <div class="tb-glass rounded-2xl tb-card-lift overflow-hidden border border-tb-gold/40 flex flex-col justify-between">
+                    <div>
+                        <div class="h-32 bg-gradient-to-br from-tb-deepred via-tb-bordeaux to-tb-obsidian flex items-center justify-center border-b border-tb-gold/30 relative">
+                            <span class="text-4xl">🏨</span>
+                            <span class="absolute top-3 right-3 px-2 py-0.5 rounded bg-tb-crimson text-tb-goldlight border border-tb-gold/40 font-display text-[11px] font-black uppercase">TARIFS MEMBRES</span>
+                        </div>
+                        <div class="p-5">
+                            <h4 class="font-display text-xl font-black uppercase gold-text-gradient" data-i18n="catHotelsTitle">HÔTELS LUXE & BOUTIQUE</h4>
+                            <p class="font-sans text-xs text-tb-champagne mt-1.5 leading-relaxed" data-i18n="catHotelsDesc">
+                                Débloquez des tarifs réduits sur plus de 250 000 hôtels, resorts et villas dans le monde via Hotellook.
+                            </p>
+                        </div>
+                    </div>
+                    <div class="px-5 pb-5">
+                        <a href="https://search.hotellook.com/?marker=tbshow" target="_blank" rel="noopener noreferrer" class="btn-gold w-full py-2.5 rounded-xl font-display text-xs font-black uppercase tracking-wider block text-center" data-i18n="catHotelsBtn">
+                            EXPLORER LES HÔTELS ↗
+                        </a>
+                    </div>
+                </div>
+
+                <div class="tb-glass rounded-2xl tb-card-lift overflow-hidden border border-tb-gold/40 flex flex-col justify-between">
+                    <div>
+                        <div class="h-32 bg-gradient-to-br from-tb-crimson via-tb-deepred to-tb-obsidian flex items-center justify-center border-b border-tb-gold/30 relative">
+                            <span class="text-4xl">🚘</span>
+                            <span class="absolute top-3 right-3 px-2 py-0.5 rounded bg-tb-gold text-tb-obsidian font-display text-[11px] font-black uppercase">ANNULATION GRATUITE</span>
+                        </div>
+                        <div class="p-5">
+                            <h4 class="font-display text-xl font-black uppercase gold-text-gradient" data-i18n="catCarsTitle">LOCATION DE VOITURES</h4>
+                            <p class="font-sans text-xs text-tb-champagne mt-1.5 leading-relaxed" data-i18n="catCarsDesc">
+                                Retrait immédiat aux terminaux internationaux avec options d'assurance complète via DiscoverCars.
+                            </p>
+                        </div>
+                    </div>
+                    <div class="px-5 pb-5">
+                        <a href="https://www.discovercars.com/?a_aid=tbshow" target="_blank" rel="noopener noreferrer" class="btn-gold w-full py-2.5 rounded-xl font-display text-xs font-black uppercase tracking-wider block text-center" data-i18n="catCarsBtn">
+                            RÉSERVER UN VÉHICULE ↗
+                        </a>
+                    </div>
+                </div>
+
+                <div class="tb-glass rounded-2xl tb-card-lift overflow-hidden border border-tb-gold/40 flex flex-col justify-between">
+                    <div>
+                        <div class="h-32 bg-gradient-to-br from-tb-deepred via-tb-bordeaux to-tb-obsidian flex items-center justify-center border-b border-tb-gold/30 relative">
+                            <span class="text-4xl">📡</span>
+                            <span class="absolute top-3 right-3 px-2 py-0.5 rounded bg-tb-crimson text-tb-goldlight border border-tb-gold/40 font-display text-[11px] font-black uppercase">5G INSTANTANÉE</span>
+                        </div>
+                        <div class="p-5">
+                            <h4 class="font-display text-xl font-black uppercase gold-text-gradient" data-i18n="catEsimTitle">eSIMS VOYAGE MONDIALES</h4>
+                            <p class="font-sans text-xs text-tb-champagne mt-1.5 leading-relaxed" data-i18n="catEsimDesc">
+                                Restez connecté dans plus de 200 pays sans frais d'itinérance grâce aux forfaits Airalo & Drimsim.
+                            </p>
+                        </div>
+                    </div>
+                    <div class="px-5 pb-5">
+                        <a href="https://www.airalo.com/?irclickid=tbshow" target="_blank" rel="noopener noreferrer" class="btn-gold w-full py-2.5 rounded-xl font-display text-xs font-black uppercase tracking-wider block text-center" data-i18n="catEsimBtn">
+                            OBTENIR UNE eSIM ↗
+                        </a>
+                    </div>
+                </div>
             </div>
         </section>
 
-        <!-- TAB 4: LEADERBOARD -->
+        <!-- =============================================================== -->
+        <!-- TAB 4: LEADERBOARD & RAID ARMORY (COMPLETE)                     -->
+        <!-- =============================================================== -->
         <section id="content-leaderboard" class="space-y-8 hidden">
-            <div class="tb-glass rounded-2xl overflow-hidden border border-tb-gold/45 shadow-2xl">
-                <div class="p-5 border-b border-tb-gold/30 flex items-center justify-between">
-                    <h3 class="font-display text-xl font-black uppercase gold-text-gradient" data-i18n="leaderTitle">CLASSEMENT COMMUNAUTAIRE</h3>
-                    <span id="leaderboardSyncLabel" class="font-display text-xs uppercase text-tb-champagne">LIVE SYNC</span>
+            <div class="tb-glass rounded-2xl p-6 md:p-8 relative overflow-hidden border border-tb-gold/50 shadow-2xl">
+                <div class="absolute -right-16 -bottom-16 w-64 h-64 bg-tb-gold/15 rounded-full blur-3xl pointer-events-none"></div>
+                <div class="relative z-10 max-w-2xl">
+                    <span class="inline-block px-3 py-1 rounded bg-tb-gold text-tb-obsidian font-display text-xs font-black tracking-widest uppercase mb-3 border border-tb-goldlight">
+                        LIVE FIREBASE RANKINGS & RAID GEAR
+                    </span>
+                    <h2 class="font-display text-3xl sm:text-4xl lg:text-5xl font-black uppercase gold-text-gradient tracking-wide leading-tight" data-i18n="leaderTitle">
+                        CLASSEMENT & ARMURERIE DE RAID
+                    </h2>
+                    <p class="font-sans text-tb-champagne text-sm sm:text-base mt-2 leading-relaxed" data-i18n="leaderDesc">
+                        Les meilleurs chasseurs de The Beyond Show synchronisés en direct depuis Firebase Realtime Database, ainsi que des armes de Raid achetables avec vos TB-Coins.
+                    </p>
                 </div>
-                <table class="w-full text-left">
-                    <thead>
-                        <tr class="bg-tb-deepred/70 border-b border-tb-gold/40 font-display text-xs font-black uppercase text-tb-goldlight">
-                            <th class="p-4" data-i18n="thRank">RANG</th>
-                            <th class="p-4" data-i18n="thHunter">CHASSEUR</th>
-                            <th class="p-4" data-i18n="thRelics">RELIQUES</th>
-                            <th class="p-4">TB-COINS</th>
-                        </tr>
-                    </thead>
-                    <tbody id="leaderboardBody" class="divide-y divide-tb-gold/15 font-sans text-sm"></tbody>
-                </table>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+                <!-- Live Leaderboard Table -->
+                <div class="lg:col-span-7 tb-glass rounded-2xl overflow-hidden border border-tb-gold/45 shadow-2xl">
+                    <div class="p-5 border-b border-tb-gold/30 flex items-center justify-between">
+                        <h3 class="font-display text-xl font-black uppercase gold-text-gradient tracking-wider" data-i18n="topHuntersTitle">
+                            TOP CHASSEURS DE LA COMMUNAUTÉ
+                        </h3>
+                        <span id="leaderboardSyncLabel" class="font-display text-xs font-bold uppercase text-tb-champagne">LIVE SYNC</span>
+                    </div>
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-left border-collapse">
+                            <thead>
+                                <tr class="bg-tb-deepred/70 border-b border-tb-gold/40 font-display text-xs font-black uppercase tracking-widest text-tb-goldlight">
+                                    <th class="p-4" data-i18n="thRank">RANG</th>
+                                    <th class="p-4" data-i18n="thHunter">MEMBRE</th>
+                                    <th class="p-4" data-i18n="thRelics">RELIQUES</th>
+                                    <th class="p-4">TB-COINS</th>
+                                </tr>
+                            </thead>
+                            <tbody id="leaderboardBody" class="divide-y divide-tb-gold/15 font-sans text-sm"></tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- Raid Armory Upgrades -->
+                <div class="lg:col-span-5 tb-glass rounded-2xl p-6 border border-tb-gold/45 shadow-2xl space-y-5">
+                    <div>
+                        <h3 class="font-display text-xl font-black uppercase gold-text-gradient tracking-wider" data-i18n="armoryTitle">
+                            ARMURERIE DES BOSS RAIDS
+                        </h3>
+                        <p class="font-sans text-xs text-tb-champagne mt-1" data-i18n="armoryDesc">
+                            Équipez des armes dimensionnelles pour amplifier votre multiplicateur d'attaque lors des Boss Raids en direct.
+                        </p>
+                    </div>
+                    <div id="raidWeaponsList" class="space-y-3.5"></div>
+                </div>
             </div>
         </section>
     </main>
@@ -425,7 +742,9 @@
         </div>
     </div>
 
-    <!-- SCRIPT FIREBASE, STREAM, ROUE & LANGUES -->
+    <!-- =================================================================== -->
+    <!-- COMPLETE SCRIPT (FIREBASE, KICK OAUTH, WHEEL, TRAVEL, LEADERBOARD)  -->
+    <!-- =================================================================== -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
         import { getDatabase, ref, set, get, update, onValue } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js";
@@ -443,25 +762,78 @@
         const app = initializeApp(firebaseConfig);
         const db = getDatabase(app);
 
-        // --- 1. STATUT BASE DE DONNÉES & STREAM ---
-        const connectedRef = ref(db, ".info/connected");
-        onValue(connectedRef, (snap) => {
+        const CLIENT_ID = "01M775NPQP93VF5PGP6DJR4BQF";
+        const REDIRECT_URI = "https://teebeeshow-cloud.github.io/tbshow/";
+        const WORKER_URL = "https://nameless-base-1ca1.teebeeshow.workers.dev";
+
+        const RELICS_CATALOG = [
+            { id: "obsidian_core", code: "#001", name: "Obsidian Core", rarity: "GOLD", icon: "💎", desc: "Matrice volcanique pulsant d'énergie thermique." },
+            { id: "crimson_spark", code: "#002", name: "Crimson Spark", rarity: "BRONZE", icon: "🔥", desc: "Éclat ardent capturé du premier stream." },
+            { id: "golden_compass", code: "#003", name: "Golden Compass", rarity: "GOLD", icon: "🧭", desc: "Pointe vers les dimensions cachées." },
+            { id: "beyond_trident", code: "#004", name: "The Beyond Trident", rarity: "MYTHIC", icon: "🔱", desc: "Relique mythique suprême forgée dans le feu." },
+            { id: "silver_astrolabe", code: "#005", name: "Silver Astrolabe", rarity: "SILVER", icon: "⏳", desc: "Calibré pour la navigation des failles." },
+            { id: "bordeaux_chalice", code: "#006", name: "Bordeaux Chalice", rarity: "BRONZE", icon: "🏆", desc: "Calice cérémoniel du Conseil Fondateur." },
+            { id: "solar_crown", code: "#007", name: "Solar Crown", rarity: "GOLD", icon: "👑", desc: "Portée par les champions incontestés de l'arène." },
+            { id: "scarlet_phoenix", code: "#008", name: "Scarlet Plume", rarity: "MYTHIC", icon: "🪶", desc: "Plume ardente éternelle du Phénix." },
+            { id: "titanium_cog", code: "#009", name: "Titanium Gear", rarity: "SILVER", icon: "⚙️", desc: "Mécanisme de précision de l'horlogerie du coffre." },
+            { id: "ember_medallion", code: "#010", name: "Ember Medallion", rarity: "BRONZE", icon: "🛡️", desc: "Marque des premiers membres de l'avant-garde." },
+            { id: "dimension_key", code: "#011", name: "Dimension Key", rarity: "GOLD", icon: "🔑", desc: "Déverrouille les chambres scellées du coffre." },
+            { id: "crimson_star", code: "#012", name: "Crimson Singularity", rarity: "MYTHIC", icon: "🌟", desc: "Énergie pure concentrée de l'Au-Delà." }
+        ];
+
+        const RAID_WEAPONS = [
+            { id: "steel_blaster", name: "Steel Blaster", bonus: "+10% DMG", cost: 0, desc: "Arme cinétique standard pour les Boss Raids." },
+            { id: "crimson_cleaver", name: "Crimson Cleaver", bonus: "+25% DMG", cost: 1500, desc: "Lame forgée en bordeaux perçant les blindages." },
+            { id: "gold_trident", name: "Gold Trident", bonus: "+50% DMG", cost: 5000, desc: "Arme relique légendaire libérant des ondes solaires." }
+        ];
+
+        let isDbOnline = false;
+        let currentFilter = "ALL";
+        let currentTravelMode = "flights";
+        let liveLeaderboardData = [];
+
+        let userState = {
+            id: null,
+            username: "GuestHunter",
+            profile_pic: "",
+            authType: "NONE",
+            coins: 500,
+            total_spins: 0,
+            collection: {},
+            equippedWeapon: "steel_blaster",
+            ownedWeapons: ["steel_blaster"],
+            lastDailyClaim: 0
+        };
+
+        let liveFeedEntries = [
+            { time: "LIVE", text: "Coffre Beyond initialisé. Lancez la Beyond Wheel pour débloquer des reliques !" },
+            { time: "TOP", text: "KrimsonKing a découvert The Beyond Trident (MYTHIC) !" },
+            { time: "WIN", text: "AuraQueen a gagné +1,000 TB-Coins sur la Beyond Wheel !" }
+        ];
+
+        // --- 1. STATUTS FIREBASE (DB & STREAM) ---
+        onValue(ref(db, ".info/connected"), (snap) => {
             const badge = document.getElementById("dbStatusBadge");
             const dot = document.getElementById("dbStatusDot");
             const text = document.getElementById("dbStatusText");
+
             if (snap.val() === true) {
+                isDbOnline = true;
                 badge.className = "px-2.5 py-1 text-xs font-display font-black tracking-widest uppercase rounded bg-tb-obsidian text-emerald-400 border border-emerald-500/60 flex items-center gap-1.5 select-none";
                 dot.className = "w-2 h-2 rounded-full bg-emerald-400 animate-pulse";
                 text.innerText = "DB ONLINE";
+                document.getElementById("leaderboardSyncLabel").innerText = "● FIREBASE LIVE";
+                document.getElementById("leaderboardSyncLabel").className = "font-display text-xs font-bold uppercase text-emerald-400";
             } else {
+                isDbOnline = false;
                 badge.className = "px-2.5 py-1 text-xs font-display font-black tracking-widest uppercase rounded bg-tb-deepred text-tb-goldlight border border-tb-crimson flex items-center gap-1.5 select-none";
                 dot.className = "w-2 h-2 rounded-full bg-tb-mythic";
                 text.innerText = "LOCAL CACHE";
+                document.getElementById("leaderboardSyncLabel").innerText = "● LOCAL CACHE";
             }
         });
 
-        const streamRef = ref(db, "stream/isOnline");
-        onValue(streamRef, (snapshot) => {
+        onValue(ref(db, "stream/isOnline"), (snapshot) => {
             const isOnline = Boolean(snapshot.val());
             const badge = document.getElementById("streamStatusBadge");
             const dot = document.getElementById("streamStatusDot");
@@ -478,77 +850,154 @@
             }
         });
 
-        // --- 2. GESTION DES LANGUES (FR / EN) ---
+        // --- 2. LEADERBOARD REALTIME LISTENER ---
+        onValue(ref(db, "tbshow/users"), (snapshot) => {
+            const data = snapshot.val();
+            if (data) {
+                liveLeaderboardData = Object.values(data).map(u => ({
+                    username: u.username || "Hunter",
+                    coins: u.coins ?? 500,
+                    relicCount: u.collection ? Object.keys(u.collection).length : 0
+                }));
+            } else {
+                liveLeaderboardData = [];
+            }
+            renderLeaderboard();
+        });
+
+        // --- 3. TRADUCTIONS FR / EN ---
         const translations = {
             fr: {
-                subAuthTitle: "OFFICIAL COMMUNITY HUB & DIMENSIONAL VAULT",
-                subAuthDesc: "Connectez votre compte Kick pour synchroniser vos TB-Coins et reliques, ou entrez en mode Invité.",
+                subAuthTitle: "OFFICIAL COMMUNITY HUB & COFFRE DIMENSIONNEL",
+                subAuthDesc: "Connectez votre compte Kick officiel pour synchroniser vos TB-Coins, tours de roue et reliques, ou entrez en mode Invité.",
+                btnConnectKick: "SE CONNECTER AVEC KICK",
                 btnGuest: "CONTINUER EN INVITÉ",
-                hubSubtitle: "OFFICIAL COMMUNITY HUB // COFFRE DIMENSIONNEL",
-                supplyBtn: "+500 SUPPLY",
-                tabHunt: "ROUE & RELIQUES",
+                hubSubtitle: "HUB COMMUNAUTAIRE OFFICIEL // COFFRE DIMENSIONNEL",
+                headerRelicsLabel: "RELIQUES",
+                supplyBtn: "SUPPLY +500",
+                tabHunt: "BEYOND WHEEL & RELIQUES",
                 tabMinigames: "MINI-JEUX DÉDIÉS",
-                tabTravel: "VOYAGES & PARTENAIRES",
-                tabLeaderboard: "CLASSEMENT",
+                tabTravel: "VOYAGES & OFFRES",
+                tabLeaderboard: "CLASSEMENT & ARMURERIE",
+                huntBadge: "COFFRE INTERACTIF EN DIRECT",
                 huntTitle: "BEYOND WHEEL & RELIQUES DIMENSIONNELLES",
-                huntDesc: "Faites tourner la roue pour 100 TB-Coins, découvrez des reliques rares sur 4 niveaux et synchronisez votre coffre en direct.",
+                huntDesc: "Faites tourner la Beyond Wheel pour 100 TB-Coins par lancer. Découvrez des reliques dimensionnelles rares sur 4 niveaux, cumulez des TB-Coins et synchronisez votre coffre directement avec votre compte Kick.",
                 wheelHeaderTitle: "BEYOND WHEEL",
-                wheelCostLabel: "COÛT",
-                spinBtn: "TOURNER LA ROUE (100 TB)",
-                spinMsgReady: "Prêt à tenter votre chance ?",
-                statsTitle: "STATISTIQUES DU CHASSEUR",
-                statSpins: "TOTAL SPINS",
+                wheelCostLabel: "COÛT DU TOUR",
+                spinBtn: "LANCER LA BEYOND WHEEL (100 TB)",
+                spinMsgReady: "Approchez-vous de la roue et réclamez votre butin dimensionnel !",
+                statsTitle: "TÉLÉMÉTRIE DU COFFRE CHASSEUR",
+                statSpins: "TOURS TOTAUX",
                 statRelics: "RELIQUES",
+                feedTitle: "ACTIVITÉ EN DIRECT",
+                collectionTitle: "COLLECTION DES RELIQUES DIMENSIONNELLES",
+                collectionDesc: "Chaque artefact découvert sur la Beyond Wheel est archivé en permanence dans votre coffre.",
+                filterAll: "TOUT",
                 arcadeBadge: "THE BEYOND ARCADE // MODULES INDÉPENDANTS",
                 arcadeTitle: "CENTRE DES MINI-JEUX DÉDIÉS",
                 arcadeDesc: "Accédez directement à chaque mini-jeu hébergé sur son propre dépôt GitHub avec sa base de données dédiée en temps réel.",
-                descPoker: "Duel Texas Hold'em avec table et base de données Firebase dédiée[cite: 6].",
-                descHang: "Décryptage de mots-clés secrets synchronisé avec le chat du stream[cite: 8].",
-                descMorb: "Affrontement tactique sur grille 3x3 en temps réel[cite: 9].",
-                descBattle: "Guerre radar 6x6 pour torpiller les navires ennemis[cite: 7].",
+                descPoker: "Duel Texas Hold'em avec table et base de données Firebase dédiée.",
+                descHang: "Décryptage de mots-clés secrets synchronisé avec le chat du stream.",
+                descMorb: "Affrontement tactique sur grille 3x3 en temps réel.",
+                descBattle: "Guerre radar 6x6 pour torpiller les navires ennemis.",
                 launchGameBtn: "LANCER LE JEU ↗",
-                travelTitle: "PARTENAIRES VOYAGES & EXPÉDITIONS",
-                travelDesc: "Réservez vos vols, hôtels et eSIMs via notre réseau partenaire Travelpayouts.",
-                leaderTitle: "CLASSEMENT COMMUNAUTAIRE",
+                travelTitle: "OFFRES VOYAGES EXCLUSIVES COMMUNAUTÉ",
+                travelDesc: "Comparez les tarifs aériens mondiaux, séjours de luxe, locations de voitures et eSIMs instantanées via notre réseau partenaire officiel Travelpayouts. Chaque réservation soutient The Beyond Show !",
+                travelFinderTitle: "MOTEUR DE RECHERCHE INSTANTANÉ TRAVELPAYOUTS",
+                btnFlightsMode: "VOLS (AVIASALES)",
+                btnHotelsMode: "HÔTELS (HOTELLOOK)",
+                lblOrigin: "VILLE DÉPART / IATA",
+                lblDest: "DESTINATION / IATA",
+                lblDate: "DÉPART / ARRIVÉE",
+                lblTravelers: "VOYAGEURS",
+                btnSearchDeals: "RECHERCHER ↗",
+                catFlightsTitle: "TARIFS AÉRIENS MONDIAUX",
+                catFlightsDesc: "Comparez plus de 700 compagnies aériennes et low-cost en temps réel via Aviasales.",
+                catFlightsBtn: "COMPARER LES VOLS ↗",
+                catHotelsTitle: "HÔTELS LUXE & BOUTIQUE",
+                catHotelsDesc: "Débloquez des tarifs réduits sur plus de 250 000 hôtels, resorts et villas dans le monde via Hotellook.",
+                catHotelsBtn: "EXPLORER LES HÔTELS ↗",
+                catCarsTitle: "LOCATION DE VOITURES",
+                catCarsDesc: "Retrait immédiat aux terminaux internationaux avec options d'assurance complète via DiscoverCars.",
+                catCarsBtn: "RÉSERVER UN VÉHICULE ↗",
+                catEsimTitle: "eSIMS VOYAGE MONDIALES",
+                catEsimDesc: "Restez connecté dans plus de 200 pays sans frais d'itinérance grâce aux forfaits Airalo & Drimsim.",
+                catEsimBtn: "OBTENIR UNE eSIM ↗",
+                leaderTitle: "CLASSEMENT & ARMURERIE DE RAID",
+                leaderDesc: "Les meilleurs chasseurs de The Beyond Show synchronisés en direct depuis Firebase Realtime Database, ainsi que des armes de Raid achetables avec vos TB-Coins.",
+                topHuntersTitle: "TOP CHASSEURS DE LA COMMUNAUTÉ",
                 thRank: "RANG",
-                thHunter: "CHASSEUR",
+                thHunter: "MEMBRE",
                 thRelics: "RELIQUES",
+                armoryTitle: "ARMURERIE DES BOSS RAIDS",
+                armoryDesc: "Équipez des armes dimensionnelles pour amplifier votre multiplicateur d'attaque lors des Boss Raids en direct.",
                 modalBtn: "CONTINUER"
             },
             en: {
                 subAuthTitle: "OFFICIAL COMMUNITY HUB & DIMENSIONAL VAULT",
-                subAuthDesc: "Connect your Kick account to sync your TB-Coins and relics, or enter as a Guest.",
+                subAuthDesc: "Connect your official Kick account to sync your TB-Coins, wheel spins, and relic collection across devices, or enter instantly in Guest mode.",
+                btnConnectKick: "CONNECT WITH KICK ACCOUNT",
                 btnGuest: "CONTINUE AS GUEST",
                 hubSubtitle: "OFFICIAL COMMUNITY HUB // DIMENSIONAL VAULT",
-                supplyBtn: "+500 SUPPLY",
-                tabHunt: "WHEEL & RELICS",
+                headerRelicsLabel: "RELICS",
+                supplyBtn: "SUPPLY +500",
+                tabHunt: "BEYOND WHEEL & RELICS",
                 tabMinigames: "DEDICATED MINIGAMES",
-                tabTravel: "TRAVEL & PARTNERS",
-                tabLeaderboard: "LEADERBOARD",
+                tabTravel: "TRAVEL DEALS",
+                tabLeaderboard: "LEADERBOARD & ARMORY",
+                huntBadge: "LIVE STREAM INTERACTIVE VAULT",
                 huntTitle: "BEYOND WHEEL & DIMENSIONAL RELICS",
-                huntDesc: "Spin the wheel for 100 TB-Coins, discover rare relics across 4 tiers, and sync your vault live.",
+                huntDesc: "Spin the Beyond Wheel for 100 TB-Coins per turn. Discover rare dimensional relics across 4 tiers, accumulate TB-Coins, and sync your vault directly with your Kick account.",
                 wheelHeaderTitle: "BEYOND WHEEL",
-                wheelCostLabel: "COST",
-                spinBtn: "SPIN THE WHEEL (100 TB)",
-                spinMsgReady: "Step up to the wheel and test your luck!",
-                statsTitle: "HUNTER STATS",
+                wheelCostLabel: "SPIN COST",
+                spinBtn: "SPIN THE BEYOND WHEEL (100 TB)",
+                spinMsgReady: "Step up to the wheel and claim your dimensional bounty!",
+                statsTitle: "HUNTER VAULT TELEMETRY",
                 statSpins: "TOTAL SPINS",
                 statRelics: "RELICS",
+                feedTitle: "LIVE HUNT ACTIVITY FEED",
+                collectionTitle: "DIMENSIONAL RELIC COLLECTION",
+                collectionDesc: "Every artifact discovered on the Beyond Wheel is permanently archived in your Dimensional Vault.",
+                filterAll: "ALL",
                 arcadeBadge: "THE BEYOND ARCADE // STANDALONE MODULES",
                 arcadeTitle: "DEDICATED MINIGAMES ARENA",
                 arcadeDesc: "Launch each standalone minigame hosted on its own GitHub repository with a dedicated real-time database.",
-                descPoker: "Texas Hold'em duel with dedicated Firebase table and database[cite: 6].",
-                descHang: "Secret keyword decryption synced live with stream chat[cite: 8].",
-                descMorb: "Tactical 3x3 grid showdown in real time[cite: 9].",
-                descBattle: "6x6 radar naval warfare to torpedo enemy ships[cite: 7].",
+                descPoker: "Texas Hold'em duel with dedicated Firebase table and database.",
+                descHang: "Secret keyword decryption synced live with stream chat.",
+                descMorb: "Tactical 3x3 grid showdown in real time.",
+                descBattle: "6x6 radar naval warfare to torpedo enemy ships.",
                 launchGameBtn: "LAUNCH GAME ↗",
-                travelTitle: "TRAVEL DEALS & EXPEDITIONS",
-                travelDesc: "Book flights, hotels, and eSIMs through our Travelpayouts partner network.",
-                leaderTitle: "COMMUNITY LEADERBOARD",
+                travelTitle: "EXCLUSIVE COMMUNITY TRAVEL DEALS",
+                travelDesc: "Compare global flight fares, luxury stays, car rentals, and instant travel eSIMs through our official Travelpayouts partner network. Every booking supports The Beyond Show!",
+                travelFinderTitle: "TRAVELPAYOUTS INSTANT DEAL FINDER",
+                btnFlightsMode: "FLIGHTS (AVIASALES)",
+                btnHotelsMode: "HOTELS (HOTELLOOK)",
+                lblOrigin: "ORIGIN CITY / IATA",
+                lblDest: "DESTINATION CITY / IATA",
+                lblDate: "DEPART / CHECK-IN",
+                lblTravelers: "TRAVELERS",
+                btnSearchDeals: "SEARCH DEALS ↗",
+                catFlightsTitle: "GLOBAL FLIGHT FARES",
+                catFlightsDesc: "Compare 700+ airlines and low-cost carriers in real time via Aviasales partner feeds.",
+                catFlightsBtn: "COMPARE FLIGHTS ↗",
+                catHotelsTitle: "LUXURY & BOUTIQUE HOTELS",
+                catHotelsDesc: "Unlock discounted nightly rates across 250,000+ hotels, resorts, and villas worldwide via Hotellook.",
+                catHotelsBtn: "EXPLORE HOTELS ↗",
+                catCarsTitle: "AIRPORT CAR RENTALS",
+                catCarsDesc: "Instant pickup at international terminals with full insurance options via DiscoverCars.",
+                catCarsBtn: "RESERVE VEHICLE ↗",
+                catEsimTitle: "GLOBAL TRAVEL eSIMS",
+                catEsimDesc: "Stay connected in 200+ countries with zero roaming fees using Airalo & Drimsim digital data packs.",
+                catEsimBtn: "GET DATA eSIM ↗",
+                leaderTitle: "LEADERBOARD & RAID ARMORY",
+                leaderDesc: "Top Beyond Show hunters synced live from Firebase Realtime Database, plus high-tier Raid Weapons purchasable with TB-Coins.",
+                topHuntersTitle: "TOP COMMUNITY HUNTERS",
                 thRank: "RANK",
-                thHunter: "HUNTER",
+                thHunter: "MEMBER",
                 thRelics: "RELICS",
-                modalBtn: "CONTINUE"
+                armoryTitle: "STREAM BOSS RAID ARMORY",
+                armoryDesc: "Equip dimensional weapons to amplify your attack multiplier during live stream Boss Raids.",
+                modalBtn: "CLAIM & CONTINUE"
             }
         };
 
@@ -565,24 +1014,115 @@
             });
         };
 
-        const savedLang = localStorage.getItem("tb_hub_lang") || "fr";
-        setLanguage(savedLang);
+        // --- 4. PERSISTANCE & UI ---
+        function saveUserProgress() {
+            localStorage.setItem("tb_hub_user_v5", JSON.stringify(userState));
+            if (userState.authType === "KICK" && userState.id && isDbOnline) {
+                update(ref(db, "tbshow/users/" + userState.id), {
+                    username: userState.username,
+                    profile_pic: userState.profile_pic || "",
+                    coins: userState.coins,
+                    total_spins: userState.total_spins,
+                    collection: userState.collection || {},
+                    last_seen: Date.now()
+                }).catch(() => {});
+            }
+            refreshAllUI();
+        }
 
-        // --- 3. ÉTAT DE L'APPLICATION & NAVIGATION ---
-        let userState = {
-            username: "GuestHunter",
-            coins: 500,
-            total_spins: 0,
-            collection: {},
-            authType: "NONE"
+        function refreshAllUI() {
+            document.getElementById("headerCoins").innerText = userState.coins.toLocaleString();
+            const unlockedCount = Object.keys(userState.collection || {}).filter(k => userState.collection[k] > 0).length;
+            document.getElementById("headerRelicCount").innerText = `${unlockedCount} / 12`;
+            document.getElementById("statTotalSpins").innerText = userState.total_spins || 0;
+            document.getElementById("statRelicRatio").innerText = `${unlockedCount} / 12`;
+            document.getElementById("armoryCountText").innerText = unlockedCount;
+
+            const eqWeapon = RAID_WEAPONS.find(w => w.id === userState.equippedWeapon) || RAID_WEAPONS[0];
+            document.getElementById("statRaidBonus").innerText = eqWeapon.bonus;
+
+            const loginOverlay = document.getElementById("authLoginOverlay");
+            if (userState.authType === "NONE") {
+                loginOverlay.classList.remove("hidden");
+            } else {
+                loginOverlay.classList.add("hidden");
+            }
+
+            const userControls = document.getElementById("headerUserControls");
+            if (userState.authType !== "NONE") {
+                userControls.classList.remove("hidden");
+                document.getElementById("headerUsername").innerText = userState.username;
+                const tagEl = document.getElementById("headerAuthTag");
+                if (userState.authType === "KICK") {
+                    tagEl.innerText = "KICK VERIFIED";
+                    tagEl.className = "text-[10px] font-display font-black px-1.5 py-0.2 rounded bg-tb-kick text-tb-obsidian";
+                } else {
+                    tagEl.innerText = "GUEST VAULT";
+                    tagEl.className = "text-[10px] font-display font-bold px-1.5 py-0.2 rounded bg-tb-deepred text-tb-goldlight border border-tb-gold/40";
+                }
+
+                const avatarImg = document.getElementById("headerAvatar");
+                if (userState.profile_pic) {
+                    avatarImg.src = userState.profile_pic;
+                    avatarImg.classList.remove("hidden");
+                } else {
+                    avatarImg.classList.add("hidden");
+                }
+            } else {
+                userControls.classList.add("hidden");
+            }
+
+            renderArmory(currentFilter);
+            renderRaidWeapons();
+            renderLeaderboard();
+        }
+
+        // --- 5. KICK OAUTH & GUEST ---
+        function generateRandomString(length = 32) {
+            const array = new Uint8Array(length);
+            window.crypto.getRandomValues(array);
+            return btoa(String.fromCharCode.apply(null, array)).replace(/\+/g, "-").replace(/\//g, "_").replace(/=+$/, "");
+        }
+
+        async function generateCodeChallenge(verifier) {
+            const encoder = new TextEncoder();
+            const digest = await window.crypto.subtle.digest("SHA-256", encoder.encode(verifier));
+            return btoa(String.fromCharCode.apply(null, new Uint8Array(digest))).replace(/\+/g, "-").replace(/\//g, "_").replace(/=+$/, "");
+        }
+
+        window.loginWithKick = async function () {
+            const codeVerifier = generateRandomString(32);
+            const oauthState = generateRandomString(16);
+            localStorage.setItem("kick_code_verifier", codeVerifier);
+            localStorage.setItem("kick_oauth_state", oauthState);
+
+            const codeChallenge = await generateCodeChallenge(codeVerifier);
+            const authUrl = new URL("https://id.kick.com/oauth/authorize");
+            authUrl.searchParams.append("response_type", "code");
+            authUrl.searchParams.append("client_id", CLIENT_ID);
+            authUrl.searchParams.append("redirect_uri", REDIRECT_URI);
+            authUrl.searchParams.append("scope", "user:read channel:read chat:write events:subscribe");
+            authUrl.searchParams.append("code_challenge", codeChallenge);
+            authUrl.searchParams.append("code_challenge_method", "S256");
+            authUrl.searchParams.append("state", oauthState);
+            window.location.href = authUrl.toString();
         };
 
-        try {
-            const saved = localStorage.getItem("tb_hub_user_v5");
-            if (saved) userState = { ...userState, ...JSON.parse(saved) };
-        } catch (e) {}
+        window.activateGuestMode = function () {
+            userState.authType = "GUEST";
+            userState.username = "Hunter_" + Math.floor(100 + Math.random() * 899);
+            saveUserProgress();
+            addLiveFeed(`${userState.username} a rejoint le Hub en mode Invité.`);
+        };
 
-        window.switchTab = function(tabId) {
+        window.logoutUser = function () {
+            localStorage.removeItem("tb_hub_user_v5");
+            userState.authType = "NONE";
+            refreshAllUI();
+        };
+
+        // --- 6. NAVIGATION & DAILY SUPPLY ---
+        window.switchTab = function (tabId) {
             ["hunt", "minigames", "travel", "leaderboard"].forEach(id => {
                 document.getElementById(`content-${id}`).classList.add("hidden");
                 document.getElementById(`tabBtn-${id}`).classList.remove("active");
@@ -591,62 +1131,21 @@
             document.getElementById(`tabBtn-${tabId}`).classList.add("active");
         };
 
-        window.activateGuestMode = function() {
-            userState.authType = "GUEST";
-            userState.username = "Hunter_" + Math.floor(100 + Math.random() * 899);
-            saveProgress();
-            document.getElementById("authLoginOverlay").classList.add("hidden");
-            refreshUI();
-        };
-
-        window.logoutUser = function() {
-            localStorage.removeItem("tb_hub_user_v5");
-            userState.authType = "NONE";
-            document.getElementById("authLoginOverlay").classList.remove("hidden");
-            refreshUI();
-        };
-
-        window.claimDailySupply = function() {
-            userState.coins += 500;
-            saveProgress();
-            showRewardModal("SUPPLY CLAIMED", "+500 TB-Coins added to your vault!", "🎁");
-        };
-
-        function saveProgress() {
-            localStorage.setItem("tb_hub_user_v5", JSON.stringify(userState));
-            refreshUI();
-        }
-
-        function refreshUI() {
-            document.getElementById("headerCoins").innerText = userState.coins.toLocaleString();
-            document.getElementById("headerUsername").innerText = userState.username;
-            document.getElementById("statTotalSpins").innerText = userState.total_spins || 0;
-            if (userState.authType === "NONE") {
-                document.getElementById("authLoginOverlay").classList.add("hidden");
-            } else {
-                document.getElementById("authLoginOverlay").classList.add("hidden");
+        window.claimDailySupply = function () {
+            if (userState.authType === "NONE") { activateGuestMode(); return; }
+            const now = Date.now();
+            if (now - (userState.lastDailyClaim || 0) < 86400000) {
+                showRewardModal("COOLDOWN", "Vous avez déjà réclamé votre bonus quotidien (+500 TB) ! Revenez demain.", "⏳");
+                return;
             }
-        }
-
-        function showRewardModal(title, desc, icon) {
-            document.getElementById("rewardModalTitle").innerText = title;
-            document.getElementById("rewardModalDesc").innerText = desc;
-            document.getElementById("rewardModalIcon").innerText = icon;
-            document.getElementById("rewardModal").classList.remove("hidden");
-        }
-        window.closeRewardModal = function() {
-            document.getElementById("rewardModal").classList.add("hidden");
+            userState.lastDailyClaim = now;
+            userState.coins += 500;
+            saveUserProgress();
+            addLiveFeed(`${userState.username} a réclamé son bonus quotidien (+500 TB-Coins).`);
+            showRewardModal("BONUS RÉCLAMÉ !", "+500 TB-Coins ont été ajoutés à votre coffre.", "🎁");
         };
 
-        // --- 4. LOGIQUE DE LA ROUE INTERACTIVE ---
-        const RELICS_CATALOG = [
-            { id: "obsidian_core", code: "#001", name: "Obsidian Core", rarity: "GOLD", icon: "💎" },
-            { id: "crimson_spark", code: "#002", name: "Crimson Spark", rarity: "BRONZE", icon: "🔥" },
-            { id: "golden_compass", code: "#003", name: "Golden Compass", rarity: "GOLD", icon: "🧭" },
-            { id: "beyond_trident", code: "#004", name: "The Beyond Trident", rarity: "MYTHIC", icon: "🔱" },
-            { id: "silver_astrolabe", code: "#005", name: "Silver Astrolabe", rarity: "SILVER", icon: "⏳" }
-        ];
-
+        // --- 7. BEYOND WHEEL ---
         const WHEEL_SEGMENTS = [
             { label: "250 TB", type: "coins", val: 250, color: "#1D0B0E" },
             { label: "BRONZE", type: "relic", rarity: "BRONZE", color: "#B81D2C" },
@@ -711,21 +1210,21 @@
             ctx.fillText("WHEEL", cx, cy + 12);
         }
 
-        window.spinWheel = function() {
+        window.spinWheel = function () {
             if (isWheelSpinning) return;
-
+            if (userState.authType === "NONE") { activateGuestMode(); return; }
             if (userState.coins < 100) {
-                showRewardModal("SOLDE INSUFFISANT", "Il vous faut au moins 100 TB-Coins pour tourner la roue !", "⚠️");
+                showRewardModal("SOLDE INSUFFISANT", "Il vous faut au moins 100 TB-Coins pour lancer la Beyond Wheel !", "⚠️");
                 return;
             }
 
             userState.coins -= 100;
             userState.total_spins = (userState.total_spins || 0) + 1;
-            saveProgress();
+            saveUserProgress();
 
             isWheelSpinning = true;
             document.getElementById("spinBtn").disabled = true;
-            document.getElementById("spinMessage").innerText = "Énergie dimensionnelle canalisée...";
+            document.getElementById("spinMessage").innerText = "Canalisation de l'énergie dimensionnelle...";
 
             const extraSpins = 6 + Math.random() * 4;
             const randomOffset = Math.random() * 2 * Math.PI;
@@ -761,25 +1260,234 @@
 
             if (prize.type === "coins") {
                 userState.coins += prize.val;
-                saveProgress();
+                saveUserProgress();
                 document.getElementById("spinMessage").innerText = `Victoire ! +${prize.val.toLocaleString()} TB-Coins gagnés !`;
+                addLiveFeed(`${userState.username} a gagné +${prize.val.toLocaleString()} TB-Coins sur la Beyond Wheel !`);
                 showRewardModal("TB-COINS GAGNÉS !", `Vous avez remporté +${prize.val.toLocaleString()} TB-Coins !`, "🪙");
             } else {
-                const matching = RELICS_CATALOG.filter(r => r.rarity === prize.rarity);
-                const chosen = matching[Math.floor(Math.random() * matching.length)] || RELICS_CATALOG[0];
+                const matchingRelics = RELICS_CATALOG.filter(r => r.rarity === prize.rarity);
+                const chosen = matchingRelics[Math.floor(Math.random() * matchingRelics.length)] || RELICS_CATALOG[0];
                 userState.collection = userState.collection || {};
                 userState.collection[chosen.id] = (userState.collection[chosen.id] || 0) + 1;
-                saveProgress();
+                saveUserProgress();
 
                 document.getElementById("spinMessage").innerText = `Relique découverte : ${chosen.name} (${chosen.rarity}) !`;
-                showRewardModal("RELIQUE DÉCOUVERTE !", `Vous avez débloqué ${chosen.icon} ${chosen.name} !`, chosen.icon);
+                addLiveFeed(`${userState.username} a découvert ${chosen.name} (${chosen.rarity}) !`);
+                showRewardModal(`${chosen.rarity} RELIC`, `Vous avez débloqué ${chosen.icon} ${chosen.name} !`, chosen.icon);
             }
         }
 
-        window.addEventListener("DOMContentLoaded", () => {
-            drawWheel(wheelAngle);
-            refreshUI();
-        });
+        // --- 8. RELIC COLLECTION & FEED ---
+        window.filterArmory = function (rarity) {
+            currentFilter = rarity;
+            renderArmory(rarity);
+        };
+
+        function renderArmory(filter) {
+            const grid = document.getElementById("relicArmoryGrid");
+            if (!grid) return;
+            grid.innerHTML = "";
+
+            ["ALL", "BRONZE", "SILVER", "GOLD", "MYTHIC"].forEach(f => {
+                const btn = document.getElementById(`filter-${f}`);
+                if (btn) btn.classList.toggle("active", f === filter);
+            });
+
+            RELICS_CATALOG.filter(r => filter === "ALL" || r.rarity === filter).forEach(item => {
+                const count = (userState.collection && userState.collection[item.id]) || 0;
+                const unlocked = count > 0;
+                let badgeStyle = "bg-amber-900/50 text-amber-400 border border-amber-600/50";
+                if (item.rarity === "SILVER") badgeStyle = "bg-stone-800 text-stone-200 border border-stone-500/50";
+                if (item.rarity === "GOLD") badgeStyle = "bg-tb-gold/20 text-tb-goldlight border border-tb-gold/60";
+                if (item.rarity === "MYTHIC") badgeStyle = "bg-tb-crimson/35 text-tb-mythic border border-tb-mythic/70";
+
+                const card = document.createElement("div");
+                card.className = `tb-glass rounded-xl p-4 border flex flex-col justify-between tb-card-lift ${unlocked ? "border-tb-gold/65" : "border-tb-gold/20 opacity-55"}`;
+                card.innerHTML = `
+                    <div>
+                        <div class="flex items-center justify-between mb-2.5">
+                            <span class="font-display text-xs font-bold text-tb-champagne">${item.code}</span>
+                            <span class="font-display text-[11px] font-black uppercase tracking-wider px-2 py-0.5 rounded ${badgeStyle}">${item.rarity}</span>
+                        </div>
+                        <div class="text-3xl mb-2">${unlocked ? item.icon : "🔒"}</div>
+                        <h4 class="font-display text-lg font-black uppercase gold-text-gradient">${item.name}</h4>
+                        <p class="font-sans text-xs text-tb-champagne mt-1 leading-relaxed">${unlocked ? item.desc : "Scellé dans la dimension Beyond."}</p>
+                    </div>
+                    <div class="pt-3 mt-3 border-t border-tb-gold/20 flex items-center justify-between font-display text-xs">
+                        <span class="text-tb-gold uppercase">ARCHIVE :</span>
+                        <span class="${unlocked ? "text-emerald-400 font-black" : "text-tb-crimson font-bold"}">${unlocked ? `x${count}` : "LOCKED"}</span>
+                    </div>
+                `;
+                grid.appendChild(card);
+            });
+        }
+
+        function addLiveFeed(text) {
+            const now = new Date();
+            const stamp = `${String(now.getHours()).padStart(2, "0")}:${String(now.getMinutes()).padStart(2, "0")}`;
+            liveFeedEntries.unshift({ time: stamp, text });
+            if (liveFeedEntries.length > 15) liveFeedEntries.pop();
+            renderLiveFeed();
+        }
+
+        function renderLiveFeed() {
+            const container = document.getElementById("liveFeedList");
+            if (!container) return;
+            container.innerHTML = "";
+            liveFeedEntries.forEach(entry => {
+                const row = document.createElement("div");
+                row.className = "flex items-start gap-3 p-2.5 rounded-xl bg-tb-obsidian/80 border border-tb-gold/20 font-sans text-xs";
+                row.innerHTML = `<span class="font-display font-black text-tb-gold shrink-0">${entry.time}</span><span class="text-tb-ivory leading-snug">${entry.text}</span>`;
+                container.appendChild(row);
+            });
+        }
+
+        // --- 9. TRAVELPAYOUTS SEARCH ---
+        window.setTravelMode = function (mode) {
+            currentTravelMode = mode;
+            const originGroup = document.getElementById("originFieldGroup");
+            const fBtn = document.getElementById("travelMode-flights");
+            const hBtn = document.getElementById("travelMode-hotels");
+
+            if (mode === "flights") {
+                originGroup.classList.remove("hidden");
+                fBtn.className = "btn-gold px-4 py-1.5 rounded-lg font-display text-xs font-black uppercase tracking-wider cursor-pointer";
+                hBtn.className = "btn-crimson px-4 py-1.5 rounded-lg font-display text-xs font-black uppercase tracking-wider cursor-pointer";
+            } else {
+                originGroup.classList.add("hidden");
+                hBtn.className = "btn-gold px-4 py-1.5 rounded-lg font-display text-xs font-black uppercase tracking-wider cursor-pointer";
+                fBtn.className = "btn-crimson px-4 py-1.5 rounded-lg font-display text-xs font-black uppercase tracking-wider cursor-pointer";
+            }
+        };
+
+        window.launchTravelSearch = function (e) {
+            e.preventDefault();
+            const origin = encodeURIComponent(document.getElementById("tpOrigin").value.trim() || "ALG");
+            const dest = encodeURIComponent(document.getElementById("tpDest").value.trim() || "DXB");
+            const date = encodeURIComponent(document.getElementById("tpDepartDate").value || "");
+            const adults = encodeURIComponent(document.getElementById("tpTravelers").value || "2");
+
+            const targetUrl = currentTravelMode === "flights"
+                ? `https://www.aviasales.com/search/${origin}${dest}1?adults=${adults}&marker=tbshow`
+                : `https://search.hotellook.com/hotels?destination=${dest}&checkIn=${date}&adults=${adults}&marker=tbshow`;
+            window.open(targetUrl, "_blank", "noopener,noreferrer");
+        };
+
+        // --- 10. LEADERBOARD & RAID ARMORY ---
+        function renderLeaderboard() {
+            const tbody = document.getElementById("leaderboardBody");
+            if (!tbody) return;
+
+            let combined = [...liveLeaderboardData];
+            if (combined.length === 0) {
+                combined = [
+                    { username: "AuraQueen", coins: 8450, relicCount: 11 },
+                    { username: "KrimsonKing", coins: 7120, relicCount: 10 },
+                    { username: "VortexVanguard", coins: 4300, relicCount: 7 },
+                    { username: "SolarKnight", coins: 2890, relicCount: 5 }
+                ];
+            }
+
+            if (userState.authType !== "NONE") {
+                const userRelics = Object.keys(userState.collection || {}).filter(k => userState.collection[k] > 0).length;
+                const existingIdx = combined.findIndex(u => u.username === userState.username);
+                if (existingIdx >= 0) {
+                    combined[existingIdx] = { username: userState.username, coins: userState.coins, relicCount: userRelics, isSelf: true };
+                } else {
+                    combined.push({ username: userState.username, coins: userState.coins, relicCount: userRelics, isSelf: true });
+                }
+            }
+
+            combined.sort((a, b) => b.coins - a.coins);
+            tbody.innerHTML = "";
+
+            combined.slice(0, 10).forEach((entry, idx) => {
+                const tr = document.createElement("tr");
+                tr.className = `transition ${entry.isSelf ? "bg-tb-deepred/65 font-bold" : "hover:bg-tb-deepred/25"}`;
+                tr.innerHTML = `
+                    <td class="p-4 font-display text-base font-black text-tb-gold">#${idx + 1}</td>
+                    <td class="p-4 font-display text-base font-bold text-tb-ivory">
+                        ${entry.username} ${entry.isSelf ? '<span class="ml-1.5 text-[10px] px-1.5 py-0.5 rounded bg-tb-gold text-tb-obsidian font-black">YOU</span>' : ""}
+                    </td>
+                    <td class="p-4 font-display text-sm font-bold text-tb-champagne">${entry.relicCount} / 12</td>
+                    <td class="p-4 font-display text-base font-black text-tb-goldlight">⚡ ${entry.coins.toLocaleString()}</td>
+                `;
+                tbody.appendChild(tr);
+            });
+        }
+
+        function renderRaidWeapons() {
+            const container = document.getElementById("raidWeaponsList");
+            if (!container) return;
+            container.innerHTML = "";
+
+            RAID_WEAPONS.forEach(w => {
+                const owned = (userState.ownedWeapons || []).includes(w.id);
+                const equipped = userState.equippedWeapon === w.id;
+
+                const card = document.createElement("div");
+                card.className = `p-4 rounded-xl bg-tb-obsidian/85 border ${equipped ? "border-tb-gold" : "border-tb-gold/30"} flex items-center justify-between gap-3`;
+                card.innerHTML = `
+                    <div>
+                        <div class="flex items-center gap-2">
+                            <h4 class="font-display text-lg font-black uppercase gold-text-gradient">${w.name}</h4>
+                            <span class="px-2 py-0.5 rounded bg-tb-crimson/35 text-tb-goldlight border border-tb-gold/40 font-display text-[11px] font-black">${w.bonus}</span>
+                        </div>
+                        <p class="font-sans text-xs text-tb-champagne mt-1">${w.desc}</p>
+                    </div>
+                    <button onclick="handleRaidWeaponAction('${w.id}')"
+                        class="${equipped ? "btn-gold" : "btn-crimson"} px-3.5 py-2 rounded-xl font-display text-xs font-black uppercase tracking-wider shrink-0 cursor-pointer">
+                        ${equipped ? "EQUIPPED" : owned ? "EQUIP" : `${w.cost.toLocaleString()} TB`}
+                    </button>
+                `;
+                container.appendChild(card);
+            });
+        }
+
+        window.handleRaidWeaponAction = function (weaponId) {
+            const w = RAID_WEAPONS.find(item => item.id === weaponId);
+            if (!w) return;
+            userState.ownedWeapons = userState.ownedWeapons || ["steel_blaster"];
+
+            if (userState.ownedWeapons.includes(w.id)) {
+                userState.equippedWeapon = w.id;
+                saveUserProgress();
+                return;
+            }
+            if (userState.coins < w.cost) {
+                showRewardModal("SOLDE INSUFFISANT", `Il vous faut ${w.cost.toLocaleString()} TB-Coins pour débloquer ${w.name}.`, "⚠️");
+                return;
+            }
+
+            userState.coins -= w.cost;
+            userState.ownedWeapons.push(w.id);
+            userState.equippedWeapon = w.id;
+            saveUserProgress();
+            addLiveFeed(`${userState.username} a équipé ${w.name} (${w.bonus}) !`);
+            showRewardModal("ARME DÉBLOQUÉE !", `${w.name} (${w.bonus}) est maintenant équipée !`, "⚔️");
+        };
+
+        // --- 11. MODAL HELPERS & BOOTSTRAP ---
+        function showRewardModal(title, desc, icon) {
+            document.getElementById("rewardModalTitle").innerText = title;
+            document.getElementById("rewardModalDesc").innerText = desc;
+            document.getElementById("rewardModalIcon").innerText = icon;
+            document.getElementById("rewardModal").classList.remove("hidden");
+        }
+        window.closeRewardModal = function () {
+            document.getElementById("rewardModal").classList.add("hidden");
+        };
+
+        try {
+            const saved = localStorage.getItem("tb_hub_user_v5");
+            if (saved) userState = { ...userState, ...JSON.parse(saved) };
+        } catch (e) {}
+
+        const savedLang = localStorage.getItem("tb_hub_lang") || "fr";
+        setLanguage(savedLang);
+        drawWheel(wheelAngle);
+        renderLiveFeed();
+        refreshAllUI();
     </script>
 </body>
 </html>
