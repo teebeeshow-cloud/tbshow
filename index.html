@@ -32,7 +32,8 @@
                             golddark: '#997A15',
                             ivory: '#F5EFE6',
                             champagne: '#B8A99A',
-                            kick: '#53FC18'
+                            kick: '#53FC18',
+                            emerald: '#10B981'
                         }
                     }
                 }
@@ -276,11 +277,12 @@
         </div>
     </header>
 
-    <!-- NAVIGATION TABS (AVEC DATA-I18N CORRIGÉ) -->
+    <!-- NAVIGATION TABS -->
     <nav class="tb-glass border-b border-tb-gold/25 shadow-md">
         <div class="max-w-7xl mx-auto px-4 flex overflow-x-auto">
             <button onclick="switchTab('hunt')" id="tabBtn-hunt" class="hub-tab active px-5 py-3 font-display text-base font-bold tracking-wider uppercase whitespace-nowrap cursor-pointer" data-i18n="tab_hunt">ROUE DE LA CHASSE & RELIQUES</button>
             <button onclick="switchTab('minigames')" id="tabBtn-minigames" class="hub-tab px-5 py-3 font-display text-base font-bold tracking-wider uppercase whitespace-nowrap cursor-pointer" data-i18n="tab_games">ARÈNE DES MINI-JEUX</button>
+            <button onclick="switchTab('ecolab')" id="tabBtn-ecolab" class="hub-tab px-5 py-3 font-display text-base font-bold tracking-wider uppercase whitespace-nowrap cursor-pointer" data-i18n="tab_ecolab">TERRA 4.0 // ECO-LAB</button>
             <button onclick="switchTab('travel')" id="tabBtn-travel" class="hub-tab px-5 py-3 font-display text-base font-bold tracking-wider uppercase whitespace-nowrap cursor-pointer" data-i18n="tab_travel">BONS PLANS VOYAGE</button>
             <button onclick="switchTab('leaderboard')" id="tabBtn-leaderboard" class="hub-tab px-5 py-3 font-display text-base font-bold tracking-wider uppercase whitespace-nowrap cursor-pointer" data-i18n="tab_leaderboard">CLASSEMENT & COFFRE</button>
         </div>
@@ -291,7 +293,7 @@
         <!-- TAB 1: HUNT -->
         <section id="content-hunt" class="space-y-8">
             <div class="tb-glass rounded-2xl p-6 md:p-8 relative overflow-hidden border border-tb-gold/50 shadow-2xl">
-                <h2 class="font-display text-3xl sm:text-4xl font-black uppercase gold-text-gradient tracking-wide" data-i18n="hunt_title">THE HUNT WHEEL & DIMENSIONAL RELICS</h2>
+                <h2 class="font-display text-3xl sm:text-4xl font-black uppercase gold-text-gradient tracking-wide" data-i18n="hunt_title">ROUE DE LA CHASSE & RELIQUES DIMENSIONNELLES</h2>
                 <p class="font-sans text-tb-champagne text-sm sm:text-base mt-2" data-i18n="hunt_desc">
                     Faites tourner la roue pour 100 TB-Coins, découvrez des reliques rares sur 4 niveaux et synchronisez votre coffre en direct.
                 </p>
@@ -300,7 +302,7 @@
             <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
                 <div class="lg:col-span-7 tb-glass rounded-2xl p-6 sm:p-8 flex flex-col items-center border border-tb-gold/45 relative shadow-xl">
                     <div class="w-full flex items-center justify-between mb-2">
-                        <span class="font-display text-xs font-black tracking-widest text-tb-gold uppercase" data-i18n="wheel_title">WHEEL OF BEYOND</span>
+                        <span class="font-display text-xs font-black tracking-widest text-tb-gold uppercase" data-i18n="wheel_title">ROUE DE L'AU-DELÀ</span>
                         <span class="font-display text-xs font-bold text-tb-champagne uppercase"><span data-i18n="wheel_cost_label">COÛT</span> : <span class="text-tb-goldlight font-black">100 TB-COINS</span></span>
                     </div>
 
@@ -324,7 +326,7 @@
                         <h3 class="font-display text-lg font-black uppercase gold-text-gradient mb-4" data-i18n="stats_title">STATISTIQUES DU CHASSEUR</h3>
                         <div class="grid grid-cols-2 gap-3 text-center">
                             <div class="bg-tb-obsidian/80 border border-tb-gold/30 rounded-xl p-3">
-                                <div class="font-display text-xs uppercase text-tb-champagne" data-i18n="stats_spins">TOTAL SPINS</div>
+                                <div class="font-display text-xs uppercase text-tb-champagne" data-i18n="stats_spins">TOURS JOUÉS</div>
                                 <div id="statTotalSpins" class="font-display text-2xl font-black text-tb-goldlight">0</div>
                             </div>
                             <div class="bg-tb-obsidian/80 border border-tb-gold/30 rounded-xl p-3">
@@ -358,7 +360,7 @@
         <!-- TAB 2: MINI-GAMES -->
         <section id="content-minigames" class="space-y-8 hidden">
             <div class="tb-glass rounded-2xl p-6 md:p-8 border border-tb-gold/50 shadow-2xl">
-                <h2 class="font-display text-3xl font-black uppercase gold-text-gradient tracking-wide" data-i18n="games_heading">MINI-GAMES ARENA</h2>
+                <h2 class="font-display text-3xl font-black uppercase gold-text-gradient tracking-wide" data-i18n="games_heading">ARÈNE DES MINI-JEUX</h2>
             </div>
             <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
                 <div class="tb-glass rounded-2xl p-5 border border-tb-gold/45 tb-card-lift flex flex-col justify-between space-y-4">
@@ -396,10 +398,96 @@
             </div>
         </section>
 
-        <!-- TAB 3: TRAVEL -->
+        <!-- TAB 3: TERRA 4.0 // ECO-LAB (CAPITAL PARTICIPATIF & STREAM OBS) -->
+        <section id="content-ecolab" class="space-y-8 hidden">
+            <!-- BANNIÈRE VISION -->
+            <div class="tb-glass rounded-2xl p-6 md:p-8 border border-tb-gold/50 shadow-2xl space-y-3">
+                <div class="flex flex-wrap items-center justify-between gap-2">
+                    <span class="px-3 py-1 rounded bg-tb-deepred text-tb-goldlight border border-tb-gold/40 font-display text-xs font-black uppercase tracking-widest" data-i18n="eco_badge">DU VIRTUEL AU RÉEL // INITIATIVE FONDATRICE</span>
+                    <span class="font-display text-xs font-bold text-emerald-400 uppercase" data-i18n="eco_obs_status">● SYNC OBS & CHAT (!eco) ACTIF</span>
+                </div>
+                <h2 class="font-display text-3xl sm:text-4xl font-black uppercase gold-text-gradient tracking-wide" data-i18n="eco_title">PROJET ECO-SYSTEM 4.0 — MICRO-FERME AUTONOME</h2>
+                <p class="font-sans text-sm sm:text-base text-tb-champagne leading-relaxed max-w-4xl" data-i18n="eco_desc">
+                    Conçu comme un laboratoire d'ingénierie durable et bio-intensive, Eco-System 4.0 relie notre communauté numérique à un actif agricole réel. Participez à l'amorçage via vos TB-Coins en direct sur le stream ou manifestez votre intention d'apport en numéraire pour la future Société par Actions (SPA).
+                </p>
+            </div>
+
+            <!-- COMPTEURS D'AMORÇAGE EN DIRECT (FIREBASE) -->
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-5">
+                <div class="tb-glass rounded-2xl p-6 border border-tb-gold/40 text-center space-y-1">
+                    <div class="font-display text-xs font-bold uppercase text-tb-champagne tracking-wider" data-i18n="eco_stat_sqm">SURFACE BIO-INTENSIVE SOUTENUE</div>
+                    <div class="font-display text-3xl sm:text-4xl font-black text-tb-goldlight"><span id="ecoStatSqm">0</span> m²</div>
+                    <div class="font-sans text-xs text-emerald-400" data-i18n="eco_stat_sqm_sub">100 TB-Coins = 1 m² activé en live</div>
+                </div>
+                <div class="tb-glass rounded-2xl p-6 border border-tb-gold/40 text-center space-y-1">
+                    <div class="font-display text-xs font-bold uppercase text-tb-champagne tracking-wider" data-i18n="eco_stat_capital">INTENTIONS D'APPORT NUMÉRAIRE</div>
+                    <div class="font-display text-3xl sm:text-4xl font-black text-tb-goldlight"><span id="ecoStatEuros">0</span> €</div>
+                    <div class="font-sans text-xs text-tb-champagne" data-i18n="eco_stat_capital_sub">Parité indicative : 1 Part Fondateur = 50 €</div>
+                </div>
+                <div class="tb-glass rounded-2xl p-6 border border-tb-gold/40 text-center space-y-1">
+                    <div class="font-display text-xs font-bold uppercase text-tb-champagne tracking-wider" data-i18n="eco_stat_backers">PIONNIERS & PARTENAIRES INSCRITS</div>
+                    <div class="font-display text-3xl sm:text-4xl font-black text-tb-ivory" id="ecoStatBackers">0</div>
+                    <div class="font-sans text-xs text-tb-champagne" data-i18n="eco_stat_backers_sub">Registre préparatoire Société par Actions</div>
+                </div>
+            </div>
+
+            <!-- DEUX COLONNES : ENGAGEMENT STREAM (TB-COINS) VS SOUSCRIPTION CAPITAL (€) -->
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                <!-- BLOC 1 : INTERACTION LIVE & OBS -->
+                <div class="tb-glass rounded-2xl p-6 md:p-8 border border-tb-gold/45 flex flex-col justify-between space-y-6">
+                    <div class="space-y-3">
+                        <div class="text-3xl">🌱</div>
+                        <h3 class="font-display text-2xl font-black uppercase gold-text-gradient" data-i18n="eco_live_title">1. ENGAGEMENT COMMUNAUTAIRE & ALERTE OBS</h3>
+                        <p class="font-sans text-sm text-tb-champagne leading-relaxed" data-i18n="eco_live_desc">
+                            Convertissez vos TB-Coins gratuits pour débloquer des parcelles virtuelles et déclencher une alerte visuelle en direct sur l'overlay OBS du stream (ou tapez <strong class="text-tb-goldlight">!eco</strong> dans le chat Kick).
+                        </p>
+                        <div class="bg-tb-obsidian/80 border border-tb-gold/25 rounded-xl p-4 text-xs text-tb-ivory space-y-1">
+                            <div class="font-bold text-tb-goldlight uppercase" data-i18n="eco_rule_title">Règle de transparence :</div>
+                            <p class="text-tb-champagne" data-i18n="eco_rule_desc">Les TB-Coins sont des points de fidélité gratuits sans valeur monétaire légale. Ils vous confèrent un statut de Pionnier et un accès prioritaire (Whitelist) lors de l'ouverture du capital.</p>
+                        </div>
+                    </div>
+                    <button onclick="pledgeEcoCoins()" class="btn-crimson w-full py-3.5 rounded-xl font-display text-base font-black uppercase tracking-wider cursor-pointer shadow-lg" data-i18n="eco_btn_coins">
+                        ACTIVER 1 m² AVEC 100 TB-COINS (TRIGGER OBS)
+                    </button>
+                </div>
+
+                <!-- BLOC 2 : SOUSCRIPTION EN NUMÉRAIRE (FUTUR ACTIONNARIAT SPA) -->
+                <div class="tb-glass rounded-2xl p-6 md:p-8 border border-tb-gold/60 flex flex-col justify-between space-y-6">
+                    <div class="space-y-4">
+                        <div class="flex items-center justify-between">
+                            <span class="text-3xl">🏛️</span>
+                            <span class="px-2.5 py-1 rounded bg-tb-gold/20 text-tb-goldlight border border-tb-gold/50 font-display text-xs font-black uppercase" data-i18n="eco_spa_badge">FUTUR ACTIONNARIAT (SPA)</span>
+                        </div>
+                        <h3 class="font-display text-2xl font-black uppercase gold-text-gradient" data-i18n="eco_cap_title">2. REGISTRE D'INTENTION EN NUMÉRAIRE (€)</h3>
+                        <p class="font-sans text-sm text-tb-champagne leading-relaxed" data-i18n="eco_cap_desc">
+                            Vous souhaitez participer au capital réel de la future société d'exploitation (particulier ou partenaire stratégique) ? Enregistrez votre intention d'apport en numéraire (50 € par part indicative).
+                        </p>
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                            <div>
+                                <label class="block font-display text-xs font-bold uppercase text-tb-champagne mb-1" data-i18n="eco_label_shares">NOMBRE DE PARTS (50 € / PART)</label>
+                                <input type="number" id="ecoSharesInput" min="1" max="1000" value="2" oninput="updateEcoEuroPreview()" class="tb-input" />
+                            </div>
+                            <div>
+                                <label class="block font-display text-xs font-bold uppercase text-tb-champagne mb-1" data-i18n="eco_label_total">APPORT INDICATIF (€)</label>
+                                <div class="tb-input font-display text-lg font-black text-tb-goldlight bg-tb-deepred/40 border-tb-gold/50" id="ecoEuroPreview">100 €</div>
+                            </div>
+                        </div>
+                        <div>
+                            <label class="block font-display text-xs font-bold uppercase text-tb-champagne mb-1" data-i18n="eco_label_contact">EMAIL OU CONTACT PARTENAIRE</label>
+                            <input type="email" id="ecoContactInput" placeholder="votre@email.com" class="tb-input" />
+                        </div>
+                    </div>
+                    <button onclick="registerCapitalIntent()" class="btn-gold w-full py-3.5 rounded-xl font-display text-base font-black uppercase tracking-wider cursor-pointer shadow-lg" data-i18n="eco_btn_capital">
+                        ENREGISTRER MON INTENTION DE SOUSCRIPTION
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- TAB 4: TRAVEL -->
         <section id="content-travel" class="space-y-8 hidden">
             <div class="tb-glass rounded-2xl p-6 md:p-8 border border-tb-gold/50 shadow-2xl space-y-3">
-                <h2 class="font-display text-3xl font-black uppercase gold-text-gradient tracking-wide" data-i18n="travel_heading">TRAVEL DEALS & PARTENARIATS</h2>
+                <h2 class="font-display text-3xl font-black uppercase gold-text-gradient tracking-wide" data-i18n="travel_heading">BONS PLANS VOYAGE & PARTENARIATS</h2>
                 <p class="font-sans text-sm text-tb-champagne" data-i18n="travel_desc">
                     Explorez et planifiez vos déplacements et séjours sélectionnés pour la communauté de The Beyond Show.
                 </p>
@@ -455,7 +543,7 @@
             </div>
         </section>
 
-        <!-- TAB 4: LEADERBOARD -->
+        <!-- TAB 5: LEADERBOARD -->
         <section id="content-leaderboard" class="space-y-8 hidden">
             <div class="tb-glass rounded-2xl overflow-hidden border border-tb-gold/45 shadow-2xl">
                 <div class="p-5 border-b border-tb-gold/30">
@@ -489,7 +577,7 @@
     <!-- SCRIPT -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
-        import { getDatabase, ref, onValue, update } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js";
+        import { getDatabase, ref, onValue, update, push, runTransaction } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js";
 
         const firebaseConfig = {
             apiKey: "AIzaSyDkRuOlqwTcKo_KdcB-1XeJ9QBS9sEvlDY",
@@ -508,33 +596,56 @@
         const REDIRECT_URI = "https://teebeeshow-cloud.github.io/tbshow/";
         const WORKER_URL = "https://nameless-base-1ca1.teebeeshow.workers.dev";
 
-        // Internationalization Dictionaries (FR / EN 100% Intégrals)
+        // Dictionnaire Bilingue Complet (FR / EN)
         const i18n = {
             fr: {
                 subtitle: "OFFICIAL COMMUNITY HUB // COFFRE DIMENSIONNEL",
                 tab_hunt: "ROUE DE LA CHASSE & RELIQUES",
                 tab_games: "ARÈNE DES MINI-JEUX",
+                tab_ecolab: "TERRA 4.0 // ECO-LAB",
                 tab_travel: "BONS PLANS VOYAGE",
                 tab_leaderboard: "CLASSEMENT & COFFRE",
-                hunt_title: "THE HUNT WHEEL & DIMENSIONAL RELICS",
+                hunt_title: "ROUE DE LA CHASSE & RELIQUES DIMENSIONNELLES",
                 hunt_desc: "Faites tourner la roue pour 100 TB-Coins, découvrez des reliques rares sur 4 niveaux et synchronisez votre coffre en direct.",
-                wheel_title: "WHEEL OF BEYOND",
+                wheel_title: "ROUE DE L'AU-DELÀ",
                 wheel_cost_label: "COÛT",
                 spin_btn: "TOURNER LA ROUE (100 TB)",
                 spin_ready: "Prêt à tenter votre chance ?",
                 stats_title: "STATISTIQUES DU CHASSEUR",
-                stats_spins: "TOTAL SPINS",
+                stats_spins: "TOURS JOUÉS",
                 stats_relics: "RELIQUES",
                 armory_title: "COLLECTION DES RELIQUES",
                 armory_sub: "Artefacts archivés dans votre coffre",
                 filter_all: "TOUT",
-                games_heading: "MINI-GAMES ARENA",
+                games_heading: "ARÈNE DES MINI-JEUX",
                 game_poker: "Duel Texas Hold'em interactif.",
                 game_hang: "Pendu synchronisé pour la communauté.",
                 game_morb: "Affrontement tactique 3x3 en direct.",
                 game_battle: "Guerre navale radar 6x6.",
                 launch_btn: "LANCER ↗",
-                travel_heading: "TRAVEL DEALS & PARTENARIATS",
+                eco_badge: "DU VIRTUEL AU RÉEL // INITIATIVE FONDATRICE",
+                eco_obs_status: "● SYNC OBS & CHAT (!eco) ACTIF",
+                eco_title: "PROJET ECO-SYSTEM 4.0 — MICRO-FERME AUTONOME",
+                eco_desc: "Conçu comme un laboratoire d'ingénierie durable et bio-intensive, Eco-System 4.0 relie notre communauté numérique à un actif agricole réel. Participez à l'amorçage via vos TB-Coins en direct sur le stream ou manifestez votre intention d'apport en numéraire pour la future Société par Actions (SPA).",
+                eco_stat_sqm: "SURFACE BIO-INTENSIVE SOUTENUE",
+                eco_stat_sqm_sub: "100 TB-Coins = 1 m² activé en live",
+                eco_stat_capital: "INTENTIONS D'APPORT NUMÉRAIRE",
+                eco_stat_capital_sub: "Parité indicative : 1 Part Fondateur = 50 €",
+                eco_stat_backers: "PIONNIERS & PARTENAIRES INSCRITS",
+                eco_stat_backers_sub: "Registre préparatoire Société par Actions",
+                eco_live_title: "1. ENGAGEMENT COMMUNAUTAIRE & ALERTE OBS",
+                eco_live_desc: "Convertissez vos TB-Coins gratuits pour débloquer des parcelles virtuelles et déclencher une alerte visuelle en direct sur l'overlay OBS du stream (ou tapez !eco dans le chat Kick).",
+                eco_rule_title: "Règle de transparence :",
+                eco_rule_desc: "Les TB-Coins sont des points de fidélité gratuits sans valeur monétaire légale. Ils vous confèrent un statut de Pionnier et un accès prioritaire (Whitelist) lors de l'ouverture du capital.",
+                eco_btn_coins: "ACTIVER 1 m² AVEC 100 TB-COINS (TRIGGER OBS)",
+                eco_spa_badge: "FUTUR ACTIONNARIAT (SPA)",
+                eco_cap_title: "2. REGISTRE D'INTENTION EN NUMÉRAIRE (€)",
+                eco_cap_desc: "Vous souhaitez participer au capital réel de la future société d'exploitation (particulier ou partenaire stratégique) ? Enregistrez votre intention d'apport en numéraire (50 € par part indicative).",
+                eco_label_shares: "NOMBRE DE PARTS (50 € / PART)",
+                eco_label_total: "APPORT INDICATIF (€)",
+                eco_label_contact: "EMAIL OU CONTACT PARTENAIRE",
+                eco_btn_capital: "ENREGISTRER MON INTENTION DE SOUSCRIPTION",
+                travel_heading: "BONS PLANS VOYAGE & PARTENARIATS",
                 travel_desc: "Explorez et planifiez vos déplacements et séjours sélectionnés pour la communauté de The Beyond Show.",
                 travel_search_title: "🔍 COMPARATEUR DE VOYAGE RAPIDE",
                 travel_from: "ORIGINE",
@@ -565,6 +676,7 @@
                 subtitle: "OFFICIAL COMMUNITY HUB // DIMENSIONAL VAULT",
                 tab_hunt: "THE HUNT WHEEL & RELICS",
                 tab_games: "MINI-GAMES ARENA",
+                tab_ecolab: "TERRA 4.0 // ECO-LAB",
                 tab_travel: "TRAVEL DEALS",
                 tab_leaderboard: "LEADERBOARD & ARMORY",
                 hunt_title: "THE HUNT WHEEL & DIMENSIONAL RELICS",
@@ -585,6 +697,28 @@
                 game_morb: "Live tactical 3x3 showdown.",
                 game_battle: "6x6 radar naval warfare.",
                 launch_btn: "LAUNCH ↗",
+                eco_badge: "VIRTUAL TO REALITY // FOUNDING INITIATIVE",
+                eco_obs_status: "● LIVE OBS & CHAT (!eco) SYNC ACTIVE",
+                eco_title: "ECO-SYSTEM 4.0 PROJECT — AUTONOMOUS MICRO-FARM",
+                eco_desc: "Engineered as a sustainable bio-intensive laboratory, Eco-System 4.0 connects our digital community to a real agricultural asset. Support seed milestones with TB-Coins live on stream or register your cash equity intent for the upcoming Joint-Stock Company.",
+                eco_stat_sqm: "BIO-INTENSIVE AREA SUPPORTED",
+                eco_stat_sqm_sub: "100 TB-Coins = 1 m² activated live",
+                eco_stat_capital: "CASH EQUITY INTENTS",
+                eco_stat_capital_sub: "Indicative parity: 1 Founding Share = €50",
+                eco_stat_backers: "REGISTERED PIONEERS & PARTNERS",
+                eco_stat_backers_sub: "Preparatory Joint-Stock Registry",
+                eco_live_title: "1. COMMUNITY ENGAGEMENT & OBS ALERT",
+                eco_live_desc: "Convert your free TB-Coins to unlock virtual plots and trigger a live visual alert on the stream's OBS overlay (or type !eco in Kick chat).",
+                eco_rule_title: "Transparency Rule:",
+                eco_rule_desc: "TB-Coins are free loyalty points with no legal monetary value. They grant Pioneer status and Whitelist priority when equity opens.",
+                eco_btn_coins: "ACTIVATE 1 m² WITH 100 TB-COINS (OBS TRIGGER)",
+                eco_spa_badge: "FUTURE EQUITY (JOINT-STOCK)",
+                eco_cap_title: "2. CASH SUBSCRIPTION INTENT REGISTRY (€)",
+                eco_cap_desc: "Want to participate in the real capital of the operating company (individual or strategic partner)? Register your cash contribution intent (€50 per indicative share).",
+                eco_label_shares: "NUMBER OF SHARES (€50 / SHARE)",
+                eco_label_total: "INDICATIVE CONTRIBUTION (€)",
+                eco_label_contact: "EMAIL OR PARTNER CONTACT",
+                eco_btn_capital: "REGISTER MY SUBSCRIPTION INTENT",
                 travel_heading: "TRAVEL DEALS & PARTNERSHIPS",
                 travel_desc: "Explore and plan your travels and getaways curated for The Beyond Show community.",
                 travel_search_title: "🔍 QUICK TRAVEL COMPARATOR",
@@ -733,20 +867,92 @@
         };
 
         try {
-            const current = localStorage.getItem("tb_hub_user_v14");
+            const current = localStorage.getItem("tb_hub_user_v15");
             if (current) {
                 userState = { ...userState, ...JSON.parse(current) };
             }
         } catch(e) {}
 
         window.switchTab = function(tabId) {
-            ["hunt", "minigames", "travel", "leaderboard"].forEach(id => {
+            ["hunt", "minigames", "ecolab", "travel", "leaderboard"].forEach(id => {
                 document.getElementById(`content-${id}`).classList.add("hidden");
                 document.getElementById(`tabBtn-${id}`).classList.remove("active");
             });
             document.getElementById(`content-${tabId}`).classList.remove("hidden");
             document.getElementById(`tabBtn-${tabId}`).classList.add("active");
             if (tabId === 'leaderboard') renderLeaderboard();
+        };
+
+        // ECO-LAB LIVE STATS & ACTIONS
+        onValue(ref(db, "tbshow/ecolab/stats"), (snap) => {
+            const val = snap.val() || { sqm: 0, euros: 0, backers: 0 };
+            const sqmEl = document.getElementById("ecoStatSqm");
+            const eurEl = document.getElementById("ecoStatEuros");
+            const bckEl = document.getElementById("ecoStatBackers");
+            if (sqmEl) sqmEl.innerText = (val.sqm || 0).toLocaleString();
+            if (eurEl) eurEl.innerText = (val.euros || 0).toLocaleString();
+            if (bckEl) bckEl.innerText = (val.backers || 0).toLocaleString();
+        });
+
+        window.pledgeEcoCoins = function() {
+            if (userState.coins < 100) {
+                showRewardModal("SOLDE INSUFFISANT", "Il vous faut 100 TB-Coins pour activer 1 m² bio-intensif.", "⚠️");
+                return;
+            }
+            userState.coins -= 100;
+            saveProgress();
+            refreshUI();
+            playSound('coin_win');
+
+            runTransaction(ref(db, "tbshow/ecolab/stats"), (current) => {
+                const data = current || { sqm: 0, euros: 0, backers: 0 };
+                data.sqm = (data.sqm || 0) + 1;
+                return data;
+            });
+
+            push(ref(db, "tbshow/ecolab/events"), {
+                type: "eco_pledge",
+                username: userState.username || "Pionnier",
+                avatar: userState.avatar,
+                sqm: 1,
+                timestamp: Date.now()
+            });
+
+            showRewardModal("TERRA 4.0 // OBS DÉCLENCHÉ", "1 m² bio-intensif activé ! Votre alerte a été envoyée sur l'overlay OBS du stream.", "🌱");
+        };
+
+        window.updateEcoEuroPreview = function() {
+            const shares = Math.max(1, parseInt(document.getElementById("ecoSharesInput").value) || 1);
+            document.getElementById("ecoEuroPreview").innerText = (shares * 50).toLocaleString() + " €";
+        };
+
+        window.registerCapitalIntent = function() {
+            const shares = Math.max(1, parseInt(document.getElementById("ecoSharesInput").value) || 1);
+            const contact = document.getElementById("ecoContactInput").value.trim();
+            if (!contact) {
+                showRewardModal("CONTACT REQUIS", "Veuillez renseigner une adresse email valide pour le registre d'intention SPA.", "✉️");
+                return;
+            }
+            const amountEuros = shares * 50;
+
+            push(ref(db, "tbshow/ecolab/backers"), {
+                username: userState.username || "Investisseur",
+                contact: contact,
+                shares: shares,
+                amount_euros: amountEuros,
+                timestamp: Date.now()
+            });
+
+            runTransaction(ref(db, "tbshow/ecolab/stats"), (current) => {
+                const data = current || { sqm: 0, euros: 0, backers: 0 };
+                data.euros = (data.euros || 0) + amountEuros;
+                data.backers = (data.backers || 0) + 1;
+                return data;
+            });
+
+            document.getElementById("ecoContactInput").value = "";
+            playSound('coin_win');
+            showRewardModal("INTENTION ENREGISTRÉE", `Souscription indicative de ${amountEuros} € (${shares} parts) inscrite au registre préparatoire SPA.`, "🏛️");
         };
 
         function generateRandomString(length = 32) {
@@ -798,7 +1004,7 @@
         };
 
         window.logoutUser = function() {
-            localStorage.removeItem("tb_hub_user_v14");
+            localStorage.removeItem("tb_hub_user_v15");
             userState = { id: null, username: "", avatar: "https://assets.kick.com/images/user/default-profile.png", coins: 500, total_spins: 0, collection: {}, authType: "NONE" };
             document.getElementById("authLoginOverlay").classList.remove("hidden");
             refreshUI();
@@ -808,6 +1014,7 @@
             userState.coins += 500;
             playSound('coin_win');
             saveProgress();
+            refreshUI();
             showRewardModal("SUPPLY", "+500 TB-Coins ajoutés !", "🎁");
         };
 
@@ -822,7 +1029,7 @@
         };
 
         function saveProgress() {
-            localStorage.setItem("tb_hub_user_v14", JSON.stringify(userState));
+            localStorage.setItem("tb_hub_user_v15", JSON.stringify(userState));
             const uniqueKey = userState.id ? `user_${userState.id}` : `guest_${(userState.username || "Ahmed").replace(/\s+/g, '_')}`;
             update(ref(db, "tbshow/users/" + uniqueKey), {
                 username: userState.username || "Ahmed Hakim Djendi",
@@ -1019,6 +1226,7 @@
             }
 
             saveProgress();
+            refreshUI();
             isWheelSpinning = true;
             wheelAngle += Math.PI * 6 + Math.random() * Math.PI;
             drawWheel(wheelAngle);
