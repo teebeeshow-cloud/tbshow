@@ -276,13 +276,13 @@
         </div>
     </header>
 
-    <!-- NAVIGATION TABS -->
+    <!-- NAVIGATION TABS (AVEC DATA-I18N CORRIGÉ) -->
     <nav class="tb-glass border-b border-tb-gold/25 shadow-md">
         <div class="max-w-7xl mx-auto px-4 flex overflow-x-auto">
-            <button onclick="switchTab('hunt')" id="tabBtn-hunt" class="hub-tab active px-5 py-3 font-display text-base font-bold tracking-wider uppercase whitespace-nowrap cursor-pointer" data-i18n="tab_hunt">THE HUNT WHEEL & RELICS</button>
-            <button onclick="switchTab('minigames')" id="tabBtn-minigames" class="hub-tab px-5 py-3 font-display text-base font-bold tracking-wider uppercase whitespace-nowrap cursor-pointer" data-i18n="tab_games">MINI-GAMES ARENA</button>
-            <button onclick="switchTab('travel')" id="tabBtn-travel" class="hub-tab px-5 py-3 font-display text-base font-bold tracking-wider uppercase whitespace-nowrap cursor-pointer" data-i18n="tab_travel">TRAVEL DEALS</button>
-            <button onclick="switchTab('leaderboard')" id="tabBtn-leaderboard" class="hub-tab px-5 py-3 font-display text-base font-bold tracking-wider uppercase whitespace-nowrap cursor-pointer" data-i18n="tab_leaderboard">LEADERBOARD & ARMORY</button>
+            <button onclick="switchTab('hunt')" id="tabBtn-hunt" class="hub-tab active px-5 py-3 font-display text-base font-bold tracking-wider uppercase whitespace-nowrap cursor-pointer" data-i18n="tab_hunt">ROUE DE LA CHASSE & RELIQUES</button>
+            <button onclick="switchTab('minigames')" id="tabBtn-minigames" class="hub-tab px-5 py-3 font-display text-base font-bold tracking-wider uppercase whitespace-nowrap cursor-pointer" data-i18n="tab_games">ARÈNE DES MINI-JEUX</button>
+            <button onclick="switchTab('travel')" id="tabBtn-travel" class="hub-tab px-5 py-3 font-display text-base font-bold tracking-wider uppercase whitespace-nowrap cursor-pointer" data-i18n="tab_travel">BONS PLANS VOYAGE</button>
+            <button onclick="switchTab('leaderboard')" id="tabBtn-leaderboard" class="hub-tab px-5 py-3 font-display text-base font-bold tracking-wider uppercase whitespace-nowrap cursor-pointer" data-i18n="tab_leaderboard">CLASSEMENT & COFFRE</button>
         </div>
     </nav>
 
@@ -396,7 +396,7 @@
             </div>
         </section>
 
-        <!-- TAB 3: TRAVEL (TRAVELPAYOUTS / DEALS INTERACTIF) -->
+        <!-- TAB 3: TRAVEL -->
         <section id="content-travel" class="space-y-8 hidden">
             <div class="tb-glass rounded-2xl p-6 md:p-8 border border-tb-gold/50 shadow-2xl space-y-3">
                 <h2 class="font-display text-3xl font-black uppercase gold-text-gradient tracking-wide" data-i18n="travel_heading">TRAVEL DEALS & PARTENARIATS</h2>
@@ -508,14 +508,14 @@
         const REDIRECT_URI = "https://teebeeshow-cloud.github.io/tbshow/";
         const WORKER_URL = "https://nameless-base-1ca1.teebeeshow.workers.dev";
 
-        // Internationalization Dictionaries (FR / EN 100% complets)
+        // Internationalization Dictionaries (FR / EN 100% Intégrals)
         const i18n = {
             fr: {
                 subtitle: "OFFICIAL COMMUNITY HUB // COFFRE DIMENSIONNEL",
-                tab_hunt: "THE HUNT WHEEL & RELICS",
-                tab_games: "MINI-GAMES ARENA",
-                tab_travel: "TRAVEL DEALS",
-                tab_leaderboard: "LEADERBOARD & ARMORY",
+                tab_hunt: "ROUE DE LA CHASSE & RELIQUES",
+                tab_games: "ARÈNE DES MINI-JEUX",
+                tab_travel: "BONS PLANS VOYAGE",
+                tab_leaderboard: "CLASSEMENT & COFFRE",
                 hunt_title: "THE HUNT WHEEL & DIMENSIONAL RELICS",
                 hunt_desc: "Faites tourner la roue pour 100 TB-Coins, découvrez des reliques rares sur 4 niveaux et synchronisez votre coffre en direct.",
                 wheel_title: "WHEEL OF BEYOND",
@@ -733,7 +733,7 @@
         };
 
         try {
-            const current = localStorage.getItem("tb_hub_user_v13");
+            const current = localStorage.getItem("tb_hub_user_v14");
             if (current) {
                 userState = { ...userState, ...JSON.parse(current) };
             }
@@ -798,7 +798,7 @@
         };
 
         window.logoutUser = function() {
-            localStorage.removeItem("tb_hub_user_v13");
+            localStorage.removeItem("tb_hub_user_v14");
             userState = { id: null, username: "", avatar: "https://assets.kick.com/images/user/default-profile.png", coins: 500, total_spins: 0, collection: {}, authType: "NONE" };
             document.getElementById("authLoginOverlay").classList.remove("hidden");
             refreshUI();
@@ -822,7 +822,7 @@
         };
 
         function saveProgress() {
-            localStorage.setItem("tb_hub_user_v13", JSON.stringify(userState));
+            localStorage.setItem("tb_hub_user_v14", JSON.stringify(userState));
             const uniqueKey = userState.id ? `user_${userState.id}` : `guest_${(userState.username || "Ahmed").replace(/\s+/g, '_')}`;
             update(ref(db, "tbshow/users/" + uniqueKey), {
                 username: userState.username || "Ahmed Hakim Djendi",
@@ -887,7 +887,7 @@
             });
         }
 
-        // LEADERBOARD 100% DYNAMIQUE ET DÉDUPLIQUÉ PAR UTILISATEUR
+        // LEADERBOARD DYNAMIQUE ET DÉDUPLIQUÉ
         function renderLeaderboard() {
             const tbody = document.getElementById("leaderboardBody");
             if (!tbody) return;
@@ -904,7 +904,6 @@
                         const currentCoins = u.coins || 0;
                         const currentRelics = u.collection ? Object.keys(u.collection).length : 0;
                         
-                        // Garde l'entrée avec le plus haut score si doublon
                         if (!userMap.has(nameKey) || userMap.get(nameKey).coins < currentCoins) {
                             userMap.set(nameKey, {
                                 username: u.username || "Chasseur",
@@ -918,7 +917,6 @@
 
                 let activeList = Array.from(userMap.values());
 
-                // Assure que l'utilisateur actuel est dans la liste s'il n'y est pas encore
                 const currentNameKey = (userState.username || "Ahmed Hakim Djendi").trim().toLowerCase();
                 if (!userMap.has(currentNameKey)) {
                     activeList.push({
