@@ -168,6 +168,21 @@
             border-color: #B81D2C;
             color: #B81D2C;
         }
+
+        .tb-input {
+            background: rgba(9, 6, 7, 0.9);
+            border: 1px solid rgba(212, 175, 55, 0.35);
+            color: #F5EFE6;
+            border-radius: 0.75rem;
+            padding: 0.75rem 1rem;
+            font-family: 'Big Shoulders Text', sans-serif;
+            width: 100%;
+        }
+        .tb-input:focus {
+            outline: none;
+            border-color: #F3D06B;
+            box-shadow: 0 0 10px rgba(212, 175, 55, 0.3);
+        }
     </style>
 </head>
 <body class="font-sans antialiased selection:bg-tb-crimson selection:text-tb-goldlight">
@@ -381,38 +396,61 @@
             </div>
         </section>
 
-        <!-- TAB 3: TRAVEL -->
+        <!-- TAB 3: TRAVEL (TRAVELPAYOUTS / DEALS INTERACTIF) -->
         <section id="content-travel" class="space-y-8 hidden">
             <div class="tb-glass rounded-2xl p-6 md:p-8 border border-tb-gold/50 shadow-2xl space-y-3">
                 <h2 class="font-display text-3xl font-black uppercase gold-text-gradient tracking-wide" data-i18n="travel_heading">TRAVEL DEALS & PARTENARIATS</h2>
                 <p class="font-sans text-sm text-tb-champagne" data-i18n="travel_desc">
-                    Explorez les meilleures offres de vol, hôtels et séjours sélectionnés pour la communauté de The Beyond Show.
+                    Explorez et planifiez vos déplacements et séjours sélectionnés pour la communauté de The Beyond Show.
                 </p>
             </div>
+
+            <!-- MOTEUR DE RECHERCHE INTERACTIF -->
+            <div class="tb-glass rounded-2xl p-6 md:p-8 border border-tb-gold/45 shadow-xl space-y-6">
+                <h3 class="font-display text-xl font-black uppercase gold-text-gradient" data-i18n="travel_search_title">🔍 COMPARATEUR DE VOYAGE RAPIDE</h3>
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+                    <div>
+                        <label class="block font-display text-xs font-bold uppercase text-tb-champagne mb-1.5" data-i18n="travel_from">ORIGINE</label>
+                        <input type="text" id="travelOrigin" class="tb-input" value="Alger (ALG)" />
+                    </div>
+                    <div>
+                        <label class="block font-display text-xs font-bold uppercase text-tb-champagne mb-1.5" data-i18n="travel_to">DESTINATION</label>
+                        <input type="text" id="travelDestination" class="tb-input" value="Paris (ORY) / Palma (PMI)" />
+                    </div>
+                    <div>
+                        <label class="block font-display text-xs font-bold uppercase text-tb-champagne mb-1.5" data-i18n="travel_date">DATE DE DÉPART</label>
+                        <input type="date" id="travelDate" class="tb-input" />
+                    </div>
+                    <div class="flex items-end">
+                        <button onclick="searchTravelDeals()" class="btn-gold w-full py-3 rounded-xl font-display text-sm font-black uppercase cursor-pointer" data-i18n="travel_search_btn">CHERCHER LES OFFRES</button>
+                    </div>
+                </div>
+            </div>
+
             <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
                 <div class="tb-glass rounded-2xl p-6 border border-tb-gold/45 tb-card-lift flex flex-col justify-between space-y-4">
                     <div>
                         <span class="text-3xl mb-2 block">✈️</span>
-                        <h3 class="font-display text-xl font-black uppercase gold-text-gradient">VOLS INTERNATIONAUX</h3>
-                        <p class="font-sans text-xs text-tb-champagne mt-2" data-i18n="travel_card1">Recherchez et comparez les liaisons aériennes (ex: Alger - Paris - Majorque) au meilleur tarif.</p>
+                        <h3 class="font-display text-xl font-black uppercase gold-text-gradient" data-i18n="travel_card1_title">VOLS INTERNATIONAUX</h3>
+                        <p class="font-sans text-xs text-tb-champagne mt-2" data-i18n="travel_card1_desc">Comparez les liaisons aériennes régulières au meilleur tarif (Algérie - Europe).</p>
                     </div>
-                    <a href="https://www.travelpayouts.com" target="_blank" rel="noopener noreferrer" class="btn-gold w-full py-2.5 rounded-xl font-display text-sm font-black uppercase block text-center" data-i18n="travel_btn">COMPARER LES VOLS ↗</a>
+                    <a href="https://www.travelpayouts.com" target="_blank" rel="noopener noreferrer" class="btn-gold w-full py-2.5 rounded-xl font-display text-sm font-black uppercase block text-center" data-i18n="travel_btn_flight">COMPARER LES VOLS ↗</a>
                 </div>
                 <div class="tb-glass rounded-2xl p-6 border border-tb-gold/45 tb-card-lift flex flex-col justify-between space-y-4">
                     <div>
                         <span class="text-3xl mb-2 block">🏨</span>
-                        <h3 class="font-display text-xl font-black uppercase gold-text-gradient">HÔTELS & SÉJOURS</h3>
-                        <p class="font-sans text-xs text-tb-champagne mt-2" data-i18n="travel_card2">Trouvez des hébergements d'exception pour vos voyages et déplacements.</p>
+                        <h3 class="font-display text-xl font-black uppercase gold-text-gradient" data-i18n="travel_card2_title">HÔTELS & SÉJOURS</h3>
+                        <p class="font-sans text-xs text-tb-champagne mt-2" data-i18n="travel_card2_desc">Trouvez des hébergements d'exception pour vos voyages et déplacements professionnels.</p>
                     </div>
-                    <a href="https://www.travelpayouts.com" target="_blank" rel="noopener noreferrer" class="btn-gold w-full py-2.5 rounded-xl font-display text-sm font-black uppercase block text-center" data-i18n="travel_btn">RÉSERVER ↗</a>
+                    <a href="https://www.travelpayouts.com" target="_blank" rel="noopener noreferrer" class="btn-gold w-full py-2.5 rounded-xl font-display text-sm font-black uppercase block text-center" data-i18n="travel_btn_hotel">RÉSERVER UN HÔTEL ↗</a>
                 </div>
                 <div class="tb-glass rounded-2xl p-6 border border-tb-gold/45 tb-card-lift flex flex-col justify-between space-y-4">
                     <div>
                         <span class="text-3xl mb-2 block">🌍</span>
-                        <h3 class="font-display text-xl font-black uppercase gold-text-gradient">BONS PLANS COMMUNAUTÉ</h3>
-                        <p class="font-sans text-xs text-tb-champagne mt-2" data-i18n="travel_card3">Profitez des réductions exclusives réservées aux spectateurs de The Beyond Show.</p>
+                        <h3 class="font-display text-xl font-black uppercase gold-text-gradient" data-i18n="travel_card3_title">BONS PLANS COMMUNAUTÉ</h3>
+                        <p class="font-sans text-xs text-tb-champagne mt-2" data-i18n="travel_card3_desc">Profitez des recommandations exclusives partagées lors des émissions en direct.</p>
                     </div>
-                    <a href="https://kick.com/tbshow" target="_blank" rel="noopener noreferrer" class="btn-gold w-full py-2.5 rounded-xl font-display text-sm font-black uppercase block text-center" data-i18n="travel_btn2">VOIR SUR KICK ↗</a>
+                    <a href="https://kick.com/tbshow" target="_blank" rel="noopener noreferrer" class="btn-gold w-full py-2.5 rounded-xl font-display text-sm font-black uppercase block text-center" data-i18n="travel_btn_community">VOIR LE STREAM ↗</a>
                 </div>
             </div>
         </section>
@@ -470,7 +508,7 @@
         const REDIRECT_URI = "https://teebeeshow-cloud.github.io/tbshow/";
         const WORKER_URL = "https://nameless-base-1ca1.teebeeshow.workers.dev";
 
-        // Internationalization Dictionaries (FR / EN complets)
+        // Internationalization Dictionaries (FR / EN 100% complets)
         const i18n = {
             fr: {
                 subtitle: "OFFICIAL COMMUNITY HUB // COFFRE DIMENSIONNEL",
@@ -497,12 +535,21 @@
                 game_battle: "Guerre navale radar 6x6.",
                 launch_btn: "LANCER ↗",
                 travel_heading: "TRAVEL DEALS & PARTENARIATS",
-                travel_desc: "Explorez les meilleures offres de vol, hôtels et séjours sélectionnés pour la communauté de The Beyond Show.",
-                travel_card1: "Recherchez et comparez les liaisons aériennes (ex: Alger - Paris - Majorque) au meilleur tarif.",
-                travel_card2: "Trouvez des hébergements d'exception pour vos voyages et déplacements.",
-                travel_card3: "Profitez des réductions exclusives réservées aux spectateurs de The Beyond Show.",
-                travel_btn: "COMPARER LES VOLS ↗",
-                travel_btn2: "VOIR SUR KICK ↗",
+                travel_desc: "Explorez et planifiez vos déplacements et séjours sélectionnés pour la communauté de The Beyond Show.",
+                travel_search_title: "🔍 COMPARATEUR DE VOYAGE RAPIDE",
+                travel_from: "ORIGINE",
+                travel_to: "DESTINATION",
+                travel_date: "DATE DE DÉPART",
+                travel_search_btn: "CHERCHER LES OFFRES",
+                travel_card1_title: "VOLS INTERNATIONAUX",
+                travel_card1_desc: "Comparez les liaisons aériennes régulières au meilleur tarif (Algérie - Europe).",
+                travel_card2_title: "HÔTELS & SÉJOURS",
+                travel_card2_desc: "Trouvez des hébergements d'exception pour vos voyages et déplacements professionnels.",
+                travel_card3_title: "BONS PLANS COMMUNAUTÉ",
+                travel_card3_desc: "Profitez des recommandations exclusives partagées lors des émissions en direct.",
+                travel_btn_flight: "COMPARER LES VOLS ↗",
+                travel_btn_hotel: "RÉSERVER UN HÔTEL ↗",
+                travel_btn_community: "VOIR LE STREAM ↗",
                 lb_title: "CLASSEMENT COMMUNAUTAIRE",
                 lb_rank: "RANG",
                 lb_hunter: "CHASSEUR",
@@ -539,12 +586,21 @@
                 game_battle: "6x6 radar naval warfare.",
                 launch_btn: "LAUNCH ↗",
                 travel_heading: "TRAVEL DEALS & PARTNERSHIPS",
-                travel_desc: "Explore top flight deals, hotels, and getaways curated for The Beyond Show community.",
-                travel_card1: "Search and compare airline routes (e.g., Algiers - Paris - Majorca) at the best rates.",
-                travel_card2: "Find exceptional accommodations for your trips and travels.",
-                travel_card3: "Enjoy exclusive discounts reserved for The Beyond Show viewers.",
-                travel_btn: "COMPARE FLIGHTS ↗",
-                travel_btn2: "VIEW ON KICK ↗",
+                travel_desc: "Explore and plan your travels and getaways curated for The Beyond Show community.",
+                travel_search_title: "🔍 QUICK TRAVEL COMPARATOR",
+                travel_from: "ORIGIN",
+                travel_to: "DESTINATION",
+                travel_date: "DEPARTURE DATE",
+                travel_search_btn: "SEARCH DEALS",
+                travel_card1_title: "INTERNATIONAL FLIGHTS",
+                travel_card1_desc: "Compare regular airline connections at the best rates (Algeria - Europe).",
+                travel_card2_title: "HOTELS & STAYS",
+                travel_card2_desc: "Find exceptional accommodations for your trips and business travel.",
+                travel_card3_title: "COMMUNITY PERKS",
+                travel_card3_desc: "Enjoy exclusive recommendations shared during live broadcasts.",
+                travel_btn_flight: "COMPARE FLIGHTS ↗",
+                travel_btn_hotel: "BOOK HOTEL ↗",
+                travel_btn_community: "VIEW STREAM ↗",
                 lb_title: "COMMUNITY LEADERBOARD",
                 lb_rank: "RANK",
                 lb_hunter: "HUNTER",
@@ -677,7 +733,7 @@
         };
 
         try {
-            const current = localStorage.getItem("tb_hub_user_v12");
+            const current = localStorage.getItem("tb_hub_user_v13");
             if (current) {
                 userState = { ...userState, ...JSON.parse(current) };
             }
@@ -742,7 +798,7 @@
         };
 
         window.logoutUser = function() {
-            localStorage.removeItem("tb_hub_user_v12");
+            localStorage.removeItem("tb_hub_user_v13");
             userState = { id: null, username: "", avatar: "https://assets.kick.com/images/user/default-profile.png", coins: 500, total_spins: 0, collection: {}, authType: "NONE" };
             document.getElementById("authLoginOverlay").classList.remove("hidden");
             refreshUI();
@@ -755,18 +811,26 @@
             showRewardModal("SUPPLY", "+500 TB-Coins ajoutés !", "🎁");
         };
 
+        window.searchTravelDeals = function() {
+            const orig = document.getElementById("travelOrigin").value;
+            const dest = document.getElementById("travelDestination").value;
+            const date = document.getElementById("travelDate").value;
+            showRewardModal("RECHERCHE LANCÉE", `Vol ${orig} ➔ ${dest} (${date || 'Date flexible'}) : Redirection vers Travelpayouts...`, "✈️");
+            setTimeout(() => {
+                window.open("https://www.travelpayouts.com", "_blank");
+            }, 1200);
+        };
+
         function saveProgress() {
-            localStorage.setItem("tb_hub_user_v12", JSON.stringify(userState));
-            if (userState.id) {
-                update(ref(db, "tbshow/users/" + userState.id), {
-                    username: userState.username,
-                    avatar: userState.avatar,
-                    coins: userState.coins,
-                    total_spins: userState.total_spins,
-                    collection: userState.collection || {}
-                }).catch(e => console.warn(e));
-            }
-            refreshUI();
+            localStorage.setItem("tb_hub_user_v13", JSON.stringify(userState));
+            const uniqueKey = userState.id ? `user_${userState.id}` : `guest_${(userState.username || "Ahmed").replace(/\s+/g, '_')}`;
+            update(ref(db, "tbshow/users/" + uniqueKey), {
+                username: userState.username || "Ahmed Hakim Djendi",
+                avatar: userState.avatar,
+                coins: userState.coins,
+                total_spins: userState.total_spins,
+                collection: userState.collection || {}
+            }).catch(e => console.warn(e));
         }
 
         function refreshUI() {
@@ -823,31 +887,42 @@
             });
         }
 
-        // LEADERBOARD 100% DYNAMIQUE (Relié à Firebase / Données réelles uniquement)
+        // LEADERBOARD 100% DYNAMIQUE ET DÉDUPLIQUÉ PAR UTILISATEUR
         function renderLeaderboard() {
             const tbody = document.getElementById("leaderboardBody");
             if (!tbody) return;
             tbody.innerHTML = "";
 
-            // Écoute de la base Firebase tbshow/users
             onValue(ref(db, "tbshow/users"), (snapshot) => {
                 tbody.innerHTML = "";
                 const data = snapshot.val();
-                let activeList = [];
+                let userMap = new Map();
 
                 if (data) {
-                    activeList = Object.values(data).map(u => ({
-                        username: u.username || "Chasseur",
-                        coins: u.coins || 0,
-                        relics: u.collection ? Object.keys(u.collection).length : 0,
-                        isYou: u.username === userState.username
-                    }));
+                    Object.values(data).forEach(u => {
+                        const nameKey = (u.username || "Chasseur").trim().toLowerCase();
+                        const currentCoins = u.coins || 0;
+                        const currentRelics = u.collection ? Object.keys(u.collection).length : 0;
+                        
+                        // Garde l'entrée avec le plus haut score si doublon
+                        if (!userMap.has(nameKey) || userMap.get(nameKey).coins < currentCoins) {
+                            userMap.set(nameKey, {
+                                username: u.username || "Chasseur",
+                                coins: currentCoins,
+                                relics: currentRelics,
+                                isYou: (u.username && userState.username && u.username.toLowerCase() === userState.username.toLowerCase())
+                            });
+                        }
+                    });
                 }
 
-                // S'il n'y a pas encore de données distantes, on affiche l'utilisateur actif local s'il a joué, ou un message de saison ouverte
-                if (activeList.length === 0 && userState.username) {
+                let activeList = Array.from(userMap.values());
+
+                // Assure que l'utilisateur actuel est dans la liste s'il n'y est pas encore
+                const currentNameKey = (userState.username || "Ahmed Hakim Djendi").trim().toLowerCase();
+                if (!userMap.has(currentNameKey)) {
                     activeList.push({
-                        username: userState.username,
+                        username: userState.username || "Ahmed Hakim Djendi",
                         coins: userState.coins,
                         relics: Object.keys(userState.collection || {}).length,
                         isYou: true
