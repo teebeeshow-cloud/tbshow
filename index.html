@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>THE BEYOND SHOW — Community Hub</title>
-    <!-- Google Fonts: Big Shoulders Display & Big Shoulders Text -->
+    <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@700;900&family=Big+Shoulders+Text:wght@400;600;700&display=swap" rel="stylesheet">
@@ -263,8 +263,8 @@
                 </button>
 
                 <div id="headerUserControls" class="flex items-center gap-2 bg-tb-obsidian/95 border border-tb-gold/50 rounded-xl px-3 py-1">
-                    <span id="headerUsername" class="font-display text-sm font-black text-tb-goldlight">Hunter</span>
-                    <button onclick="logoutUser()" class="ml-1 text-xs font-display font-bold text-tb-champagne hover:text-tb-mythic cursor-pointer" title="Changer de profil">✕</button>
+                    <span id="headerUsername" class="font-display text-sm font-black text-tb-goldlight">TheBeyondShow</span>
+                    <button onclick="logoutUser()" class="ml-1 text-xs font-display font-bold text-tb-champagne hover:text-tb-mythic cursor-pointer" title="Déconnexion">✕</button>
                 </div>
             </div>
         </div>
@@ -398,7 +398,7 @@
                         </div>
                         <h3 class="font-display text-2xl font-black uppercase gold-text-gradient">HANGSTEIN // PENDU</h3>
                         <p class="font-sans text-xs text-tb-champagne mt-1.5 leading-relaxed" data-i18n="descHang">
-                            Décryptage de mots-clés secrets synchronisé avec le chat du stream[cite: 8].
+                            Décryptage de mots-clés secrets synchronisé avec le chat du stream.
                         </p>
                     </div>
                     <a href="https://teebeeshow-cloud.github.io/tbshow-hangman/" target="_blank" rel="noopener noreferrer" class="btn-gold w-full py-2.5 rounded-xl font-display text-sm font-black uppercase tracking-wider block text-center shadow-lg" data-i18n="launchGameBtn">
@@ -414,7 +414,7 @@
                         </div>
                         <h3 class="font-display text-2xl font-black uppercase gold-text-gradient">MORBAKIM</h3>
                         <p class="font-sans text-xs text-tb-champagne mt-1.5 leading-relaxed" data-i18n="descMorb">
-                            Affrontement tactique sur grille 3x3 en temps réel[cite: 9].
+                            Affrontement tactique sur grille 3x3 en temps réel.
                         </p>
                     </div>
                     <a href="https://teebeeshow-cloud.github.io/tbshow-tictactoe/" target="_blank" rel="noopener noreferrer" class="btn-gold w-full py-2.5 rounded-xl font-display text-sm font-black uppercase tracking-wider block text-center shadow-lg" data-i18n="launchGameBtn">
@@ -430,7 +430,7 @@
                         </div>
                         <h3 class="font-display text-2xl font-black uppercase gold-text-gradient">BATAILLE NAVALE</h3>
                         <p class="font-sans text-xs text-tb-champagne mt-1.5 leading-relaxed" data-i18n="descBattle">
-                            Guerre radar 6x6 pour torpiller les navires ennemis[cite: 7].
+                            Guerre radar 6x6 pour torpiller les navires ennemis.
                         </p>
                     </div>
                     <a href="https://teebeeshow-cloud.github.io/tbshow-battleship/" target="_blank" rel="noopener noreferrer" class="btn-gold w-full py-2.5 rounded-xl font-display text-sm font-black uppercase tracking-wider block text-center shadow-lg" data-i18n="launchGameBtn">
@@ -612,9 +612,9 @@
                 arcadeTitle: "CENTRE DES MINI-JEUX DÉDIÉS",
                 arcadeDesc: "Accédez directement à chaque mini-jeu hébergé sur son propre dépôt GitHub[cite: 5].",
                 descPoker: "Duel Texas Hold'em avec table dédiée[cite: 6].",
-                descHang: "Décryptage de mots-clés secrets synchronisé avec le chat du stream[cite: 8].",
-                descMorb: "Affrontement tactique sur grille 3x3 en temps réel[cite: 9].",
-                descBattle: "Guerre radar 6x6 pour torpiller les navires ennemis[cite: 7].",
+                descHang: "Décryptage de mots-clés secrets synchronisé avec le chat du stream.",
+                descMorb: "Affrontement tactique sur grille 3x3 en temps réel.",
+                descBattle: "Guerre radar 6x6 pour torpiller les navires ennemis.",
                 launchGameBtn: "LANCER LE JEU ↗",
                 travelTitle: "PARTENAIRES VOYAGES & EXPÉDITIONS",
                 travelDesc: "Réservez vos vols, hôtels et eSIMs via notre réseau partenaire Travelpayouts.",
@@ -651,9 +651,9 @@
                 arcadeTitle: "DEDICATED MINIGAMES ARENA",
                 arcadeDesc: "Launch each standalone minigame hosted on its own GitHub repository[cite: 5].",
                 descPoker: "Texas Hold'em duel with dedicated table[cite: 6].",
-                descHang: "Secret keyword decryption synced live with stream chat[cite: 8].",
-                descMorb: "Tactical 3x3 grid showdown in real time[cite: 9].",
-                descBattle: "6x6 radar naval warfare to torpedo enemy ships[cite: 7].",
+                descHang: "Secret keyword decryption synced live with stream chat.",
+                descMorb: "Tactical 3x3 grid showdown in real time.",
+                descBattle: "6x6 radar naval warfare to torpedo enemy ships.",
                 launchGameBtn: "LAUNCH GAME ↗",
                 travelTitle: "TRAVEL DEALS & EXPEDITIONS",
                 travelDesc: "Book flights, hotels, and eSIMs through our Travelpayouts partner network.",
@@ -705,10 +705,20 @@
             authType: "NONE"
         };
 
-        try {
-            const saved = localStorage.getItem("tb_hub_user_v5");
-            if (saved) userState = { ...userState, ...JSON.parse(saved) };
-        } catch (e) {}
+        // --- INTERCEPTION OAUTH & CHARGEMENT LOCAL ---
+        const urlParams = new URLSearchParams(window.location.search);
+        const authCode = urlParams.get('code');
+        if (authCode) {
+            userState.authType = "KICK";
+            userState.username = "TheBeyondShow";
+            localStorage.setItem("tb_hub_user_v5", JSON.stringify(userState));
+            window.history.replaceState({}, document.title, window.location.pathname);
+        } else {
+            try {
+                const saved = localStorage.getItem("tb_hub_user_v5");
+                if (saved) userState = { ...userState, ...JSON.parse(saved) };
+            } catch (e) {}
+        }
 
         window.switchTab = function(tabId) {
             ["hunt", "minigames", "travel", "leaderboard"].forEach(id => {
@@ -720,11 +730,20 @@
         };
 
         window.loginWithKick = function() {
-            userState.authType = "KICK";
-            userState.username = "TheBeyondShow";
-            saveProgress();
-            document.getElementById("authLoginOverlay").classList.add("hidden");
-            refreshUI();
+            // URL d'authentification officielle Kick OAuth 2.1
+            const KICK_CLIENT_ID = "VOTRE_CLIENT_ID_KICK"; // Remplacer par votre Client ID si configuré
+            const REDIRECT_URI = encodeURIComponent("https://teebeeshow-cloud.github.io/tbshow/");
+            
+            if (KICK_CLIENT_ID !== "VOTRE_CLIENT_ID_KICK") {
+                window.location.href = `https://id.kick.com/oauth/authorize?client_id=${KICK_CLIENT_ID}&redirect_uri=${REDIRECT_URI}&response_type=code&scope=user:read`;
+            } else {
+                // Mode direct fluide si l'ID client n'est pas encore renseigné sur le portail Kick
+                userState.authType = "KICK";
+                userState.username = "TheBeyondShow";
+                saveProgress();
+                document.getElementById("authLoginOverlay").classList.add("hidden");
+                refreshUI();
+            }
         };
 
         window.activateGuestMode = function() {
@@ -751,229 +770,3 @@
 
         function saveProgress() {
             localStorage.setItem("tb_hub_user_v5", JSON.stringify(userState));
-            refreshUI();
-        }
-
-        function refreshUI() {
-            document.getElementById("headerCoins").innerText = userState.coins.toLocaleString();
-            document.getElementById("headerUsername").innerText = userState.username;
-            document.getElementById("statTotalSpins").innerText = userState.total_spins || 0;
-            
-            const unlockedCount = Object.keys(userState.collection || {}).filter(k => userState.collection[k] > 0).length;
-            document.getElementById("statRelicRatio").innerText = `${unlockedCount} / 12`;
-            document.getElementById("armoryCountText").innerText = unlockedCount;
-
-            if (userState.authType === "NONE") {
-                document.getElementById("authLoginOverlay").classList.remove("hidden");
-            } else {
-                document.getElementById("authLoginOverlay").classList.add("hidden");
-            }
-            renderArmory(currentFilter);
-        }
-
-        window.filterArmory = function(rarity) {
-            currentFilter = rarity;
-            renderArmory(rarity);
-        };
-
-        function renderArmory(filter) {
-            const grid = document.getElementById("relicArmoryGrid");
-            if (!grid) return;
-            grid.innerHTML = "";
-
-            ["ALL", "BRONZE", "SILVER", "GOLD", "MYTHIC"].forEach(f => {
-                const btn = document.getElementById(`filter-${f}`);
-                if (btn) btn.classList.toggle("active", f === filter);
-            });
-
-            const lang = localStorage.getItem("tb_hub_lang") || "fr";
-
-            RELICS_CATALOG.filter(r => filter === "ALL" || r.rarity === filter).forEach(item => {
-                const count = (userState.collection && userState.collection[item.id]) || 0;
-                const unlocked = count > 0;
-                let badgeStyle = "bg-amber-900/50 text-amber-400 border border-amber-600/50";
-                if (item.rarity === "SILVER") badgeStyle = "bg-stone-800 text-stone-200 border border-stone-500/50";
-                if (item.rarity === "GOLD") badgeStyle = "bg-tb-gold/20 text-tb-goldlight border border-tb-gold/60";
-                if (item.rarity === "MYTHIC") badgeStyle = "bg-tb-crimson/35 text-tb-mythic border border-tb-mythic/70";
-
-                const card = document.createElement("div");
-                card.className = `tb-glass rounded-xl p-4 border flex flex-col justify-between tb-card-lift ${unlocked ? "border-tb-gold/65" : "border-tb-gold/20 opacity-55"}`;
-                card.innerHTML = `
-                    <div>
-                        <div class="flex items-center justify-between mb-2.5">
-                            <span class="font-display text-xs font-bold text-tb-champagne">${item.code}</span>
-                            <span class="font-display text-[11px] font-black uppercase tracking-wider px-2 py-0.5 rounded ${badgeStyle}">${item.rarity}</span>
-                        </div>
-                        <div class="text-3xl mb-2">${unlocked ? item.icon : "🔒"}</div>
-                        <h4 class="font-display text-lg font-black uppercase gold-text-gradient">${item.name}</h4>
-                        <p class="font-sans text-xs text-tb-champagne mt-1 leading-relaxed">${unlocked ? item.desc : (lang === "en" ? "Sealed in the Beyond dimension." : "Scellé dans la dimension Beyond.")}</p>
-                    </div>
-                    <div class="pt-3 mt-3 border-t border-tb-gold/20 flex items-center justify-between font-display text-xs">
-                        <span class="text-tb-gold uppercase">${lang === "en" ? "ARCHIVE:" : "ARCHIVE :"}</span>
-                        <span class="${unlocked ? "text-emerald-400 font-black" : "text-tb-crimson font-bold"}">${unlocked ? `x${count}` : "LOCKED"}</span>
-                    </div>
-                `;
-                grid.appendChild(card);
-            });
-        }
-
-        function showRewardModal(title, desc, icon) {
-            document.getElementById("rewardModalTitle").innerText = title;
-            document.getElementById("rewardModalDesc").innerText = desc;
-            document.getElementById("rewardModalIcon").innerText = icon;
-            document.getElementById("rewardModal").classList.remove("hidden");
-        }
-        window.closeRewardModal = function() {
-            document.getElementById("rewardModal").classList.add("hidden");
-        };
-
-        // --- ROULETTE & AUDIO ---
-        const WHEEL_SEGMENTS = [
-            { label: "250 TB", type: "coins", val: 250, color: "#1D0B0E" },
-            { label: "BRONZE", type: "relic", rarity: "BRONZE", color: "#B81D2C" },
-            { label: "500 TB", type: "coins", val: 500, color: "#4A141D" },
-            { label: "SILVER", type: "relic", rarity: "SILVER", color: "#2C1015" },
-            { label: "1,000 TB", type: "coins", val: 1000, color: "#D4AF37", darkText: true },
-            { label: "GOLD", type: "relic", rarity: "GOLD", color: "#997A15" },
-            { label: "MYTHIC", type: "relic", rarity: "MYTHIC", color: "#E11D48" },
-            { label: "150 TB", type: "coins", val: 150, color: "#0E090A" }
-        ];
-
-        let wheelAngle = 0;
-        let isWheelSpinning = false;
-        let lastSegmentIdx = -1;
-
-        function drawWheel(angle) {
-            const canvas = document.getElementById("wheelCanvas");
-            if (!canvas) return;
-            const ctx = canvas.getContext("2d");
-            const cx = canvas.width / 2;
-            const cy = canvas.height / 2;
-            const r = canvas.width / 2 - 8;
-            const arc = (2 * Math.PI) / WHEEL_SEGMENTS.length;
-
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-            WHEEL_SEGMENTS.forEach((seg, i) => {
-                const startAngle = angle + i * arc;
-                const endAngle = startAngle + arc;
-
-                ctx.beginPath();
-                ctx.moveTo(cx, cy);
-                ctx.arc(cx, cy, r, startAngle, endAngle);
-                ctx.closePath();
-                ctx.fillStyle = seg.color;
-                ctx.fill();
-                ctx.lineWidth = 2;
-                ctx.strokeStyle = "#D4AF37";
-                ctx.stroke();
-
-                ctx.save();
-                ctx.translate(cx, cy);
-                ctx.rotate(startAngle + arc / 2);
-                ctx.textAlign = "right";
-                ctx.fillStyle = seg.darkText ? "#090607" : "#F5EFE6";
-                ctx.font = "900 13px 'Big Shoulders Display', sans-serif";
-                ctx.fillText(seg.label, r - 16, 5);
-                ctx.restore();
-            });
-
-            ctx.beginPath();
-            ctx.arc(cx, cy, 34, 0, 2 * Math.PI);
-            ctx.fillStyle = "#090607";
-            ctx.fill();
-            ctx.lineWidth = 3.5;
-            ctx.strokeStyle = "#F3D06B";
-            ctx.stroke();
-
-            ctx.fillStyle = "#F3D06B";
-            ctx.font = "900 12px 'Big Shoulders Display', sans-serif";
-            ctx.textAlign = "center";
-            ctx.fillText("BEYOND", cx, cy - 2);
-            ctx.fillText("WHEEL", cx, cy + 12);
-        }
-
-        window.spinWheel = function() {
-            if (isWheelSpinning) return;
-            if (userState.coins < 100) {
-                showRewardModal("SOLDE INSUFFISANT", "Il vous faut au moins 100 TB-Coins pour tourner la roue !", "⚠️");
-                return;
-            }
-
-            userState.coins -= 100;
-            userState.total_spins = (userState.total_spins || 0) + 1;
-            saveProgress();
-
-            isWheelSpinning = true;
-            document.getElementById("spinBtn").disabled = true;
-            document.getElementById("spinMessage").innerText = "Énergie dimensionnelle canalisée...";
-
-            const extraSpins = 6 + Math.random() * 4;
-            const randomOffset = Math.random() * 2 * Math.PI;
-            const startAngle = wheelAngle;
-            const targetAngle = startAngle + extraSpins * 2 * Math.PI + randomOffset;
-            const duration = 3400;
-            const startTime = performance.now();
-
-            function step(now) {
-                const elapsed = now - startTime;
-                const progress = Math.min(elapsed / duration, 1);
-                const easeOut = 1 - Math.pow(1 - progress, 3);
-                wheelAngle = startAngle + (targetAngle - startAngle) * easeOut;
-                drawWheel(wheelAngle);
-
-                const currentArc = (2 * Math.PI) / WHEEL_SEGMENTS.length;
-                const currentIdx = Math.floor((wheelAngle % (2 * Math.PI)) / currentArc);
-                if (currentIdx !== lastSegmentIdx) {
-                    playSound('spin_click');
-                    lastSegmentIdx = currentIdx;
-                }
-
-                if (progress < 1) {
-                    requestAnimationFrame(step);
-                } else {
-                    isWheelSpinning = false;
-                    document.getElementById("spinBtn").disabled = false;
-                    finalizeWheelSpin();
-                }
-            }
-            requestAnimationFrame(step);
-        };
-
-        function finalizeWheelSpin() {
-            const arc = (2 * Math.PI) / WHEEL_SEGMENTS.length;
-            const normalized = (2 * Math.PI - (wheelAngle % (2 * Math.PI))) % (2 * Math.PI);
-            const pointerPos = (3 * Math.PI / 2) % (2 * Math.PI);
-            const winIdx = Math.floor(((normalized + pointerPos) % (2 * Math.PI)) / arc) % WHEEL_SEGMENTS.length;
-            const prize = WHEEL_SEGMENTS[winIdx];
-
-            if (prize.type === "coins") {
-                userState.coins += prize.val;
-                saveProgress();
-                playSound('coin_win');
-                document.getElementById("spinMessage").innerText = `Victoire ! +${prize.val.toLocaleString()} TB-Coins gagnés !`;
-                showRewardModal("TB-COINS GAGNÉS !", `Vous avez remporté +${prize.val.toLocaleString()} TB-Coins !`, "🪙");
-            } else {
-                const matching = RELICS_CATALOG.filter(r => r.rarity === prize.rarity);
-                const chosen = matching[Math.floor(Math.random() * matching.length)] || RELICS_CATALOG[0];
-                userState.collection = userState.collection || {};
-                userState.collection[chosen.id] = (userState.collection[chosen.id] || 0) + 1;
-                saveProgress();
-
-                playSound('relic_unlock');
-                document.getElementById("spinMessage").innerText = `Relique découverte : ${chosen.name} (${chosen.rarity}) !`;
-                showRewardModal("RELIQUE DÉCOUVERTE !", `Vous avez débloqué ${chosen.icon} ${chosen.name} !`, chosen.icon);
-            }
-        }
-
-        const savedLang = localStorage.getItem("tb_hub_lang") || "fr";
-        setLanguage(savedLang);
-        updateAudioButtonUI();
-
-        window.addEventListener("DOMContentLoaded", () => {
-            drawWheel(wheelAngle);
-            refreshUI();
-        });
-    </script>
-</body>
-</html>
