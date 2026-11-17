@@ -115,19 +115,6 @@
             box-shadow: 0 6px 20px rgba(225, 29, 72, 0.5);
         }
 
-        .btn-kick {
-            background: linear-gradient(180deg, #6BFF38 0%, #53FC18 55%, #37B809 100%);
-            color: #090607;
-            border: 1px solid #B6FF9C;
-            box-shadow: 0 4px 16px rgba(83, 252, 24, 0.35);
-            transition: all 0.18s ease;
-        }
-        .btn-kick:hover {
-            filter: brightness(1.06);
-            transform: translateY(-1px);
-            box-shadow: 0 6px 22px rgba(83, 252, 24, 0.52);
-        }
-
         .hub-tab {
             border-bottom: 3px solid transparent;
             color: #B8A99A;
@@ -211,7 +198,7 @@
                             <span id="dbStatusDot" class="w-2 h-2 rounded-full bg-amber-400 animate-pulse"></span>
                             <span id="dbStatusText">DB CONNECTING...</span>
                         </div>
-                        <!-- STREAM ONLINE/OFFLINE STATUS -->
+                        <!-- STREAM STATUS -->
                         <div id="streamStatusBadge" class="px-2.5 py-1 text-xs font-display font-black tracking-widest uppercase rounded bg-tb-charcoal text-stone-400 border border-stone-600 flex items-center gap-1.5 select-none">
                             <span id="streamStatusDot" class="w-2 h-2 rounded-full bg-stone-500"></span>
                             <span id="streamStatusText">STREAM OFFLINE</span>
@@ -225,24 +212,20 @@
 
             <!-- CONTROLS & LANG SWITCHER -->
             <div class="flex flex-wrap items-center gap-2 sm:gap-2.5">
-                <!-- LANG SWITCH -->
                 <div class="flex bg-tb-obsidian p-0.5 rounded-lg border border-tb-gold/30">
                     <button onclick="setLanguage('fr')" id="langBtn-fr" class="lang-btn active">FR</button>
                     <button onclick="setLanguage('en')" id="langBtn-en" class="lang-btn">EN</button>
                 </div>
 
-                <!-- COINS -->
                 <div class="flex items-center gap-2 bg-gradient-to-r from-tb-deepred to-tb-bordeaux border border-tb-gold/60 rounded-xl px-3.5 py-1.5">
                     <span class="font-display text-xl font-black text-tb-goldlight" id="headerCoins">500</span>
                     <span class="font-display text-xs font-bold uppercase text-tb-gold">TB</span>
                 </div>
 
-                <!-- SUPPLY -->
                 <button onclick="claimDailySupply()" class="btn-gold px-3 py-2 rounded-xl font-display text-xs sm:text-sm font-black uppercase tracking-wider cursor-pointer" data-i18n="supplyBtn">
                     +500 SUPPLY
                 </button>
 
-                <!-- USER -->
                 <div id="headerUserControls" class="flex items-center gap-2 bg-tb-obsidian/95 border border-tb-gold/50 rounded-xl px-3 py-1">
                     <span id="headerUsername" class="font-display text-sm font-black text-tb-goldlight">Hunter</span>
                     <button onclick="logoutUser()" class="ml-1 text-xs font-display font-bold text-tb-champagne hover:text-tb-mythic cursor-pointer">✕</button>
@@ -267,7 +250,7 @@
         <!-- TAB 1: HUNT WHEEL -->
         <section id="content-hunt" class="space-y-8">
             <div class="tb-glass rounded-2xl p-6 md:p-8 relative overflow-hidden border border-tb-gold/50 shadow-2xl">
-                <h2 class="font-display text-3xl sm:text-4xl font-black uppercase gold-text-gradient tracking-wide" data-i18n="huntTitle">ROUE DE L'AU-DELÀ & RELIQUES DIMENSIONNELLES</h2>
+                <h2 class="font-display text-3xl sm:text-4xl font-black uppercase gold-text-gradient tracking-wide" data-i18n="huntTitle">BEYOND WHEEL & RELIQUES DIMENSIONNELLES</h2>
                 <p class="font-sans text-tb-champagne text-sm sm:text-base mt-2" data-i18n="huntDesc">
                     Faites tourner la roue pour 100 TB-Coins, découvrez des reliques rares sur 4 niveaux et synchronisez votre coffre en direct.
                 </p>
@@ -279,10 +262,10 @@
                     <div class="w-full flex items-center justify-between mb-2">
                         <div class="flex items-center gap-2">
                             <span class="w-2.5 h-2.5 rounded-full bg-tb-crimson animate-pulse"></span>
-                            <span class="font-display text-xs font-black tracking-widest text-tb-gold uppercase">ROUE DE L'AU-DELÀ</span>
+                            <span class="font-display text-xs font-black tracking-widest text-tb-gold uppercase" data-i18n="wheelHeaderTitle">BEYOND WHEEL</span>
                         </div>
                         <div class="font-display text-xs font-bold text-tb-champagne uppercase tracking-wider">
-                            COÛT : <span class="text-tb-goldlight font-black">100 TB-COINS</span>
+                            <span data-i18n="wheelCostLabel">COÛT</span> : <span class="text-tb-goldlight font-black">100 TB-COINS</span>
                         </div>
                     </div>
 
@@ -334,7 +317,6 @@
             </div>
 
             <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
-                <!-- 1. TB Hold'em Poker -->
                 <div class="tb-glass rounded-2xl p-5 border border-tb-gold/45 tb-card-lift flex flex-col justify-between space-y-4">
                     <div>
                         <div class="flex items-center justify-between mb-3">
@@ -346,12 +328,11 @@
                             Duel Texas Hold'em avec table et base de données Firebase dédiée[cite: 6].
                         </p>
                     </div>
-                    <a href="https://teebeeshow-cloud.github.io/tbhold-em/" target="_blank" rel="noopener noreferrer" class="btn-gold w-full py-2.5 rounded-xl font-display text-sm font-black uppercase tracking-wider block text-center shadow-lg">
+                    <a href="https://teebeeshow-cloud.github.io/tbhold-em/" target="_blank" rel="noopener noreferrer" class="btn-gold w-full py-2.5 rounded-xl font-display text-sm font-black uppercase tracking-wider block text-center shadow-lg" data-i18n="launchGameBtn">
                         LANCER LE JEU ↗
                     </a>
                 </div>
 
-                <!-- 2. Hangstein / Pendu -->
                 <div class="tb-glass rounded-2xl p-5 border border-tb-gold/45 tb-card-lift flex flex-col justify-between space-y-4">
                     <div>
                         <div class="flex items-center justify-between mb-3">
@@ -363,12 +344,11 @@
                             Décryptage de mots-clés secrets synchronisé avec le chat du stream[cite: 8].
                         </p>
                     </div>
-                    <a href="https://teebeeshow-cloud.github.io/tbshow-hangman/" target="_blank" rel="noopener noreferrer" class="btn-gold w-full py-2.5 rounded-xl font-display text-sm font-black uppercase tracking-wider block text-center shadow-lg">
+                    <a href="https://teebeeshow-cloud.github.io/tbshow-hangman/" target="_blank" rel="noopener noreferrer" class="btn-gold w-full py-2.5 rounded-xl font-display text-sm font-black uppercase tracking-wider block text-center shadow-lg" data-i18n="launchGameBtn">
                         LANCER LE JEU ↗
                     </a>
                 </div>
 
-                <!-- 3. Morbakim -->
                 <div class="tb-glass rounded-2xl p-5 border border-tb-gold/45 tb-card-lift flex flex-col justify-between space-y-4">
                     <div>
                         <div class="flex items-center justify-between mb-3">
@@ -380,12 +360,11 @@
                             Affrontement tactique sur grille 3x3 en temps réel[cite: 9].
                         </p>
                     </div>
-                    <a href="https://teebeeshow-cloud.github.io/tbshow-tictactoe/" target="_blank" rel="noopener noreferrer" class="btn-gold w-full py-2.5 rounded-xl font-display text-sm font-black uppercase tracking-wider block text-center shadow-lg">
+                    <a href="https://teebeeshow-cloud.github.io/tbshow-tictactoe/" target="_blank" rel="noopener noreferrer" class="btn-gold w-full py-2.5 rounded-xl font-display text-sm font-black uppercase tracking-wider block text-center shadow-lg" data-i18n="launchGameBtn">
                         LANCER LE JEU ↗
                     </a>
                 </div>
 
-                <!-- 4. Battleship -->
                 <div class="tb-glass rounded-2xl p-5 border border-tb-gold/45 tb-card-lift flex flex-col justify-between space-y-4">
                     <div>
                         <div class="flex items-center justify-between mb-3">
@@ -397,7 +376,7 @@
                             Guerre radar 6x6 pour torpiller les navires ennemis[cite: 7].
                         </p>
                     </div>
-                    <a href="https://teebeeshow-cloud.github.io/tbshow-battleship/" target="_blank" rel="noopener noreferrer" class="btn-gold w-full py-2.5 rounded-xl font-display text-sm font-black uppercase tracking-wider block text-center shadow-lg">
+                    <a href="https://teebeeshow-cloud.github.io/tbshow-battleship/" target="_blank" rel="noopener noreferrer" class="btn-gold w-full py-2.5 rounded-xl font-display text-sm font-black uppercase tracking-wider block text-center shadow-lg" data-i18n="launchGameBtn">
                         LANCER LE JEU ↗
                     </a>
                 </div>
@@ -424,9 +403,9 @@
                 <table class="w-full text-left">
                     <thead>
                         <tr class="bg-tb-deepred/70 border-b border-tb-gold/40 font-display text-xs font-black uppercase text-tb-goldlight">
-                            <th class="p-4">RANG</th>
-                            <th class="p-4">CHASSEUR</th>
-                            <th class="p-4">RELIQUES</th>
+                            <th class="p-4" data-i18n="thRank">RANG</th>
+                            <th class="p-4" data-i18n="thHunter">CHASSEUR</th>
+                            <th class="p-4" data-i18n="thRelics">RELIQUES</th>
                             <th class="p-4">TB-COINS</th>
                         </tr>
                     </thead>
@@ -442,7 +421,7 @@
             <div id="rewardModalIcon" class="w-16 h-16 mx-auto rounded-2xl bg-tb-deepred border-2 border-tb-gold flex items-center justify-center text-3xl shadow-xl">🏆</div>
             <h3 id="rewardModalTitle" class="font-display text-2xl font-black uppercase gold-text-gradient">SUCCÈS</h3>
             <p id="rewardModalDesc" class="font-sans text-sm text-tb-champagne">Opération réussie !</p>
-            <button onclick="closeRewardModal()" class="btn-gold w-full py-3 rounded-xl font-display text-sm font-black uppercase tracking-wider cursor-pointer">CONTINUER</button>
+            <button onclick="closeRewardModal()" class="btn-gold w-full py-3 rounded-xl font-display text-sm font-black uppercase tracking-wider cursor-pointer" data-i18n="modalBtn">CONTINUER</button>
         </div>
     </div>
 
@@ -511,8 +490,10 @@
                 tabMinigames: "MINI-JEUX DÉDIÉS",
                 tabTravel: "VOYAGES & PARTENAIRES",
                 tabLeaderboard: "CLASSEMENT",
-                huntTitle: "ROUE DE L'AU-DELÀ & RELIQUES DIMENSIONNELLES",
+                huntTitle: "BEYOND WHEEL & RELIQUES DIMENSIONNELLES",
                 huntDesc: "Faites tourner la roue pour 100 TB-Coins, découvrez des reliques rares sur 4 niveaux et synchronisez votre coffre en direct.",
+                wheelHeaderTitle: "BEYOND WHEEL",
+                wheelCostLabel: "COÛT",
                 spinBtn: "TOURNER LA ROUE (100 TB)",
                 spinMsgReady: "Prêt à tenter votre chance ?",
                 statsTitle: "STATISTIQUES DU CHASSEUR",
@@ -525,9 +506,14 @@
                 descHang: "Décryptage de mots-clés secrets synchronisé avec le chat du stream[cite: 8].",
                 descMorb: "Affrontement tactique sur grille 3x3 en temps réel[cite: 9].",
                 descBattle: "Guerre radar 6x6 pour torpiller les navires ennemis[cite: 7].",
+                launchGameBtn: "LANCER LE JEU ↗",
                 travelTitle: "PARTENAIRES VOYAGES & EXPÉDITIONS",
                 travelDesc: "Réservez vos vols, hôtels et eSIMs via notre réseau partenaire Travelpayouts.",
-                leaderTitle: "CLASSEMENT COMMUNAUTAIRE"
+                leaderTitle: "CLASSEMENT COMMUNAUTAIRE",
+                thRank: "RANG",
+                thHunter: "CHASSEUR",
+                thRelics: "RELIQUES",
+                modalBtn: "CONTINUER"
             },
             en: {
                 subAuthTitle: "OFFICIAL COMMUNITY HUB & DIMENSIONAL VAULT",
@@ -539,8 +525,10 @@
                 tabMinigames: "DEDICATED MINIGAMES",
                 tabTravel: "TRAVEL & PARTNERS",
                 tabLeaderboard: "LEADERBOARD",
-                huntTitle: "WHEEL OF BEYOND & DIMENSIONAL RELICS",
+                huntTitle: "BEYOND WHEEL & DIMENSIONAL RELICS",
                 huntDesc: "Spin the wheel for 100 TB-Coins, discover rare relics across 4 tiers, and sync your vault live.",
+                wheelHeaderTitle: "BEYOND WHEEL",
+                wheelCostLabel: "COST",
                 spinBtn: "SPIN THE WHEEL (100 TB)",
                 spinMsgReady: "Step up to the wheel and test your luck!",
                 statsTitle: "HUNTER STATS",
@@ -548,14 +536,19 @@
                 statRelics: "RELICS",
                 arcadeBadge: "THE BEYOND ARCADE // STANDALONE MODULES",
                 arcadeTitle: "DEDICATED MINIGAMES ARENA",
-                arcadeDesc: "Launch each standalone mini-jeu hosted on its own GitHub repository with a dedicated real-time database.",
+                arcadeDesc: "Launch each standalone minigame hosted on its own GitHub repository with a dedicated real-time database.",
                 descPoker: "Texas Hold'em duel with dedicated Firebase table and database[cite: 6].",
                 descHang: "Secret keyword decryption synced live with stream chat[cite: 8].",
                 descMorb: "Tactical 3x3 grid showdown in real time[cite: 9].",
                 descBattle: "6x6 radar naval warfare to torpedo enemy ships[cite: 7].",
+                launchGameBtn: "LAUNCH GAME ↗",
                 travelTitle: "TRAVEL DEALS & EXPEDITIONS",
                 travelDesc: "Book flights, hotels, and eSIMs through our Travelpayouts partner network.",
-                leaderTitle: "COMMUNITY LEADERBOARD"
+                leaderTitle: "COMMUNITY LEADERBOARD",
+                thRank: "RANK",
+                thHunter: "HUNTER",
+                thRelics: "RELICS",
+                modalBtn: "CONTINUE"
             }
         };
 
@@ -629,7 +622,7 @@
             document.getElementById("headerUsername").innerText = userState.username;
             document.getElementById("statTotalSpins").innerText = userState.total_spins || 0;
             if (userState.authType === "NONE") {
-                document.getElementById("authLoginOverlay").classList.remove("hidden");
+                document.getElementById("authLoginOverlay").classList.add("hidden");
             } else {
                 document.getElementById("authLoginOverlay").classList.add("hidden");
             }
@@ -715,7 +708,7 @@
             ctx.font = "900 12px 'Big Shoulders Display', sans-serif";
             ctx.textAlign = "center";
             ctx.fillText("BEYOND", cx, cy - 2);
-            ctx.fillText("HUNT", cx, cy + 12);
+            ctx.fillText("WHEEL", cx, cy + 12);
         }
 
         window.spinWheel = function() {
