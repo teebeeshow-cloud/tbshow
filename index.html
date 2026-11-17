@@ -122,16 +122,22 @@
             box-shadow: 0 4px 16px rgba(83, 252, 24, 0.35);
             transition: all 0.18s ease;
         }
+
         .hub-tab {
             border-bottom: 3px solid transparent;
             color: #B8A99A;
             transition: all 0.2s ease;
+        }
+        .hub-tab:hover {
+            color: #F3D06B;
+            background: rgba(74, 20, 29, 0.35);
         }
         .hub-tab.active {
             color: #F3D06B;
             border-bottom-color: #F3D06B;
             background: linear-gradient(180deg, rgba(184, 29, 44, 0.35) 0%, rgba(44, 16, 21, 0.15) 100%);
         }
+
         .filter-pill {
             border: 1px solid rgba(212, 175, 55, 0.3);
             color: #B8A99A;
@@ -143,6 +149,7 @@
             color: #090607;
             background: #D4AF37;
         }
+
         .lang-btn, .audio-btn {
             background: #090607;
             border: 1px solid rgba(212, 175, 55, 0.3);
@@ -165,12 +172,9 @@
 </head>
 <body class="font-sans antialiased selection:bg-tb-crimson selection:text-tb-goldlight">
 
-    <!-- LOGIN OVERLAY -->
+    <!-- LOGIN OVERLAY : Affiché par défaut si non connecté -->
     <div id="authLoginOverlay" class="fixed inset-0 z-50 bg-tb-obsidian/95 backdrop-blur-md flex items-center justify-center p-4">
         <div class="tb-glass rounded-2xl max-w-md w-full p-8 border-2 border-tb-gold shadow-2xl text-center space-y-6 relative">
-            <!-- Bouton Croix de fermeture sécurisé -->
-            <button onclick="closeAuthModal()" class="absolute top-4 right-4 text-tb-champagne hover:text-tb-mythic font-bold text-lg cursor-pointer" title="Fermer">✕</button>
-            
             <div class="w-16 h-16 mx-auto rounded-2xl bg-gradient-to-br from-tb-crimson to-tb-deepred border-2 border-tb-gold flex items-center justify-center shadow-xl">
                 <svg class="w-9 h-9 text-tb-goldlight" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
                     <polygon points="12 2 19 6.5 19 17.5 12 22 5 17.5 5 6.5 12 2"/>
@@ -182,11 +186,11 @@
                 <p class="font-sans text-xs text-tb-champagne uppercase tracking-widest mt-1">OFFICIAL COMMUNITY HUB & COFFRE DIMENSIONNEL</p>
             </div>
             <p class="font-sans text-sm text-tb-ivory leading-relaxed">
-                Connectez votre profil diffuseur TheBeyondShow pour synchroniser vos TB-Coins et reliques.
+                Cliquez ci-dessous pour initialiser votre session diffuseur et accéder à votre coffre.
             </p>
             <div class="space-y-3 pt-2">
                 <button onclick="loginAsBeyondShow()" class="btn-kick w-full py-3.5 rounded-xl font-display text-base font-black uppercase tracking-wider cursor-pointer shadow-lg flex items-center justify-center gap-2">
-                    <span>CONNECTER THE BEYOND SHOW</span>
+                    <span>SE CONNECTER EN TANT QUE THE BEYOND SHOW</span>
                 </button>
                 <button onclick="activateGuestMode()" class="btn-crimson w-full py-3 rounded-xl font-display text-sm font-black uppercase tracking-wider cursor-pointer shadow-lg">
                     CONTINUER EN INVITÉ
@@ -486,11 +490,11 @@
 
         let currentFilter = "ALL";
         let userState = {
-            username: "TheBeyondShow",
+            username: "",
             coins: 500,
             total_spins: 0,
             collection: {},
-            authType: "NONE"
+            authType: "NONE" // Exige une action de connexion au premier lancement
         };
 
         try {
@@ -526,17 +530,10 @@
             refreshUI();
         };
 
-        window.closeAuthModal = function() {
-            userState.authType = "GUEST";
-            userState.username = "TheBeyondShow";
-            saveProgress();
-            document.getElementById("authLoginOverlay").classList.add("hidden");
-            refreshUI();
-        };
-
         window.logoutUser = function() {
             localStorage.removeItem("tb_hub_user_v5");
             userState.authType = "NONE";
+            userState.username = "";
             document.getElementById("authLoginOverlay").classList.remove("hidden");
             refreshUI();
         };
@@ -555,17 +552,18 @@
 
         function refreshUI() {
             document.getElementById("headerCoins").innerText = userState.coins.toLocaleString();
-            document.getElementById("headerUsername").innerText = userState.username;
+            document.getElementById("headerUsername").innerText = userState.username || "Invité";
             document.getElementById("statTotalSpins").innerText = userState.total_spins || 0;
             
             const unlockedCount = Object.keys(userState.collection || {}).filter(k => userState.collection[k] > 0).length;
             document.getElementById("statRelicRatio").innerText = `${unlockedCount} / ${RELICS_CATALOG.length}`;
             document.getElementById("armoryCountText").innerText = unlockedCount;
 
-            if (userState.authType === "NONE") {
-                document.getElementById("authLoginOverlay").classList.remove("hidden");
+            const overlay = document.getElementById("authLoginOverlay");
+            if (userState.authType === "NONE" || !userState.username) {
+                overlay.classList.remove("hidden");
             } else {
-                document.getElementById("authLoginOverlay").classList.add("hidden");
+                overlay.classList.add("hidden");
             }
             renderArmory(currentFilter);
         }
