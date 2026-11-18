@@ -236,8 +236,8 @@
                             <span id="dbStatusDot" class="w-2 h-2 rounded-full bg-amber-400 animate-pulse"></span>
                             <span id="dbStatusText">CONNECTING...</span>
                         </div>
-                        <!-- STREAM STATUS -->
-                        <div id="streamStatusBadge" class="px-2.5 py-1 text-xs font-display font-black tracking-widest uppercase rounded bg-tb-charcoal text-tb-champagne border border-tb-gold/30 flex items-center gap-1.5 select-none">
+                        <!-- STREAM STATUS (CLIKABLE POUR ADMIN) -->
+                        <div id="streamStatusBadge" onclick="toggleStreamStatusAdmin()" title="Cliquez pour basculer Online/Offline (Admin)" class="px-2.5 py-1 text-xs font-display font-black tracking-widest uppercase rounded bg-tb-charcoal text-tb-champagne border border-tb-gold/30 flex items-center gap-1.5 select-none cursor-pointer hover:border-tb-gold">
                             <span id="streamStatusDot" class="w-2 h-2 rounded-full bg-stone-500"></span>
                             <span id="streamStatusText">STREAM OFFLINE</span>
                         </div>
@@ -398,9 +398,8 @@
             </div>
         </section>
 
-        <!-- TAB 3: TERRA 4.0 // ECO-LAB (CAPITAL PARTICIPATIF & STREAM OBS) -->
+        <!-- TAB 3: TERRA 4.0 // ECO-LAB -->
         <section id="content-ecolab" class="space-y-8 hidden">
-            <!-- BANNIÈRE VISION -->
             <div class="tb-glass rounded-2xl p-6 md:p-8 border border-tb-gold/50 shadow-2xl space-y-3">
                 <div class="flex flex-wrap items-center justify-between gap-2">
                     <span class="px-3 py-1 rounded bg-tb-deepred text-tb-goldlight border border-tb-gold/40 font-display text-xs font-black uppercase tracking-widest" data-i18n="eco_badge">DU VIRTUEL AU RÉEL // INITIATIVE FONDATRICE</span>
@@ -412,7 +411,6 @@
                 </p>
             </div>
 
-            <!-- COMPTEURS D'AMORÇAGE EN DIRECT (FIREBASE) -->
             <div class="grid grid-cols-1 sm:grid-cols-3 gap-5">
                 <div class="tb-glass rounded-2xl p-6 border border-tb-gold/40 text-center space-y-1">
                     <div class="font-display text-xs font-bold uppercase text-tb-champagne tracking-wider" data-i18n="eco_stat_sqm">SURFACE BIO-INTENSIVE SOUTENUE</div>
@@ -431,9 +429,7 @@
                 </div>
             </div>
 
-            <!-- DEUX COLONNES : ENGAGEMENT STREAM (TB-COINS) VS SOUSCRIPTION CAPITAL (€) -->
             <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
-                <!-- BLOC 1 : INTERACTION LIVE & OBS -->
                 <div class="tb-glass rounded-2xl p-6 md:p-8 border border-tb-gold/45 flex flex-col justify-between space-y-6">
                     <div class="space-y-3">
                         <div class="text-3xl">🌱</div>
@@ -451,7 +447,6 @@
                     </button>
                 </div>
 
-                <!-- BLOC 2 : SOUSCRIPTION EN NUMÉRAIRE (FUTUR ACTIONNARIAT SPA) -->
                 <div class="tb-glass rounded-2xl p-6 md:p-8 border border-tb-gold/60 flex flex-col justify-between space-y-6">
                     <div class="space-y-4">
                         <div class="flex items-center justify-between">
@@ -493,7 +488,6 @@
                 </p>
             </div>
 
-            <!-- MOTEUR DE RECHERCHE INTERACTIF -->
             <div class="tb-glass rounded-2xl p-6 md:p-8 border border-tb-gold/45 shadow-xl space-y-6">
                 <h3 class="font-display text-xl font-black uppercase gold-text-gradient" data-i18n="travel_search_title">🔍 COMPARATEUR DE VOYAGE RAPIDE</h3>
                 <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
@@ -728,7 +722,7 @@
                 travel_search_btn: "SEARCH DEALS",
                 travel_card1_title: "INTERNATIONAL FLIGHTS",
                 travel_card1_desc: "Compare regular airline connections at the best rates (Algeria - Europe).",
-                travel_card2_title: "HOTELS & STAYS",
+                travel_card2_title: "HÔTELS & STAYS",
                 travel_card2_desc: "Find exceptional accommodations for your trips and business travel.",
                 travel_card3_title: "COMMUNITY PERKS",
                 travel_card3_desc: "Enjoy exclusive recommendations shared during live broadcasts.",
@@ -826,22 +820,32 @@
             }
         });
 
-        function checkStreamStatus() {
-            const isLive = false; 
+        // SYNCHRONISATION DU STATUT DU STREAM EN TEMPS RÉEL VIA FIREBASE
+        onValue(ref(db, "tbshow/stream/is_live"), (snap) => {
+            const isLive = snap.val() === true;
             const badge = document.getElementById("streamStatusBadge");
             const dot = document.getElementById("streamStatusDot");
             const text = document.getElementById("streamStatusText");
 
             if (isLive) {
-                badge.className = "px-2.5 py-1 text-xs font-display font-black tracking-widest uppercase rounded bg-tb-obsidian text-tb-kick border border-tb-kick/60 flex items-center gap-1.5 select-none shadow-[0_0_10px_rgba(83,252,24,0.3)]";
+                badge.className = "px-2.5 py-1 text-xs font-display font-black tracking-widest uppercase rounded bg-tb-obsidian text-tb-kick border border-tb-kick/60 flex items-center gap-1.5 select-none shadow-[0_0_10px_rgba(83,252,24,0.3)] cursor-pointer";
                 dot.className = "w-2 h-2 rounded-full bg-tb-kick animate-ping";
                 text.innerText = "STREAM ONLINE";
             } else {
-                badge.className = "px-2.5 py-1 text-xs font-display font-black tracking-widest uppercase rounded bg-tb-charcoal text-tb-champagne border border-tb-gold/30 flex items-center gap-1.5 select-none";
+                badge.className = "px-2.5 py-1 text-xs font-display font-black tracking-widest uppercase rounded bg-tb-charcoal text-tb-champagne border border-tb-gold/30 flex items-center gap-1.5 select-none cursor-pointer";
                 dot.className = "w-2 h-2 rounded-full bg-stone-500";
                 text.innerText = "STREAM OFFLINE";
             }
-        }
+        });
+
+        // Fonction d'administration rapide pour basculer le statut en cliquant sur le badge
+        window.toggleStreamStatusAdmin = function() {
+            const currentStatusRef = ref(db, "tbshow/stream/is_live");
+            onValue(currentStatusRef, (snap) => {
+                const currentVal = snap.val() === true;
+                update(ref(db, "tbshow/stream"), { is_live: !currentVal });
+            }, { onlyOnce: true });
+        };
 
         const RELICS_CATALOG = [
             { id: "obsidian_core", code: "#001", name: "Obsidian Core", rarity: "GOLD", icon: "💎", desc: "Matrice volcanique." },
@@ -1094,7 +1098,6 @@
             });
         }
 
-        // LEADERBOARD DYNAMIQUE ET DÉDUPLIQUÉ
         function renderLeaderboard() {
             const tbody = document.getElementById("leaderboardBody");
             if (!tbody) return;
@@ -1240,7 +1243,6 @@
 
         updateAudioButtonUI();
         setLanguage(currentLang);
-        checkStreamStatus();
 
         window.addEventListener("DOMContentLoaded", async () => {
             drawWheel(wheelAngle);
