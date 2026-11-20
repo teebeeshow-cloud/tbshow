@@ -33,7 +33,9 @@
                             ivory: '#F5EFE6',
                             champagne: '#B8A99A',
                             kick: '#53FC18',
-                            emerald: '#10B981'
+                            emerald: '#10B981',
+                            amethyst: '#A855F7',
+                            steelblue: '#60A5FA'
                         }
                     }
                 }
@@ -54,6 +56,8 @@
             --gold-dark: #997A15;
             --text-ivory: #F5EFE6;
             --text-champagne: #B8A99A;
+            --amethyst-main: #A855F7;
+            --steelblue-main: #60A5FA;
         }
 
         body {
@@ -121,6 +125,14 @@
             color: #090607;
             border: 1px solid #B6FF9C;
             box-shadow: 0 4px 16px rgba(83, 252, 24, 0.35);
+            transition: all 0.18s ease;
+        }
+
+        .btn-amethyst {
+            background: linear-gradient(180deg, #C084FC 0%, #A855F7 55%, #6B21A8 100%);
+            color: #090607;
+            border: 1px solid #E9D5FF;
+            box-shadow: 0 4px 16px rgba(168, 85, 247, 0.35);
             transition: all 0.18s ease;
         }
 
@@ -237,7 +249,7 @@
                             <span id="dbStatusText">CONNECTING...</span>
                         </div>
                         <!-- STREAM STATUS -->
-                        <div id="streamStatusBadge" class="px-2.5 py-1 text-xs font-display font-black tracking-widest uppercase rounded bg-tb-charcoal text-tb-champagne border border-tb-gold/30 flex items-center gap-1.5 select-none">
+                        <div id="streamStatusBadge" onclick="switchTab('live')" title="Ouvrir le studio Live & Listening" class="px-2.5 py-1 text-xs font-display font-black tracking-widest uppercase rounded bg-tb-charcoal text-tb-champagne border border-tb-gold/30 flex items-center gap-1.5 select-none cursor-pointer hover:border-tb-gold">
                             <span id="streamStatusDot" class="w-2 h-2 rounded-full bg-stone-500"></span>
                             <span id="streamStatusText">STREAM OFFLINE</span>
                         </div>
@@ -281,6 +293,10 @@
     <nav class="tb-glass border-b border-tb-gold/25 shadow-md">
         <div class="max-w-7xl mx-auto px-4 flex overflow-x-auto">
             <button onclick="switchTab('hunt')" id="tabBtn-hunt" class="hub-tab active px-5 py-3 font-display text-base font-bold tracking-wider uppercase whitespace-nowrap cursor-pointer" data-i18n="tab_hunt">ROUE DE LA CHASSE & RELIQUES</button>
+            <button onclick="switchTab('live')" id="tabBtn-live" class="hub-tab px-5 py-3 font-display text-base font-bold tracking-wider uppercase whitespace-nowrap cursor-pointer flex items-center gap-2">
+                <span class="w-2 h-2 rounded-full bg-tb-kick"></span>
+                <span data-i18n="tab_live">LIVE & LISTENING</span>
+            </button>
             <button onclick="switchTab('minigames')" id="tabBtn-minigames" class="hub-tab px-5 py-3 font-display text-base font-bold tracking-wider uppercase whitespace-nowrap cursor-pointer" data-i18n="tab_games">ARÈNE DES MINI-JEUX</button>
             <button onclick="switchTab('ecolab')" id="tabBtn-ecolab" class="hub-tab px-5 py-3 font-display text-base font-bold tracking-wider uppercase whitespace-nowrap cursor-pointer" data-i18n="tab_ecolab">TERRA 4.0 // ECO-LAB</button>
             <button onclick="switchTab('travel')" id="tabBtn-travel" class="hub-tab px-5 py-3 font-display text-base font-bold tracking-wider uppercase whitespace-nowrap cursor-pointer" data-i18n="tab_travel">BONS PLANS VOYAGE</button>
@@ -357,7 +373,199 @@
             </div>
         </section>
 
-        <!-- TAB 2: MINI-GAMES -->
+        <!-- TAB 2: LIVE & LISTENING STUDIO -->
+        <section id="content-live" class="space-y-8 hidden">
+            <!-- BANNIÈRE STUDIO -->
+            <div class="tb-glass rounded-2xl p-6 md:p-8 border border-tb-gold/50 shadow-2xl flex flex-wrap items-center justify-between gap-4">
+                <div class="space-y-2 max-w-3xl">
+                    <span class="px-3 py-1 rounded bg-tb-deepred text-tb-goldlight border border-tb-gold/40 font-display text-xs font-black uppercase tracking-widest" data-i18n="live_badge">STUDIO DE DIFFUSION // MULTI-FLUX & SON</span>
+                    <h2 class="font-display text-3xl sm:text-4xl font-black uppercase gold-text-gradient tracking-wide" data-i18n="live_title">DIRECTS, CHAÎNES OFFICIELLES & LISTENING PARTY</h2>
+                    <p class="font-sans text-sm sm:text-base text-tb-champagne" data-i18n="live_desc">
+                        Suivez les émissions en direct sur Kick, retrouvez nos 3 canaux officiels et rejoignez les sessions d'écoute collectives Bandcamp.
+                    </p>
+                </div>
+                <button onclick="copyShareLink('https://teebeeshow-cloud.github.io/tbshow/')" class="btn-gold px-4 py-2.5 rounded-xl font-display text-xs font-black uppercase tracking-wider cursor-pointer" data-i18n="live_copy_hub">
+                    COPIER LE LIEN DU HUB
+                </button>
+            </div>
+
+            <!-- 3 CHAÎNES OFFICIELLES (KICK / YOUTUBE / TWITCH) -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <!-- KICK -->
+                <div class="tb-glass rounded-2xl p-6 border border-tb-kick/45 tb-card-lift flex flex-col justify-between space-y-4">
+                    <div class="space-y-2">
+                        <div class="flex items-center justify-between">
+                            <span class="font-display text-xs font-black uppercase px-2.5 py-0.5 rounded bg-tb-kick/15 text-tb-kick border border-tb-kick/40">CANAL PRINCIPAL</span>
+                            <span id="kickChannelCardStatus" class="font-display text-xs font-bold text-tb-champagne uppercase">● KICK.COM</span>
+                        </div>
+                        <h3 class="font-display text-2xl font-black uppercase text-tb-ivory">KICK — THE BEYOND SHOW</h3>
+                        <p class="font-sans text-xs text-tb-champagne" data-i18n="ch_kick_desc">Talk-shows en direct, interactive chat (!hunt, !attack, !eco) et connexion OAuth officielle.</p>
+                    </div>
+                    <div class="flex gap-2">
+                        <a href="https://kick.com/tbshow" target="_blank" rel="noopener noreferrer" class="btn-kick flex-1 py-2.5 rounded-xl font-display text-sm font-black uppercase text-center" data-i18n="ch_open_kick">OUVRIR KICK ↗</a>
+                        <button onclick="copyShareLink('https://kick.com/tbshow')" class="px-3 py-2.5 rounded-xl bg-tb-obsidian border border-tb-gold/40 text-tb-goldlight font-display text-xs font-black uppercase cursor-pointer" title="Copier le lien">📋</button>
+                    </div>
+                </div>
+
+                <!-- YOUTUBE -->
+                <div class="tb-glass rounded-2xl p-6 border border-tb-crimson/55 tb-card-lift flex flex-col justify-between space-y-4">
+                    <div class="space-y-2">
+                        <div class="flex items-center justify-between">
+                            <span class="font-display text-xs font-black uppercase px-2.5 py-0.5 rounded bg-tb-crimson/20 text-tb-mythic border border-tb-crimson/50">ARCHIVES & LIVES</span>
+                            <span class="font-display text-xs font-bold text-tb-champagne uppercase">▶ YOUTUBE</span>
+                        </div>
+                        <h3 class="font-display text-2xl font-black uppercase text-tb-ivory">YOUTUBE — TB SHOW</h3>
+                        <p class="font-sans text-xs text-tb-champagne" data-i18n="ch_yt_desc">Rediffusions intégrales, extraits thématiques, philosophie, technologie et diffusions simultanées.</p>
+                    </div>
+                    <div class="flex gap-2">
+                        <a href="https://www.youtube.com/@tbshow" target="_blank" rel="noopener noreferrer" class="btn-crimson flex-1 py-2.5 rounded-xl font-display text-sm font-black uppercase text-center" data-i18n="ch_open_yt">OUVRIR YOUTUBE ↗</a>
+                        <button onclick="copyShareLink('https://www.youtube.com/@tbshow')" class="px-3 py-2.5 rounded-xl bg-tb-obsidian border border-tb-gold/40 text-tb-goldlight font-display text-xs font-black uppercase cursor-pointer" title="Copier le lien">📋</button>
+                    </div>
+                </div>
+
+                <!-- TWITCH -->
+                <div class="tb-glass rounded-2xl p-6 border border-tb-amethyst/45 tb-card-lift flex flex-col justify-between space-y-4">
+                    <div class="space-y-2">
+                        <div class="flex items-center justify-between">
+                            <span class="font-display text-xs font-black uppercase px-2.5 py-0.5 rounded bg-tb-amethyst/20 text-purple-300 border border-tb-amethyst/45">MULTISTREAM</span>
+                            <span class="font-display text-xs font-bold text-tb-champagne uppercase">◈ TWITCH</span>
+                        </div>
+                        <h3 class="font-display text-2xl font-black uppercase text-tb-ivory">TWITCH — TB SHOW</h3>
+                        <p class="font-sans text-xs text-tb-champagne" data-i18n="ch_tw_desc">Relais communautaire Twitch, sessions nocturnes et interactions multi-plateformes.</p>
+                    </div>
+                    <div class="flex gap-2">
+                        <a href="https://www.twitch.tv/tbshow" target="_blank" rel="noopener noreferrer" class="btn-amethyst flex-1 py-2.5 rounded-xl font-display text-sm font-black uppercase text-center" data-i18n="ch_open_tw">OUVRIR TWITCH ↗</a>
+                        <button onclick="copyShareLink('https://www.twitch.tv/tbshow')" class="px-3 py-2.5 rounded-xl bg-tb-obsidian border border-tb-gold/40 text-tb-goldlight font-display text-xs font-black uppercase cursor-pointer" title="Copier le lien">📋</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- LECTEUR MULTI-FLUX (CHARGEMENT LÉGER À LA DEMANDE) + MÉMO COMMANDES -->
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+                <div class="lg:col-span-8 tb-glass rounded-2xl p-6 border border-tb-gold/45 space-y-4 shadow-xl">
+                    <div class="flex flex-wrap items-center justify-between gap-3">
+                        <h3 class="font-display text-xl font-black uppercase gold-text-gradient" data-i18n="player_title">LECTEUR DE FLUX INTÉGRÉ</h3>
+                        <div class="flex flex-wrap gap-2">
+                            <button onclick="loadStreamPlayer('kick')" class="btn-kick px-3 py-1.5 rounded-lg font-display text-xs font-black uppercase cursor-pointer" data-i18n="player_load_kick">CHARGER KICK</button>
+                            <button onclick="loadStreamPlayer('youtube')" class="btn-crimson px-3 py-1.5 rounded-lg font-display text-xs font-black uppercase cursor-pointer" data-i18n="player_load_yt">CHARGER YOUTUBE</button>
+                            <button onclick="unloadStreamPlayer()" class="px-3 py-1.5 rounded-lg bg-tb-obsidian border border-tb-gold/30 text-tb-champagne hover:text-tb-ivory font-display text-xs font-black uppercase cursor-pointer" data-i18n="player_stop">FERMER LECTEUR</button>
+                        </div>
+                    </div>
+
+                    <!-- CONTENEUR VIDÉO 16:9 -->
+                    <div id="streamPlayerContainer" class="relative w-full aspect-video rounded-xl overflow-hidden bg-tb-obsidian border border-tb-gold/35 flex flex-col items-center justify-center p-6 text-center space-y-4">
+                        <div class="text-4xl">📡</div>
+                        <p class="font-display text-lg font-black uppercase text-tb-goldlight" data-i18n="player_idle_title">LECTEUR EN VEILLE (MODE ÉCONOMIE CPU)</p>
+                        <p class="font-sans text-xs text-tb-champagne max-w-md" data-i18n="player_idle_desc">
+                            Cliquez sur « Charger Kick » ou « Charger YouTube » pour ouvrir le flux vidéo directement ici, ou utilisez les liens directs ci-dessus.
+                        </p>
+                    </div>
+
+                    <!-- CHAMP OPTIONNEL ID YOUTUBE LIVE / VIDÉO -->
+                    <div class="flex flex-col sm:flex-row gap-2 pt-1">
+                        <input type="text" id="youtubeEmbedIdInput" placeholder="ID vidéo ou chaîne YouTube (ex: dQw4w9WgXcQ)" class="tb-input text-xs py-2" />
+                        <button onclick="loadStreamPlayer('youtube')" class="btn-gold px-4 py-2 rounded-xl font-display text-xs font-black uppercase whitespace-nowrap cursor-pointer" data-i18n="player_yt_apply">LIRE CET ID YOUTUBE</button>
+                    </div>
+                </div>
+
+                <!-- MÉMO DES COMMANDES DU CHAT -->
+                <div class="lg:col-span-4 tb-glass rounded-2xl p-6 border border-tb-gold/45 space-y-4 shadow-xl">
+                    <h3 class="font-display text-xl font-black uppercase gold-text-gradient" data-i18n="cmd_title">COMMANDES DU CHAT EN DIRECT</h3>
+                    <p class="font-sans text-xs text-tb-champagne" data-i18n="cmd_desc">Tapez ces commandes dans le chat Kick pendant l'émission pour agir en temps réel sur l'overlay :</p>
+                    <div class="space-y-2.5 text-xs">
+                        <div class="bg-tb-obsidian/90 border border-tb-gold/30 rounded-xl p-3">
+                            <span class="font-display text-sm font-black text-tb-goldlight">!hunt</span>
+                            <p class="text-tb-champagne mt-0.5">+50 TB-Coins et une relique dimensionnelle aléatoire.</p>
+                        </div>
+                        <div class="bg-tb-obsidian/90 border border-tb-gold/30 rounded-xl p-3">
+                            <span class="font-display text-sm font-black text-tb-mythic">!attack</span>
+                            <p class="text-tb-champagne mt-0.5">Frappe le Boss du stream selon votre arme équipée.</p>
+                        </div>
+                        <div class="bg-tb-obsidian/90 border border-tb-gold/30 rounded-xl p-3">
+                            <span class="font-display text-sm font-black text-emerald-400">!eco</span>
+                            <p class="text-tb-champagne mt-0.5">Active +1 m² bio-intensif sur Terra 4.0 avec alerte OBS.</p>
+                        </div>
+                        <div class="bg-tb-obsidian/90 border border-tb-gold/30 rounded-xl p-3">
+                            <span class="font-display text-sm font-black text-tb-steelblue">!coins</span>
+                            <p class="text-tb-champagne mt-0.5">Affiche votre solde actuel de TB-Coins dans le chat.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- WIDGET BANDCAMP LISTENING PARTY -->
+            <div class="tb-glass rounded-2xl p-6 md:p-8 border-2 border-tb-amethyst/60 shadow-2xl space-y-6">
+                <div class="flex flex-wrap items-center justify-between gap-4">
+                    <div class="space-y-1">
+                        <div class="flex items-center gap-2.5 flex-wrap">
+                            <span class="px-3 py-1 rounded bg-tb-amethyst/20 text-purple-300 border border-tb-amethyst/50 font-display text-xs font-black uppercase tracking-widest">BANDCAMP // LISTENING PARTY</span>
+                            <span id="lpStatusPill" class="px-2.5 py-0.5 rounded bg-tb-charcoal text-tb-champagne border border-tb-gold/30 font-display text-xs font-black uppercase">STANDBY</span>
+                        </div>
+                        <h3 id="lpDisplayTitle" class="font-display text-2xl sm:text-3xl font-black uppercase gold-text-gradient pt-1">SESSION D'ÉCOUTE COLLECTIVE — THE BEYOND SHOW</h3>
+                        <p id="lpDisplayArtist" class="font-sans text-sm text-tb-ivory font-semibold">Sélection musicale & exploration sonore</p>
+                        <p id="lpDisplaySchedule" class="font-sans text-xs text-tb-champagne">Prochaine session annoncée en direct</p>
+                    </div>
+                    <div class="flex flex-wrap gap-2.5">
+                        <a id="lpExternalLinkBtn" href="https://bandcamp.com" target="_blank" rel="noopener noreferrer" class="btn-amethyst px-5 py-3 rounded-xl font-display text-sm font-black uppercase tracking-wider shadow-lg" data-i18n="lp_join_btn">
+                            REJOINDRE SUR BANDCAMP ↗
+                        </a>
+                        <button onclick="copyLpUrl()" class="px-4 py-3 rounded-xl bg-tb-obsidian border border-tb-gold/40 text-tb-goldlight font-display text-xs font-black uppercase cursor-pointer" data-i18n="lp_copy_btn">
+                            COPIER LE LIEN
+                        </button>
+                    </div>
+                </div>
+
+                <!-- LECTEUR BANDCAMP INTÉGRÉ (SI UN ALBUM/TRACK ID EST RENSEIGNÉ) -->
+                <div id="lpEmbedWrapper" class="hidden rounded-xl overflow-hidden border border-tb-gold/40 bg-tb-obsidian p-2">
+                    <iframe id="lpBandcampIframe" style="border: 0; width: 100%; height: 120px;" seamless></iframe>
+                </div>
+
+                <!-- PANNEAU DE CONTRÔLE RAPIDE (SYNCHRONISE HUB + OVERLAY OBS) -->
+                <details class="bg-tb-obsidian/85 border border-tb-gold/30 rounded-xl p-4">
+                    <summary class="font-display text-xs font-black uppercase tracking-wider text-tb-goldlight cursor-pointer select-none" data-i18n="lp_admin_summary">
+                        ⚙️ CONTRÔLE HÔTE : CONFIGURER LA LISTENING PARTY & L'OVERLAY OBS
+                    </summary>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mt-4">
+                        <div>
+                            <label class="block font-display text-xs font-bold uppercase text-tb-champagne mb-1">STATUT DE LA SESSION</label>
+                            <select id="lpInputStatus" class="tb-input">
+                                <option value="LIVE">🔴 LIVE (ON AIR SUR OBS)</option>
+                                <option value="UPCOMING">🟡 À VENIR (TEASER SUR OBS)</option>
+                                <option value="OFFLINE">⚫ TERMINÉ / MASQUÉ SUR OBS</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block font-display text-xs font-bold uppercase text-tb-champagne mb-1">TITRE DE L'ALBUM / SESSION</label>
+                            <input type="text" id="lpInputTitle" placeholder="Ex: Listening Party #01 — Kosmische Musik" class="tb-input" />
+                        </div>
+                        <div>
+                            <label class="block font-display text-xs font-bold uppercase text-tb-champagne mb-1">ARTISTE / LABEL</label>
+                            <input type="text" id="lpInputArtist" placeholder="Ex: Artiste ou Sélection TB Show" class="tb-input" />
+                        </div>
+                        <div>
+                            <label class="block font-display text-xs font-bold uppercase text-tb-champagne mb-1">HORAIRE / NOTE</label>
+                            <input type="text" id="lpInputSchedule" placeholder="Ex: Ce soir à 21h00 CET" class="tb-input" />
+                        </div>
+                        <div>
+                            <label class="block font-display text-xs font-bold uppercase text-tb-champagne mb-1">LIEN LISTENING PARTY BANDCAMP</label>
+                            <input type="url" id="lpInputUrl" placeholder="https://artiste.bandcamp.com/album/..." class="tb-input" />
+                        </div>
+                        <div>
+                            <label class="block font-display text-xs font-bold uppercase text-tb-champagne mb-1">ID EMBED ALBUM (OPTIONNEL)</label>
+                            <input type="text" id="lpInputEmbedId" placeholder="Ex: 1234567890 (album=ID)" class="tb-input" />
+                        </div>
+                    </div>
+                    <div class="mt-4 flex flex-wrap items-center justify-between gap-3">
+                        <span class="font-sans text-xs text-tb-champagne">La sauvegarde met à jour instantanément le Hub et la source navigateur <code class="text-tb-goldlight">bandcamp_obs.html</code>.</span>
+                        <button onclick="saveListeningPartySettings()" class="btn-gold px-5 py-2.5 rounded-xl font-display text-xs font-black uppercase tracking-wider cursor-pointer">
+                            PUBLIER SUR LE HUB & OBS
+                        </button>
+                    </div>
+                </details>
+            </div>
+        </section>
+
+        <!-- TAB 3: MINI-GAMES -->
         <section id="content-minigames" class="space-y-8 hidden">
             <div class="tb-glass rounded-2xl p-6 md:p-8 border border-tb-gold/50 shadow-2xl">
                 <h2 class="font-display text-3xl font-black uppercase gold-text-gradient tracking-wide" data-i18n="games_heading">ARÈNE DES MINI-JEUX</h2>
@@ -398,7 +606,7 @@
             </div>
         </section>
 
-        <!-- TAB 3: TERRA 4.0 // ECO-LAB (CAPITAL PARTICIPATIF & STREAM OBS) -->
+        <!-- TAB 4: TERRA 4.0 // ECO-LAB -->
         <section id="content-ecolab" class="space-y-8 hidden">
             <div class="tb-glass rounded-2xl p-6 md:p-8 border border-tb-gold/50 shadow-2xl space-y-3">
                 <div class="flex flex-wrap items-center justify-between gap-2">
@@ -411,7 +619,6 @@
                 </p>
             </div>
 
-            <!-- COMPTEURS D'AMORÇAGE EN DIRECT (FIREBASE) -->
             <div class="grid grid-cols-1 sm:grid-cols-3 gap-5">
                 <div class="tb-glass rounded-2xl p-6 border border-tb-gold/40 text-center space-y-1">
                     <div class="font-display text-xs font-bold uppercase text-tb-champagne tracking-wider" data-i18n="eco_stat_sqm">SURFACE BIO-INTENSIVE SOUTENUE</div>
@@ -480,7 +687,7 @@
             </div>
         </section>
 
-        <!-- TAB 4: TRAVEL -->
+        <!-- TAB 5: TRAVEL -->
         <section id="content-travel" class="space-y-8 hidden">
             <div class="tb-glass rounded-2xl p-6 md:p-8 border border-tb-gold/50 shadow-2xl space-y-3">
                 <h2 class="font-display text-3xl font-black uppercase gold-text-gradient tracking-wide" data-i18n="travel_heading">BONS PLANS VOYAGE & PARTENARIATS</h2>
@@ -538,7 +745,7 @@
             </div>
         </section>
 
-        <!-- TAB 5: LEADERBOARD -->
+        <!-- TAB 6: LEADERBOARD -->
         <section id="content-leaderboard" class="space-y-8 hidden">
             <div class="tb-glass rounded-2xl overflow-hidden border border-tb-gold/45 shadow-2xl">
                 <div class="p-5 border-b border-tb-gold/30">
@@ -596,6 +803,7 @@
             fr: {
                 subtitle: "OFFICIAL COMMUNITY HUB // COFFRE DIMENSIONNEL",
                 tab_hunt: "ROUE DE LA CHASSE & RELIQUES",
+                tab_live: "LIVE & LISTENING",
                 tab_games: "ARÈNE DES MINI-JEUX",
                 tab_ecolab: "TERRA 4.0 // ECO-LAB",
                 tab_travel: "BONS PLANS VOYAGE",
@@ -612,6 +820,28 @@
                 armory_title: "COLLECTION DES RELIQUES",
                 armory_sub: "Artefacts archivés dans votre coffre",
                 filter_all: "TOUT",
+                live_badge: "STUDIO DE DIFFUSION // MULTI-FLUX & SON",
+                live_title: "DIRECTS, CHAÎNES OFFICIELLES & LISTENING PARTY",
+                live_desc: "Suivez les émissions en direct sur Kick, retrouvez nos 3 canaux officiels et rejoignez les sessions d'écoute collectives Bandcamp.",
+                live_copy_hub: "COPIER LE LIEN DU HUB",
+                ch_kick_desc: "Talk-shows en direct, interactive chat (!hunt, !attack, !eco) et connexion OAuth officielle.",
+                ch_open_kick: "OUVRIR KICK ↗",
+                ch_yt_desc: "Rediffusions intégrales, extraits thématiques, philosophie, technologie et diffusions simultanées.",
+                ch_open_yt: "OUVRIR YOUTUBE ↗",
+                ch_tw_desc: "Relais communautaire Twitch, sessions nocturnes et interactions multi-plateformes.",
+                ch_open_tw: "OUVRIR TWITCH ↗",
+                player_title: "LECTEUR DE FLUX INTÉGRÉ",
+                player_load_kick: "CHARGER KICK",
+                player_load_yt: "CHARGER YOUTUBE",
+                player_stop: "FERMER LECTEUR",
+                player_idle_title: "LECTEUR EN VEILLE (MODE ÉCONOMIE CPU)",
+                player_idle_desc: "Cliquez sur « Charger Kick » ou « Charger YouTube » pour ouvrir le flux vidéo directement ici, ou utilisez les liens directs ci-dessus.",
+                player_yt_apply: "LIRE CET ID YOUTUBE",
+                cmd_title: "COMMANDES DU CHAT EN DIRECT",
+                cmd_desc: "Tapez ces commandes dans le chat Kick pendant l'émission pour agir en temps réel sur l'overlay :",
+                lp_join_btn: "REJOINDRE SUR BANDCAMP ↗",
+                lp_copy_btn: "COPIER LE LIEN",
+                lp_admin_summary: "⚙️ CONTRÔLE HÔTE : CONFIGURER LA LISTENING PARTY & L'OVERLAY OBS",
                 games_heading: "ARÈNE DES MINI-JEUX",
                 game_poker: "Duel Texas Hold'em interactif.",
                 game_hang: "Pendu synchronisé pour la communauté.",
@@ -670,6 +900,7 @@
             en: {
                 subtitle: "OFFICIAL COMMUNITY HUB // DIMENSIONAL VAULT",
                 tab_hunt: "THE HUNT WHEEL & RELICS",
+                tab_live: "LIVE & LISTENING",
                 tab_games: "MINI-GAMES ARENA",
                 tab_ecolab: "TERRA 4.0 // ECO-LAB",
                 tab_travel: "TRAVEL DEALS",
@@ -686,6 +917,28 @@
                 armory_title: "RELICS COLLECTION",
                 armory_sub: "Artifacts archived in your vault",
                 filter_all: "ALL",
+                live_badge: "BROADCAST STUDIO // MULTI-STREAM & SOUND",
+                live_title: "LIVE STREAMS, OFFICIAL CHANNELS & LISTENING PARTY",
+                live_desc: "Watch live broadcasts on Kick, access all 3 official channels, and join collective Bandcamp listening sessions.",
+                live_copy_hub: "COPY HUB LINK",
+                ch_kick_desc: "Live talk shows, interactive chat (!hunt, !attack, !eco) and official OAuth login.",
+                ch_open_kick: "OPEN KICK ↗",
+                ch_yt_desc: "Full replays, highlights, philosophy, technology and simulcast streams.",
+                ch_open_yt: "OPEN YOUTUBE ↗",
+                ch_tw_desc: "Twitch community relay, late-night sessions and multi-platform interactions.",
+                ch_open_tw: "OPEN TWITCH ↗",
+                player_title: "EMBEDDED STREAM PLAYER",
+                player_load_kick: "LOAD KICK",
+                player_load_yt: "LOAD YOUTUBE",
+                player_stop: "CLOSE PLAYER",
+                player_idle_title: "PLAYER STANDBY (CPU SAVER MODE)",
+                player_idle_desc: "Click 'Load Kick' or 'Load YouTube' to watch right here, or use the direct channel links above.",
+                player_yt_apply: "PLAY YOUTUBE ID",
+                cmd_title: "LIVE CHAT COMMANDS",
+                cmd_desc: "Type these commands in Kick chat during the broadcast to trigger live actions:",
+                lp_join_btn: "JOIN ON BANDCAMP ↗",
+                lp_copy_btn: "COPY LINK",
+                lp_admin_summary: "⚙️ HOST CONTROL: CONFIGURE LISTENING PARTY & OBS OVERLAY",
                 games_heading: "MINI-GAMES ARENA",
                 game_poker: "Interactive Texas Hold'em duel.",
                 game_hang: "Synchronized community hangman.",
@@ -723,7 +976,7 @@
                 travel_search_btn: "SEARCH DEALS",
                 travel_card1_title: "INTERNATIONAL FLIGHTS",
                 travel_card1_desc: "Compare regular airline connections at the best rates (Algeria - Europe).",
-                travel_card2_title: "HÔTELS & STAYS",
+                travel_card2_title: "HOTELS & STAYS",
                 travel_card2_desc: "Find exceptional accommodations for your trips and business travel.",
                 travel_card3_title: "COMMUNITY PERKS",
                 travel_card3_desc: "Enjoy exclusive recommendations shared during live broadcasts.",
@@ -750,7 +1003,7 @@
             localStorage.setItem("tb_hub_lang", lang);
             document.getElementById("langBtn-fr").classList.toggle("active", lang === "fr");
             document.getElementById("langBtn-en").classList.toggle("active", lang === "en");
-            
+
             document.querySelectorAll("[data-i18n]").forEach(el => {
                 const key = el.getAttribute("data-i18n");
                 if (i18n[lang][key]) el.innerText = i18n[lang][key];
@@ -821,29 +1074,188 @@
             }
         });
 
-        // VÉRIFICATION AUTOMATIQUE DU STATUT LIVE VIA TON CLOUDFLARE WORKER
-        async function checkKickLiveStatus() {
+        // STATUT LIVE KICK (WORKER + FIREBASE REALTIME)
+        function applyStreamBadgeUI(isLive) {
             const badge = document.getElementById("streamStatusBadge");
             const dot = document.getElementById("streamStatusDot");
             const text = document.getElementById("streamStatusText");
+            const kickCardStatus = document.getElementById("kickChannelCardStatus");
 
-            try {
-                const response = await fetch(`${WORKER_URL}/status`);
-                const data = await response.json();
-
-                if (data && data.is_live === true) {
-                    badge.className = "px-2.5 py-1 text-xs font-display font-black tracking-widest uppercase rounded bg-tb-obsidian text-tb-kick border border-tb-kick/60 flex items-center gap-1.5 select-none shadow-[0_0_10px_rgba(83,252,24,0.3)]";
-                    dot.className = "w-2 h-2 rounded-full bg-tb-kick animate-ping";
-                    text.innerText = "STREAM ONLINE";
-                } else {
-                    badge.className = "px-2.5 py-1 text-xs font-display font-black tracking-widest uppercase rounded bg-tb-charcoal text-tb-champagne border border-tb-gold/30 flex items-center gap-1.5 select-none";
-                    dot.className = "w-2 h-2 rounded-full bg-stone-500";
-                    text.innerText = "STREAM OFFLINE";
+            if (isLive) {
+                badge.className = "px-2.5 py-1 text-xs font-display font-black tracking-widest uppercase rounded bg-tb-obsidian text-tb-kick border border-tb-kick/60 flex items-center gap-1.5 select-none shadow-[0_0_10px_rgba(83,252,24,0.3)] cursor-pointer";
+                dot.className = "w-2 h-2 rounded-full bg-tb-kick animate-ping";
+                text.innerText = "STREAM ONLINE";
+                if (kickCardStatus) {
+                    kickCardStatus.innerText = "● EN DIRECT MAINTENANT";
+                    kickCardStatus.className = "font-display text-xs font-black text-tb-kick uppercase animate-pulse";
                 }
+            } else {
+                badge.className = "px-2.5 py-1 text-xs font-display font-black tracking-widest uppercase rounded bg-tb-charcoal text-tb-champagne border border-tb-gold/30 flex items-center gap-1.5 select-none cursor-pointer";
+                dot.className = "w-2 h-2 rounded-full bg-stone-500";
+                text.innerText = "STREAM OFFLINE";
+                if (kickCardStatus) {
+                    kickCardStatus.innerText = "● KICK.COM";
+                    kickCardStatus.className = "font-display text-xs font-bold text-tb-champagne uppercase";
+                }
+            }
+        }
+
+        async function checkKickLiveStatus() {
+            try {
+                const response = await fetch(`${WORKER_URL}/status`, { cache: "no-store" });
+                const data = await response.json();
+                applyStreamBadgeUI(Boolean(data && data.is_live === true));
             } catch (e) {
                 console.warn("Erreur vérification live via Worker :", e);
             }
         }
+
+        onValue(ref(db, "tbshow/stream/is_live"), (snap) => {
+            if (snap.exists()) {
+                applyStreamBadgeUI(snap.val() === true);
+            }
+        });
+
+        // LECTEUR MULTI-FLUX À LA DEMANDE (KICK / YOUTUBE)
+        window.loadStreamPlayer = function(platform) {
+            const container = document.getElementById("streamPlayerContainer");
+            if (!container) return;
+
+            if (platform === "kick") {
+                container.innerHTML = `
+                    <iframe
+                        src="https://player.kick.com/tbshow"
+                        class="w-full h-full border-0"
+                        allowfullscreen="true"
+                        scrolling="no">
+                    </iframe>
+                `;
+            } else if (platform === "youtube") {
+                const rawId = (document.getElementById("youtubeEmbedIdInput")?.value || "").trim();
+                const embedSrc = rawId
+                    ? `https://www.youtube.com/embed/${encodeURIComponent(rawId)}?autoplay=1`
+                    : `https://www.youtube.com/embed?listType=user_uploads&list=tbshow`;
+                container.innerHTML = `
+                    <iframe
+                        src="${embedSrc}"
+                        class="w-full h-full border-0"
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                        allowfullscreen>
+                    </iframe>
+                `;
+            }
+        };
+
+        window.unloadStreamPlayer = function() {
+            const container = document.getElementById("streamPlayerContainer");
+            if (!container) return;
+            container.innerHTML = `
+                <div class="text-4xl">📡</div>
+                <p class="font-display text-lg font-black uppercase text-tb-goldlight">LECTEUR EN VEILLE (MODE ÉCONOMIE CPU)</p>
+                <p class="font-sans text-xs text-tb-champagne max-w-md">
+                    Cliquez sur « Charger Kick » ou « Charger YouTube » pour ouvrir le flux vidéo directement ici, ou utilisez les liens directs ci-dessus.
+                </p>
+            `;
+        };
+
+        window.copyShareLink = function(link) {
+            navigator.clipboard?.writeText(link).then(() => {
+                showRewardModal("LIEN COPIÉ", `Lien copié dans le presse-papiers : ${link}`, "📋");
+            }).catch(() => {
+                showRewardModal("LIEN DU SHOW", link, "🔗");
+            });
+        };
+
+        // BANDCAMP LISTENING PARTY (FIREBASE SYNC HUB + OBS)
+        let currentLpUrl = "https://bandcamp.com";
+
+        onValue(ref(db, "tbshow/listening_party"), (snap) => {
+            const lp = snap.val() || {
+                status: "UPCOMING",
+                title: "SESSION D'ÉCOUTE COLLECTIVE — THE BEYOND SHOW",
+                artist: "Sélection musicale & exploration sonore",
+                schedule: "Prochaine session annoncée en direct",
+                url: "https://bandcamp.com",
+                embed_id: ""
+            };
+
+            currentLpUrl = lp.url || "https://bandcamp.com";
+
+            const titleEl = document.getElementById("lpDisplayTitle");
+            const artistEl = document.getElementById("lpDisplayArtist");
+            const schedEl = document.getElementById("lpDisplaySchedule");
+            const linkBtn = document.getElementById("lpExternalLinkBtn");
+            const pillEl = document.getElementById("lpStatusPill");
+            const embedWrap = document.getElementById("lpEmbedWrapper");
+            const iframeEl = document.getElementById("lpBandcampIframe");
+
+            if (titleEl) titleEl.innerText = lp.title || "BANDCAMP LISTENING PARTY";
+            if (artistEl) artistEl.innerText = lp.artist || "THE BEYOND SHOW";
+            if (schedEl) schedEl.innerText = lp.schedule || "";
+            if (linkBtn) linkBtn.href = currentLpUrl;
+
+            if (pillEl) {
+                if (lp.status === "LIVE") {
+                    pillEl.innerText = "🔴 ON AIR // LIVE";
+                    pillEl.className = "px-2.5 py-0.5 rounded bg-tb-mythic/20 text-tb-mythic border border-tb-mythic font-display text-xs font-black uppercase animate-pulse";
+                } else if (lp.status === "UPCOMING") {
+                    pillEl.innerText = "🟡 À VENIR";
+                    pillEl.className = "px-2.5 py-0.5 rounded bg-tb-gold/20 text-tb-goldlight border border-tb-gold/50 font-display text-xs font-black uppercase";
+                } else {
+                    pillEl.innerText = "STANDBY";
+                    pillEl.className = "px-2.5 py-0.5 rounded bg-tb-charcoal text-tb-champagne border border-tb-gold/30 font-display text-xs font-black uppercase";
+                }
+            }
+
+            // Pré-remplit les champs admin s'ils sont vides
+            const inStatus = document.getElementById("lpInputStatus");
+            const inTitle = document.getElementById("lpInputTitle");
+            const inArtist = document.getElementById("lpInputArtist");
+            const inSched = document.getElementById("lpInputSchedule");
+            const inUrl = document.getElementById("lpInputUrl");
+            const inEmbed = document.getElementById("lpInputEmbedId");
+            if (inStatus && !inStatus.dataset.dirty) inStatus.value = lp.status || "UPCOMING";
+            if (inTitle && !inTitle.value) inTitle.value = lp.title || "";
+            if (inArtist && !inArtist.value) inArtist.value = lp.artist || "";
+            if (inSched && !inSched.value) inSched.value = lp.schedule || "";
+            if (inUrl && !inUrl.value) inUrl.value = lp.url || "";
+            if (inEmbed && !inEmbed.value) inEmbed.value = lp.embed_id || "";
+
+            // Affichage du lecteur intégré Bandcamp si un embed_id numérique est fourni
+            const cleanEmbedId = String(lp.embed_id || "").replace(/[^0-9]/g, "");
+            if (cleanEmbedId && embedWrap && iframeEl) {
+                const targetSrc = `https://bandcamp.com/EmbeddedPlayer/album=${cleanEmbedId}/size=large/bgcol=181a1b/linkcol=d4af37/tracklist=false/artwork=small/transparent=true/`;
+                if (iframeEl.src !== targetSrc) iframeEl.src = targetSrc;
+                embedWrap.classList.remove("hidden");
+            } else if (embedWrap) {
+                embedWrap.classList.add("hidden");
+            }
+        });
+
+        window.saveListeningPartySettings = function() {
+            const payload = {
+                status: document.getElementById("lpInputStatus").value,
+                title: document.getElementById("lpInputTitle").value.trim() || "SESSION D'ÉCOUTE COLLECTIVE — THE BEYOND SHOW",
+                artist: document.getElementById("lpInputArtist").value.trim() || "THE BEYOND SHOW",
+                schedule: document.getElementById("lpInputSchedule").value.trim() || "En direct sur Bandcamp",
+                url: document.getElementById("lpInputUrl").value.trim() || "https://bandcamp.com",
+                embed_id: document.getElementById("lpInputEmbedId").value.trim(),
+                updated_at: Date.now()
+            };
+
+            update(ref(db, "tbshow/listening_party"), payload)
+                .then(() => {
+                    playSound("coin_win");
+                    showRewardModal("LISTENING PARTY PUBLIÉE", "La session Bandcamp est synchronisée sur le Hub et sur l'overlay OBS !", "🎧");
+                })
+                .catch((err) => {
+                    showRewardModal("ERREUR FIREBASE", err.message, "⚠️");
+                });
+        };
+
+        window.copyLpUrl = function() {
+            copyShareLink(currentLpUrl);
+        };
 
         const RELICS_CATALOG = [
             { id: "obsidian_core", code: "#001", name: "Obsidian Core", rarity: "GOLD", icon: "💎", desc: "Matrice volcanique." },
@@ -857,7 +1269,7 @@
         ];
 
         let currentFilter = "ALL";
-        
+
         let userState = {
             id: null,
             username: "",
@@ -876,12 +1288,16 @@
         } catch(e) {}
 
         window.switchTab = function(tabId) {
-            ["hunt", "minigames", "ecolab", "travel", "leaderboard"].forEach(id => {
-                document.getElementById(`content-${id}`).classList.add("hidden");
-                document.getElementById(`tabBtn-${id}`).classList.remove("active");
+            ["hunt", "live", "minigames", "ecolab", "travel", "leaderboard"].forEach(id => {
+                const sec = document.getElementById(`content-${id}`);
+                const btn = document.getElementById(`tabBtn-${id}`);
+                if (sec) sec.classList.add("hidden");
+                if (btn) btn.classList.remove("active");
             });
-            document.getElementById(`content-${tabId}`).classList.remove("hidden");
-            document.getElementById(`tabBtn-${tabId}`).classList.add("active");
+            const targetSec = document.getElementById(`content-${tabId}`);
+            const targetBtn = document.getElementById(`tabBtn-${tabId}`);
+            if (targetSec) targetSec.classList.remove("hidden");
+            if (targetBtn) targetBtn.classList.add("active");
             if (tabId === 'leaderboard') renderLeaderboard();
         };
 
@@ -1049,7 +1465,7 @@
                 document.getElementById("headerUserAvatar").src = userState.avatar;
             }
             document.getElementById("statTotalSpins").innerText = userState.total_spins || 0;
-            
+
             const unlockedCount = Object.keys(userState.collection || {}).filter(k => userState.collection[k] > 0).length;
             document.getElementById("statRelicRatio").innerText = `${unlockedCount} / ${RELICS_CATALOG.length}`;
             document.getElementById("armoryCountText").innerText = unlockedCount;
@@ -1111,7 +1527,7 @@
                         const nameKey = (u.username || "Chasseur").trim().toLowerCase();
                         const currentCoins = u.coins || 0;
                         const currentRelics = u.collection ? Object.keys(u.collection).length : 0;
-                        
+
                         if (!userMap.has(nameKey) || userMap.get(nameKey).coins < currentCoins) {
                             userMap.set(nameKey, {
                                 username: u.username || "Chasseur",
@@ -1218,7 +1634,7 @@
             if (isWheelSpinning || userState.coins < 100) return;
             userState.coins -= 100;
             userState.total_spins = (userState.total_spins || 0) + 1;
-            
+
             const wonSeg = WHEEL_SEGMENTS[Math.floor(Math.random() * WHEEL_SEGMENTS.length)];
             if (wonSeg.type === 'coins') {
                 userState.coins += wonSeg.val;
