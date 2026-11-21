@@ -299,6 +299,10 @@
             </button>
             <button onclick="switchTab('minigames')" id="tabBtn-minigames" class="hub-tab px-5 py-3 font-display text-base font-bold tracking-wider uppercase whitespace-nowrap cursor-pointer" data-i18n="tab_games">ARÈNE DES MINI-JEUX</button>
             <button onclick="switchTab('ecolab')" id="tabBtn-ecolab" class="hub-tab px-5 py-3 font-display text-base font-bold tracking-wider uppercase whitespace-nowrap cursor-pointer" data-i18n="tab_ecolab">TERRA 4.0 // ECO-LAB</button>
+            <button onclick="switchTab('occasions')" id="tabBtn-occasions" class="hub-tab px-5 py-3 font-display text-base font-bold tracking-wider uppercase whitespace-nowrap cursor-pointer flex items-center gap-1.5">
+                <span>🎂</span>
+                <span data-i18n="tab_occasions">ANNIV & OCCASIONS</span>
+            </button>
             <button onclick="switchTab('travel')" id="tabBtn-travel" class="hub-tab px-5 py-3 font-display text-base font-bold tracking-wider uppercase whitespace-nowrap cursor-pointer" data-i18n="tab_travel">BONS PLANS VOYAGE</button>
             <button onclick="switchTab('leaderboard')" id="tabBtn-leaderboard" class="hub-tab px-5 py-3 font-display text-base font-bold tracking-wider uppercase whitespace-nowrap cursor-pointer" data-i18n="tab_leaderboard">CLASSEMENT & COFFRE</button>
         </div>
@@ -484,6 +488,10 @@
                         <div class="bg-tb-obsidian/90 border border-tb-gold/30 rounded-xl p-3">
                             <span class="font-display text-sm font-black text-emerald-400">!eco</span>
                             <p class="text-tb-champagne mt-0.5">Active +1 m² bio-intensif sur Terra 4.0 avec alerte OBS.</p>
+                        </div>
+                        <div class="bg-tb-obsidian/90 border border-tb-gold/30 rounded-xl p-3">
+                            <span class="font-display text-sm font-black text-tb-amethyst">!gift</span>
+                            <p class="text-tb-champagne mt-0.5">Déclenche l'overlay OBS Joyeux Anniversaire / Occasion en direct !</p>
                         </div>
                         <div class="bg-tb-obsidian/90 border border-tb-gold/30 rounded-xl p-3">
                             <span class="font-display text-sm font-black text-tb-steelblue">!coins</span>
@@ -687,6 +695,187 @@
             </div>
         </section>
 
+        <!-- TAB: ANNIV & OCCASIONS -->
+        <section id="content-occasions" class="space-y-8 hidden">
+            <!-- HERO BANNER -->
+            <div class="tb-glass rounded-2xl p-6 md:p-8 border border-tb-gold/55 shadow-2xl relative overflow-hidden">
+                <div class="flex flex-wrap items-center justify-between gap-4">
+                    <div class="space-y-2 max-w-3xl">
+                        <span class="px-3 py-1 rounded bg-tb-amethyst/20 text-purple-300 border border-tb-amethyst/50 font-display text-xs font-black uppercase tracking-widest" data-i18n="occ_badge">CÉLÉBRATIONS & SPONSORING COMMUNAUTAIRE // SYNC OBS</span>
+                        <h2 class="font-display text-3xl sm:text-4xl font-black uppercase gold-text-gradient tracking-wide" data-i18n="occ_title">C'EST TON MOMENT ? MARQUE LE COUP EN DIRECT !</h2>
+                        <p class="font-sans text-sm sm:text-base text-tb-champagne leading-relaxed" data-i18n="occ_desc">
+                            Un anniversaire, une réussite ou une date symbolique approche ? Inscris ta date et ton horaire ci-dessous. Le Jour J, ton compte à rebours déclenche l'overlay OBS « Joyeux Anniversaire » avec ta double cagnotte (Live + Cadeau / Bon d'achat) et la commande chat <strong class="text-tb-goldlight">!gift</strong> !
+                        </p>
+                    </div>
+                    <button onclick="triggerGiftCelebration('HUB_MANUAL')" class="btn-amethyst px-5 py-3 rounded-xl font-display text-sm font-black uppercase tracking-wider cursor-pointer shadow-lg">
+                        🎉 DÉCLENCHER L'ALERTE OBS (!gift)
+                    </button>
+                </div>
+            </div>
+
+            <!-- CELEBRATION À LA UNE + COMPTE À REBOURS + DOUBLE CAGNOTTE -->
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+                <!-- CARTE PRINCIPALE À LA UNE -->
+                <div class="lg:col-span-7 tb-glass rounded-2xl p-6 md:p-8 border-2 border-tb-gold/65 shadow-2xl space-y-6">
+                    <div class="flex flex-wrap items-center justify-between gap-3">
+                        <div class="flex items-center gap-2">
+                            <span id="occHeroTag" class="px-3 py-1 rounded bg-tb-deepred text-tb-goldlight border border-tb-gold/45 font-display text-xs font-black uppercase tracking-widest">🎂 ANNIVERSAIRE À LA UNE</span>
+                            <span id="occLiveStatusBadge" class="px-2.5 py-1 rounded bg-tb-charcoal text-tb-champagne border border-tb-gold/30 font-display text-xs font-black uppercase">COMPTE À REBOURS</span>
+                        </div>
+                        <span id="occHeroDateDisplay" class="font-display text-xs font-bold text-tb-steelblue uppercase tracking-wider">-- / -- / ----</span>
+                    </div>
+
+                    <div>
+                        <p class="font-sans text-xs uppercase tracking-widest text-tb-champagne" data-i18n="occ_honoree_label">CÉLÉBRATION DE</p>
+                        <h3 id="occHeroName" class="font-display text-4xl sm:text-5xl font-black uppercase gold-text-gradient tracking-wide mt-0.5">AUCUNE CÉLÉBRATION ACTIVE</h3>
+                        <p id="occHeroMessage" class="font-sans text-sm text-tb-ivory italic mt-2 bg-tb-obsidian/75 border-l-2 border-tb-gold px-4 py-2.5 rounded-r-xl">
+                            « Inscris ta date à droite pour lancer le compte à rebours officiel du Beyond Show ! »
+                        </p>
+                    </div>
+
+                    <!-- COMPTE À REBOURS DYNAMIQUE -->
+                    <div class="grid grid-cols-4 gap-3 text-center">
+                        <div class="bg-tb-obsidian/90 border border-tb-gold/40 rounded-xl p-3">
+                            <div id="cdDays" class="font-display text-3xl sm:text-4xl font-black text-tb-goldlight">00</div>
+                            <div class="font-display text-[11px] font-bold uppercase text-tb-champagne">JOURS</div>
+                        </div>
+                        <div class="bg-tb-obsidian/90 border border-tb-gold/40 rounded-xl p-3">
+                            <div id="cdHours" class="font-display text-3xl sm:text-4xl font-black text-tb-goldlight">00</div>
+                            <div class="font-display text-[11px] font-bold uppercase text-tb-champagne">HEURES</div>
+                        </div>
+                        <div class="bg-tb-obsidian/90 border border-tb-gold/40 rounded-xl p-3">
+                            <div id="cdMinutes" class="font-display text-3xl sm:text-4xl font-black text-tb-goldlight">00</div>
+                            <div class="font-display text-[11px] font-bold uppercase text-tb-champagne">MIN</div>
+                        </div>
+                        <div class="bg-tb-obsidian/90 border border-tb-amethyst/60 rounded-xl p-3">
+                            <div id="cdSeconds" class="font-display text-3xl sm:text-4xl font-black text-purple-300">00</div>
+                            <div class="font-display text-[11px] font-bold uppercase text-tb-champagne">SEC</div>
+                        </div>
+                    </div>
+
+                    <!-- DOUBLE CAGNOTTE (LIVE + CADEAU / BON D'ACHAT) -->
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-2">
+                        <!-- CAGNOTTE 1 : SOUTIEN LIVE -->
+                        <div class="bg-tb-obsidian/90 border border-tb-gold/45 rounded-xl p-4 space-y-3">
+                            <div class="flex items-center justify-between">
+                                <span class="font-display text-xs font-black uppercase text-tb-goldlight">🎥 CAGNOTTE LIVE SHOW</span>
+                                <span class="font-display text-sm font-black text-tb-ivory"><span id="occLiveCurrent">0</span> € / <span id="occLiveGoal">100</span> €</span>
+                            </div>
+                            <div class="w-full h-3 rounded-full bg-tb-charcoal overflow-hidden border border-tb-gold/30">
+                                <div id="occLiveProgressBar" class="h-full bg-gradient-to-r from-tb-crimson via-tb-gold to-tb-goldlight transition-all duration-500" style="width: 0%;"></div>
+                            </div>
+                            <p id="occLiveLabel" class="font-sans text-xs text-tb-champagne">Objectif soutien émission spéciale</p>
+                            <div class="flex gap-2">
+                                <button onclick="contributeOccasionPot('live', 5)" class="btn-crimson flex-1 py-2 rounded-lg font-display text-xs font-black uppercase cursor-pointer">+5 € LIVE</button>
+                                <button onclick="contributeOccasionPot('live', 10)" class="btn-gold flex-1 py-2 rounded-lg font-display text-xs font-black uppercase cursor-pointer">+10 € LIVE</button>
+                            </div>
+                        </div>
+
+                        <!-- CAGNOTTE 2 : CADEAU / BON D'ACHAT -->
+                        <div class="bg-tb-obsidian/90 border border-tb-amethyst/50 rounded-xl p-4 space-y-3">
+                            <div class="flex items-center justify-between">
+                                <span class="font-display text-xs font-black uppercase text-purple-300">🎁 CAGNOTTE CADEAU</span>
+                                <span class="font-display text-sm font-black text-tb-ivory"><span id="occGiftCurrent">0</span> € / <span id="occGiftGoal">50</span> €</span>
+                            </div>
+                            <div class="w-full h-3 rounded-full bg-tb-charcoal overflow-hidden border border-tb-amethyst/35">
+                                <div id="occGiftProgressBar" class="h-full bg-gradient-to-r from-purple-700 via-tb-amethyst to-tb-steelblue transition-all duration-500" style="width: 0%;"></div>
+                            </div>
+                            <p id="occGiftLabel" class="font-sans text-xs text-tb-champagne">Bon d'achat / attention pour l'abonné</p>
+                            <div class="flex gap-2">
+                                <button onclick="contributeOccasionPot('gift', 5)" class="btn-amethyst flex-1 py-2 rounded-lg font-display text-xs font-black uppercase cursor-pointer">+5 € CADEAU</button>
+                                <button onclick="contributeOccasionPot('gift', 10)" class="btn-gold flex-1 py-2 rounded-lg font-display text-xs font-black uppercase cursor-pointer">+10 € CADEAU</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- INTERACTION TB-COINS (!gift) -->
+                    <div class="flex flex-wrap items-center justify-between gap-3 bg-tb-deepred/35 border border-tb-gold/35 rounded-xl p-4">
+                        <div class="text-xs">
+                            <span class="font-display font-black uppercase text-tb-goldlight">SOUHAITER UN JOYEUX ANNIVERSAIRE EN DIRECT :</span>
+                            <p class="text-tb-champagne">Envoie une salve festive sur l'overlay OBS (50 TB-Coins ou commande <code class="text-tb-goldlight">!gift</code> dans le chat).</p>
+                        </div>
+                        <button onclick="sendHubGiftCheer()" class="btn-gold px-4 py-2.5 rounded-xl font-display text-xs font-black uppercase tracking-wider cursor-pointer shrink-0">
+                            🎂 ENVOYER UN VŒU (50 TB)
+                        </button>
+                    </div>
+                </div>
+
+                <!-- FORMULAIRE D'INSCRIPTION ABONNÉ / INITIATEUR -->
+                <div class="lg:col-span-5 tb-glass rounded-2xl p-6 md:p-8 border border-tb-gold/45 shadow-xl space-y-5">
+                    <div>
+                        <span class="font-display text-xs font-black uppercase tracking-widest text-tb-gold">ESPACE ABONNÉ & SPONSORING</span>
+                        <h3 class="font-display text-2xl font-black uppercase gold-text-gradient mt-0.5">PROGRAMMER MA DATE & MA CAGNOTTE</h3>
+                        <p class="font-sans text-xs text-tb-champagne mt-1">
+                            Choisis la fête, le prénom du concerné, la date, l'horaire souhaité pour le déclenchement OBS et les objectifs de cagnottes.
+                        </p>
+                    </div>
+
+                    <div class="space-y-3.5">
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                            <div>
+                                <label class="block font-display text-xs font-bold uppercase text-tb-champagne mb-1">TYPE D'OCCASION</label>
+                                <select id="occInputType" class="tb-input">
+                                    <option value="ANNIVERSAIRE">🎂 Anniversaire</option>
+                                    <option value="FÊTE / CÉLÉBRATION">🥂 Fête / Célébration</option>
+                                    <option value="DIPLÔME / PROJET">🎓 Diplôme / Réussite</option>
+                                    <option value="SPÉCIAL STREAM">⚡ Émission Spéciale</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label class="block font-display text-xs font-bold uppercase text-tb-champagne mb-1">PRÉNOM / PSEUDO CONCERNÉ</label>
+                                <input type="text" id="occInputName" placeholder="Ex: Yann, Nina, Pyramide..." class="tb-input" />
+                            </div>
+                        </div>
+
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                            <div>
+                                <label class="block font-display text-xs font-bold uppercase text-tb-champagne mb-1">DATE DE L'ÉVÉNEMENT</label>
+                                <input type="date" id="occInputDate" class="tb-input" />
+                            </div>
+                            <div>
+                                <label class="block font-display text-xs font-bold uppercase text-tb-champagne mb-1">HORAIRE CHOISI (DÉCLENCHEMENT)</label>
+                                <input type="time" id="occInputTime" value="21:00" class="tb-input" />
+                            </div>
+                        </div>
+
+                        <div>
+                            <label class="block font-display text-xs font-bold uppercase text-tb-champagne mb-1">MESSAGE / DÉDICACE POUR L'OVERLAY</label>
+                            <input type="text" id="occInputMessage" placeholder="Ex: Joyeux anniversaire ! Ce soir on fête ça ensemble !" class="tb-input" />
+                        </div>
+
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                            <div>
+                                <label class="block font-display text-xs font-bold uppercase text-tb-champagne mb-1">OBJECTIF CAGNOTTE LIVE (€)</label>
+                                <input type="number" id="occInputLiveGoal" min="0" value="100" class="tb-input" />
+                            </div>
+                            <div>
+                                <label class="block font-display text-xs font-bold uppercase text-tb-champagne mb-1">OBJECTIF CADEAU / BON D'ACHAT (€)</label>
+                                <input type="number" id="occInputGiftGoal" min="0" value="50" class="tb-input" />
+                            </div>
+                        </div>
+
+                        <div>
+                            <label class="block font-display text-xs font-bold uppercase text-tb-champagne mb-1">SOUHAIT CADEAU (BON D'ACHAT, VINYLE, JEU...)</label>
+                            <input type="text" id="occInputGiftWish" placeholder="Ex: Bon d'achat Bandcamp / Steam / Livre" class="tb-input" />
+                        </div>
+
+                        <button onclick="saveOccasionEvent()" class="btn-gold w-full py-3.5 rounded-xl font-display text-base font-black uppercase tracking-wider cursor-pointer shadow-lg">
+                            ENREGISTRER & ACTIVER LE COMPTE À REBOURS
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- CALENDRIER / FILE DES PROCHAINES OCCASIONS -->
+            <div class="tb-glass rounded-2xl p-6 md:p-8 border border-tb-gold/45 shadow-xl space-y-4">
+                <div class="flex flex-wrap items-center justify-between gap-2">
+                    <h3 class="font-display text-2xl font-black uppercase gold-text-gradient">CALENDRIER DES CÉLÉBRATIONS INSCRITES</h3>
+                    <span class="font-sans text-xs text-tb-champagne">Cliquez sur « Mettre à la une » pour basculer l'overlay OBS sur un abonné</span>
+                </div>
+                <div id="occasionsQueueList" class="grid grid-cols-1 md:grid-cols-3 gap-4"></div>
+            </div>
+        </section>
+
         <!-- TAB 5: TRAVEL -->
         <section id="content-travel" class="space-y-8 hidden">
             <div class="tb-glass rounded-2xl p-6 md:p-8 border border-tb-gold/50 shadow-2xl space-y-3">
@@ -804,6 +993,8 @@
                 subtitle: "OFFICIAL COMMUNITY HUB // COFFRE DIMENSIONNEL",
                 tab_hunt: "ROUE DE LA CHASSE & RELIQUES",
                 tab_live: "LIVE & LISTENING",
+                tab_occasions: "BIRTHDAYS & OCCASIONS",
+                tab_occasions: "ANNIV & OCCASIONS",
                 tab_games: "ARÈNE DES MINI-JEUX",
                 tab_ecolab: "TERRA 4.0 // ECO-LAB",
                 tab_travel: "BONS PLANS VOYAGE",
@@ -901,6 +1092,8 @@
                 subtitle: "OFFICIAL COMMUNITY HUB // DIMENSIONAL VAULT",
                 tab_hunt: "THE HUNT WHEEL & RELICS",
                 tab_live: "LIVE & LISTENING",
+                tab_occasions: "BIRTHDAYS & OCCASIONS",
+                tab_occasions: "ANNIV & OCCASIONS",
                 tab_games: "MINI-GAMES ARENA",
                 tab_ecolab: "TERRA 4.0 // ECO-LAB",
                 tab_travel: "TRAVEL DEALS",
@@ -1288,7 +1481,7 @@
         } catch(e) {}
 
         window.switchTab = function(tabId) {
-            ["hunt", "live", "minigames", "ecolab", "travel", "leaderboard"].forEach(id => {
+            ["hunt", "live", "minigames", "ecolab", "occasions", "travel", "leaderboard"].forEach(id => {
                 const sec = document.getElementById(`content-${id}`);
                 const btn = document.getElementById(`tabBtn-${id}`);
                 if (sec) sec.classList.add("hidden");
@@ -1300,6 +1493,206 @@
             if (targetBtn) targetBtn.classList.add("active");
             if (tabId === 'leaderboard') renderLeaderboard();
         };
+
+        
+        // --- ANNIV & OCCASIONS (COMPTE À REBOURS + DOUBLE CAGNOTTE + SYNC OBS !gift) ---
+        let activeOccasionData = null;
+        let occasionCountdownTimer = null;
+
+        onValue(ref(db, "tbshow/occasions/active"), (snap) => {
+            activeOccasionData = snap.val() || {
+                type: "ANNIVERSAIRE",
+                name: "Communauté TB Show",
+                date: new Date().toISOString().split("T")[0],
+                time: "21:00",
+                message: "Joyeux anniversaire ! Célébration en direct sur The Beyond Show !",
+                live_goal: 100,
+                live_current: 0,
+                gift_goal: 50,
+                gift_current: 0,
+                gift_wish: "Bon d'achat Bandcamp / Culture",
+                initiator: "TB Show"
+            };
+
+            const tagEl = document.getElementById("occHeroTag");
+            const nameEl = document.getElementById("occHeroName");
+            const msgEl = document.getElementById("occHeroMessage");
+            const dateEl = document.getElementById("occHeroDateDisplay");
+
+            if (tagEl) tagEl.innerText = `🎂 ${activeOccasionData.type || "ANNIVERSAIRE"}`;
+            if (nameEl) nameEl.innerText = activeOccasionData.name || "ABONNÉ TB SHOW";
+            if (msgEl) msgEl.innerText = `« ${activeOccasionData.message || "Joyeux anniversaire !"} »`;
+            if (dateEl) dateEl.innerText = `${activeOccasionData.date || ""} à ${activeOccasionData.time || "21:00"}`;
+
+            const liveCur = Number(activeOccasionData.live_current || 0);
+            const liveGoal = Math.max(1, Number(activeOccasionData.live_goal || 100));
+            const giftCur = Number(activeOccasionData.gift_current || 0);
+            const giftGoal = Math.max(1, Number(activeOccasionData.gift_goal || 50));
+
+            document.getElementById("occLiveCurrent").innerText = liveCur.toLocaleString();
+            document.getElementById("occLiveGoal").innerText = liveGoal.toLocaleString();
+            document.getElementById("occLiveProgressBar").style.width = Math.min(100, Math.round((liveCur / liveGoal) * 100)) + "%";
+
+            document.getElementById("occGiftCurrent").innerText = giftCur.toLocaleString();
+            document.getElementById("occGiftGoal").innerText = giftGoal.toLocaleString();
+            document.getElementById("occGiftProgressBar").style.width = Math.min(100, Math.round((giftCur / giftGoal) * 100)) + "%";
+            document.getElementById("occGiftLabel").innerText = activeOccasionData.gift_wish || "Bon d'achat / attention pour l'abonné";
+
+            startOccasionCountdown();
+        });
+
+        function startOccasionCountdown() {
+            if (occasionCountdownTimer) clearInterval(occasionCountdownTimer);
+
+            function tick() {
+                if (!activeOccasionData || !activeOccasionData.date) return;
+                const timeStr = activeOccasionData.time || "21:00";
+                const targetTs = new Date(`${activeOccasionData.date}T${timeStr}:00`).getTime();
+                const now = Date.now();
+                const diff = targetTs - now;
+
+                const badge = document.getElementById("occLiveStatusBadge");
+
+                if (isNaN(targetTs) || diff <= 0) {
+                    document.getElementById("cdDays").innerText = "00";
+                    document.getElementById("cdHours").innerText = "00";
+                    document.getElementById("cdMinutes").innerText = "00";
+                    document.getElementById("cdSeconds").innerText = "00";
+                    if (badge) {
+                        badge.innerText = "🎉 JOUR J // ON AIR !";
+                        badge.className = "px-2.5 py-1 rounded bg-tb-mythic/25 text-tb-mythic border border-tb-mythic font-display text-xs font-black uppercase animate-pulse";
+                    }
+                    return;
+                }
+
+                const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+                const hours = Math.floor((diff / (1000 * 60 * 60)) % 24);
+                const mins = Math.floor((diff / (1000 * 60)) % 60);
+                const secs = Math.floor((diff / 1000) % 60);
+
+                document.getElementById("cdDays").innerText = String(days).padStart(2, "0");
+                document.getElementById("cdHours").innerText = String(hours).padStart(2, "0");
+                document.getElementById("cdMinutes").innerText = String(mins).padStart(2, "0");
+                document.getElementById("cdSeconds").innerText = String(secs).padStart(2, "0");
+                if (badge) {
+                    badge.innerText = "⏳ COMPTE À REBOURS ACTIF";
+                    badge.className = "px-2.5 py-1 rounded bg-tb-gold/20 text-tb-goldlight border border-tb-gold/50 font-display text-xs font-black uppercase";
+                }
+            }
+
+            tick();
+            occasionCountdownTimer = setInterval(tick, 1000);
+        }
+
+        window.saveOccasionEvent = function() {
+            const name = document.getElementById("occInputName").value.trim() || userState.username || "Abonné TB Show";
+            const type = document.getElementById("occInputType").value;
+            const date = document.getElementById("occInputDate").value || new Date().toISOString().split("T")[0];
+            const time = document.getElementById("occInputTime").value || "21:00";
+            const message = document.getElementById("occInputMessage").value.trim() || `Joyeux anniversaire ${name} !`;
+            const liveGoal = Math.max(0, Number(document.getElementById("occInputLiveGoal").value) || 100);
+            const giftGoal = Math.max(0, Number(document.getElementById("occInputGiftGoal").value) || 50);
+            const giftWish = document.getElementById("occInputGiftWish").value.trim() || "Bon d'achat / Cadeau communautaire";
+
+            const payload = {
+                type,
+                name,
+                date,
+                time,
+                message,
+                live_goal: liveGoal,
+                live_current: 0,
+                gift_goal: giftGoal,
+                gift_current: 0,
+                gift_wish: giftWish,
+                initiator: userState.username || name,
+                updated_at: Date.now()
+            };
+
+            // 1. Mettre à la une + enregistrer dans la liste des occasions
+            update(ref(db, "tbshow/occasions/active"), payload);
+            push(ref(db, "tbshow/occasions/queue"), payload);
+
+            playSound("coin_win");
+            showRewardModal("CÉLÉBRATION PROGRAMMÉE", `L'événement de ${name} (${date} à ${time}) est actif sur le Hub et prêt pour l'overlay OBS !`, "🎂");
+        };
+
+        window.contributeOccasionPot = function(potType, amount) {
+            const field = potType === "live" ? "live_current" : "gift_current";
+            runTransaction(ref(db, "tbshow/occasions/active"), (cur) => {
+                const data = cur || activeOccasionData || { name: "Abonné", live_current: 0, gift_current: 0 };
+                data[field] = (Number(data[field]) || 0) + amount;
+                return data;
+            });
+
+            triggerGiftCelebration(userState.username || "Sponsor");
+            playSound("coin_win");
+            showRewardModal(
+                potType === "live" ? "SOUTIEN LIVE AJOUTÉ" : "CAGNOTTE CADEAU AUGMENTÉE",
+                `+${amount} € enregistrés pour ${activeOccasionData?.name || "la célébration"} !`,
+                potType === "live" ? "🎥" : "🎁"
+            );
+        };
+
+        window.sendHubGiftCheer = function() {
+            if (userState.coins < 50) {
+                showRewardModal("SOLDE INSUFFISANT", "Il faut 50 TB-Coins pour envoyer un vœu animé sur OBS (ou tapez !gift dans le chat).", "⚠️");
+                return;
+            }
+            userState.coins -= 50;
+            saveProgress();
+            refreshUI();
+            triggerGiftCelebration(userState.username || "Viewer");
+            playSound("coin_win");
+            showRewardModal("VŒU ENVOYÉ SUR OBS", `Joyeux anniversaire envoyé à ${activeOccasionData?.name || "l'abonné"} !`, "🎉");
+        };
+
+        window.triggerGiftCelebration = function(senderName) {
+            const targetName = activeOccasionData?.name || "la Communauté";
+            const occType = activeOccasionData?.type || "ANNIVERSAIRE";
+            update(ref(db, "tbshow/occasions/trigger"), {
+                sender: senderName || "TB Show",
+                honoree: targetName,
+                type: occType,
+                message: activeOccasionData?.message || `Joyeux anniversaire ${targetName} !`,
+                timestamp: Date.now()
+            });
+        };
+
+        onValue(ref(db, "tbshow/occasions/queue"), (snap) => {
+            const listEl = document.getElementById("occasionsQueueList");
+            if (!listEl) return;
+            listEl.innerHTML = "";
+            const val = snap.val();
+            if (!val) {
+                listEl.innerHTML = `<p class="font-sans text-xs text-tb-champagne col-span-3">Aucune autre célébration enregistrée dans la file d'attente.</p>`;
+                return;
+            }
+
+            const entries = Object.entries(val).reverse().slice(0, 6);
+            entries.forEach(([key, item]) => {
+                const card = document.createElement("div");
+                card.className = "bg-tb-obsidian/85 border border-tb-gold/35 rounded-xl p-4 flex flex-col justify-between space-y-3";
+                card.innerHTML = `
+                    <div>
+                        <div class="flex items-center justify-between text-xs">
+                            <span class="font-display font-black uppercase text-tb-goldlight">${item.type || "ANNIVERSAIRE"}</span>
+                            <span class="text-tb-steelblue font-bold">${item.date || ""} • ${item.time || ""}</span>
+                        </div>
+                        <h4 class="font-display text-xl font-black uppercase text-tb-ivory mt-1">${item.name || "Abonné"}</h4>
+                        <p class="font-sans text-xs text-tb-champagne mt-1 line-clamp-2">${item.message || ""}</p>
+                    </div>
+                    <button data-key="${key}" class="btn-crimson w-full py-2 rounded-lg font-display text-xs font-black uppercase cursor-pointer">
+                        METTRE À LA UNE (OBS)
+                    </button>
+                `;
+                card.querySelector("button").onclick = () => {
+                    update(ref(db, "tbshow/occasions/active"), { ...item, updated_at: Date.now() });
+                    showRewardModal("MIS À LA UNE", `${item.name} est maintenant affiché sur le Hub et l'overlay OBS !`, "✨");
+                };
+                listEl.appendChild(card);
+            });
+        });
 
         // ECO-LAB LIVE STATS & ACTIONS
         onValue(ref(db, "tbshow/ecolab/stats"), (snap) => {
